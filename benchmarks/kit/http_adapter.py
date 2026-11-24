@@ -8,10 +8,20 @@ policy. Results explicitly distinguish this benchmark wrapper from a runtime's n
 from __future__ import annotations
 
 import json
+import socketserver
 import threading
 import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, HTTPServer
+
+
+class LocalServer(HTTPServer):
+    """HTTPServer without its lookup of the host's fully qualified name on bind, a reverse DNS lookup that can stall
+    for seconds (it hung on GitHub's macOS runners); nothing here reads `server_name`."""
+
+    def server_bind(self):
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = str(self.server_address[0]), int(self.server_address[1])
 
 
 def run_http(args, decide, meta, *, memory, fits, run):
@@ -43,7 +53,7 @@ def run_http(args, decide, meta, *, memory, fits, run):
             self.end_headers()
             self.wfile.write(payload)
 
-    server = HTTPServer(("127.0.0.1", 0), Handler)
+    server = LocalServer(("127.0.0.1", 0), Handler)
     base = f"http://127.0.0.1:{server.server_port}"
 
     def post(path, body):

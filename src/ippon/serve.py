@@ -93,6 +93,7 @@ import select
 import shutil
 import signal
 import socket
+import socketserver
 import statistics
 import sys
 import threading
@@ -811,6 +812,12 @@ class Server(ThreadingHTTPServer):
     request_queue_size = MAX_QUEUE
     batcher: Batcher
     answering: _Answering
+
+    def server_bind(self) -> None:
+        """Binds as socketserver does, without HTTPServer's lookup of the host's fully qualified name: that reverse
+        DNS lookup can stall for seconds (it hung on GitHub's macOS runners), and nothing here reads `server_name`."""
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = str(self.server_address[0]), int(self.server_address[1])
 
     def serve_forever(self, poll_interval: float = 0.5) -> None:
         if threading.current_thread() is not threading.main_thread():
