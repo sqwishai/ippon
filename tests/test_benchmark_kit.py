@@ -12,7 +12,8 @@ KIT = Path(__file__).resolve().parents[1] / "benchmarks/kit"
 # what every program below starts with: the kit importable, no readings of this Mac, and a Monitor that sees no
 # other process (a test that needs one busy sets its own after this)
 PRELUDE = """
-import sys
+import sys, faulthandler
+faulthandler.dump_traceback_later(float(__import__("os").environ.get("KIT_TRACE_AFTER", "1e9")), exit=True)
 sys.path.insert(0, sys.argv[1])
 import common
 common.machine_state = lambda: {}
@@ -31,12 +32,15 @@ common.Monitor = Quiet
 
 def run_kit(program: str, *args: object, timeout: float = 30) -> None:
     """Run `program` after PRELUDE in a fresh isolated Python, with the kit's folder and `args` as its arguments."""
+    import os
+
     result = subprocess.run(
         [sys.executable, "-I", "-c", PRELUDE + program, str(KIT), *map(str, args)],
         capture_output=True,
         text=True,
-        timeout=timeout,
+        timeout=timeout + 30,
         check=False,
+        env={**os.environ, "KIT_TRACE_AFTER": str(timeout - 3)},
     )
     assert result.returncode == 0, result.stderr
 
