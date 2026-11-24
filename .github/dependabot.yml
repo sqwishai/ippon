@@ -11,6 +11,11 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # OpenCV decodes d3's videos as its creators' runtime does, and 5.1 changed the decoded pixels: a new minor
+      # version is taken by hand, once tests/test_d3_media.py passes on it
+      - dependency-name: opencv-python-headless
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
     groups:
       # MLX alone: ippon's M5 kernel choices were fitted on one MLX series, so a bump of it gets its own pull request,
       # an ippon bench --ab spot-check before merging, and a refit (scripts/measure_kernels.py) on a new minor version

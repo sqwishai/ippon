@@ -15,7 +15,9 @@ dependencies = [
     "pillow>=11",  # images in requests, decoded as the creators' code decodes them (media/decode.py)
     "pyyaml>=6",  # model cards' front matter, read as huggingface_hub reads it (licences.py)
     "av>=18.1",  # videos, decoded as the models' creators decode them (media/lfm3_video.py)
-    "opencv-python-headless>=5.0",  # videos, for models whose creators decode them with OpenCV (media/d3_video.py)
+    # videos, for models whose creators decode them with OpenCV (media/d3_video.py); 5.1 decodes the reference clips
+    # to different pixels than the creators' runtime, so it stays on 5.0 until the references are checked again
+    "opencv-python-headless>=5.0,<5.1",
     "tokenizers>=0.21",
 ]
 keywords = ["mlx", "apple-silicon", "metal", "decision-models", "classification", "local-inference"]
