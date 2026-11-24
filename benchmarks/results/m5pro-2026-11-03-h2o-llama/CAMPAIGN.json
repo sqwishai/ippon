@@ -1,0 +1,137 @@
+{
+  "kit_commit": "1610112a907dfcc06fed2e35720db8541d623d69",
+  "library_commit": "1610112a907dfcc06fed2e35720db8541d623d69",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-03",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "1610112",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-5"
+  },
+  "workloads": [
+    {
+      "name": "text",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1,50"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "typical",
+      "options": [
+        "--sizes",
+        "500",
+        "--questions",
+        "3"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "concurrent",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--clients",
+        "8"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "repeat",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "repeat"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "grow",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "grow"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "burst",
+      "options": [
+        "--sizes",
+        "300",
+        "--questions",
+        "1",
+        "--clients",
+        "16"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 20,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "73a6642bc21dc3336172983f3cfa06116a61841951d592c3eba2c9dc2647e3b6"
+  }
+}

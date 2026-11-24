@@ -1,0 +1,122 @@
+name: Release
+
+# A version tag (v0.1.0, v0.2.0rc1) checks and builds the sdist and wheel, publishes them to PyPI through trusted
+# publishing, and opens a draft GitHub release with the files, their SHA-256 sums and the version's notes from
+# CHANGELOG.md (scripts/release.py --notes), for a maintainer to read over and publish.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    if: ${{ !github.event.repository.private }}  # releases are made from the public repository, where macOS runs free
+    runs-on: macos-15
+    outputs:
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - name: Check that the tag names the package's version
+        id: version
+        run: |
+          version=$(uv version --short)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "the tag $GITHUB_REF_NAME doesn't match pyproject.toml's version $version" >&2
+            exit 1
+          fi
+          case "$version" in  # PEP 440: a, b, rc or .dev marks a pre-release
+            *[a-z]*) echo "prerelease=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - name: The version's notes in CHANGELOG.md
+        run: |
+          mkdir notes
+          uv run --no-project python scripts/release.py --notes "${GITHUB_REF_NAME#v}" > notes/RELEASE_NOTES.md
+      - run: uv sync --locked
+      - name: Format, lint and types
+        run: uv run ruff format --check . && uv run ruff check . && uv run mypy
+      - run: uv run pytest -q
+      - name: Build the sdist and wheel
+        run: uv build
+      - name: Check the package metadata
+        run: |
+          uvx twine check --strict dist/*
+          # PyPI shows the README without the repository: every link and image must be absolute
+          if unzip -p dist/ippon-*.whl '*/METADATA' | grep -nE '\]\([^h#]|(src|srcset|href)="[^h#]'; then
+            echo "relative links in the wheel's description" >&2
+            exit 1
+          fi
+      # no usable Apple GPU on the runner: installing and repairing only, serving runs on a real Mac first
+      - name: Installed package on every supported Python
+        run: |
+          uv run --locked python scripts/check_package.py --wheel dist/*.whl --out "$RUNNER_TEMP/package-checks" \
+            --install-only
+      - name: Keep lifecycle reports and server logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: package-checks
+          path: ${{ runner.temp }}/package-checks/
+      - name: SHA-256 sums
+        run: cd dist && shasum -a 256 * > SHA256SUMS
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: dist
+          path: dist/
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: notes
+          path: notes/
+
+  pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/ippon/
+    permissions:
+      id-token: write  # trusted publishing: no token is stored
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - run: rm dist/SHA256SUMS
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086  # v1.14.3
+
+  github:
+    name: Draft the GitHub release
+    needs: [build, pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: notes
+          path: notes/
+      - name: Open the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          flag=""
+          [ "$PRERELEASE" = "true" ] && flag="--prerelease"
+          gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --draft $flag \
+            --title "ippon $GITHUB_REF_NAME" --notes-file notes/RELEASE_NOTES.md

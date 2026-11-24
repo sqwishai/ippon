@@ -1,0 +1,483 @@
+{
+ "engine": "jeff-medium-maker-mps",
+ "campaign": {
+  "kit_commit": "08a7b8a465789bd611defa32663ab123915e0863",
+  "library_commit": "08a7b8a465789bd611defa32663ab123915e0863",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-04",
+  "machine": {
+   "chip": "Apple M5 Pro",
+   "architecture": "applegpu_g17s",
+   "memory_gib": 48,
+   "macos": "27.0.1",
+   "mlx": "0.32.4",
+   "ippon": "0.1.0.dev0",
+   "revision": "08a7b8a",
+   "power": {
+    "mode": "2",
+    "ac": true
+   },
+   "kernel_rule": "m5-6"
+  },
+  "workloads": [
+   {
+    "name": "text",
+    "options": [
+     "--sizes",
+     "1000",
+     "--questions",
+     "1,50"
+    ],
+    "pairs": [
+     [
+      "jeff-medium-maker-mps",
+      "jeff-medium-ippon-serve"
+     ]
+    ],
+    "alone": []
+   }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+   "file": "MODEL_BUILDS.json",
+   "sha256": "0bf72541b9bf6ac47bafed5b29cc76ae0d863ac4274bb9ecf54cc00ed4409eb5"
+  }
+ },
+ "meta": {
+  "runtime": "transformers 5.17.0 + torch 2.13.0 (mps)",
+  "versions": {
+   "accelerate": "1.15.0",
+   "tokenizers": "0.23.3",
+   "transformers": "5.17.0",
+   "safetensors": "0.8.0",
+   "torch": "2.13.0"
+  },
+  "family": "jeff",
+  "device": "mps",
+  "server_cmd": [
+   "python",
+   "-I",
+   "-c",
+   "import functools, sys; import jeff.model as m, jeff.serve as s; s.JeffModel = functools.partial(m.JeffModel, device='mps'); sys.argv = ['jeff-serve', '~/models/jeff-1.1-medium', '--host', '127.0.0.1', '--port', '54828']; s.main()"
+  ],
+  "endpoint": "/v1/systemone",
+  "server_source": "src/jeff/serve.py",
+  "source_sha256": {
+   "src/jeff/serve.py": "bcec8e1f8a48c1ff9dfdbe7df0c5f18ff64afdecd2ae3b22b6e25074aac7c50b",
+   "src/jeff/model.py": "d337f9719d07f0d204b8af3306d98c9fb4589fea0c817e54b781af81c1bac30a",
+   "src/jeff/batching.py": "e9efe72946d668eda14b2e7036a6b717de2b1e5509469e119a023bcc847aaab0",
+   "src/jeff/prompting.py": "560704b8b5be51eeb4a30c543f6100c35f640d3a4d2b548544e470aa79bd0d3d"
+  },
+  "model_dir": "~/models/jeff-1.1-medium",
+  "revision": "540c40924dd67c715d3367309ba6744bac754b00",
+  "health": {
+   "status": "ok",
+   "model": "Jeff-1.1-Medium"
+  },
+  "question_method": "one native /v1/systemone request containing all questions, run batched with other requests' questions (jeff.batching)",
+  "transport": "native HTTP"
+ },
+ "device": {
+  "chip": "Apple M5 Pro",
+  "memory_bytes": 51539607552,
+  "gpu_cores": "20",
+  "macos": "27.0.1",
+  "macos_build": "26A434",
+  "python": "3.12.15",
+  "python_executable": "benchmarks/envs/harness/bin/python",
+  "platform": "macOS-27.0.1-arm64-arm-64bit"
+ },
+ "start": {
+  "time": "2026-11-04T20:37:37+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by coreaudiod, powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 12288.00M  used = 10959.25M  free = 1328.75M  (encrypted)",
+  "memory_free_pct": "49%",
+  "load_avg": [
+   1.626953125,
+   1.6748046875,
+   2.3447265625
+  ]
+ },
+ "config": {
+  "http_transport_retries": 2,
+  "http_retry_backoff_s": 0.05,
+  "n": 10,
+  "warmup": 2,
+  "sizes": [
+   1000
+  ],
+  "questions": [
+   1,
+   50
+  ],
+  "seed": 0,
+  "max_input": 8192,
+  "gap_s": 0.0,
+  "chars_per_token": 3.7,
+  "clients": 1,
+  "media": null,
+  "scenario": "fresh",
+  "min_n": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0
+ },
+ "skipped_sizes": {},
+ "after_load": {
+  "self": {
+   "phys_footprint": 20300328,
+   "lifetime_max_phys_footprint": 20546088
+  },
+  "server": {
+   "phys_footprint": 25778047456,
+   "lifetime_max_phys_footprint": 25811864008
+  },
+  "engine": {
+   "server_phys_footprint": 25778047456
+  }
+ },
+ "requests": [
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "ms": 1971.87,
+   "tokens": 1382,
+   "state_chars": 3704,
+   "request_sha256": "fdec963f69ee1bd0c99ea6507f9c344a59a1abf926b778c4148faf72764ae91e",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10333994766629953,
+     "no": 0.8966600523337005
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "ms": 1946.55,
+   "tokens": 1381,
+   "state_chars": 3704,
+   "request_sha256": "6db269afd727ee0ab2d90ef928beba6a3a2399ce7f2ae4bd556e66f531c79556",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10719605279069093,
+     "no": 0.8928039472093091
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 5,
+   "ms": 3234.42,
+   "tokens": 1379,
+   "state_chars": 3704,
+   "request_sha256": "fc674e3f94ef48b76f89fa8bcc60472d884fd3ed00cd1b77006c031955c18ebf",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10791848833416122,
+     "no": 0.8920815116658388
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 6,
+   "ms": 2860.64,
+   "tokens": 1381,
+   "state_chars": 3704,
+   "request_sha256": "b2dd9da9c7d4bb754e180403f572922d495ee6013785106a53b09ba1e98f19b9",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10658334626709853,
+     "no": 0.8934166537329015
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 8,
+   "ms": 2235.48,
+   "tokens": 1378,
+   "state_chars": 3704,
+   "request_sha256": "25e93f66357413a6f55f594e3d4c31288bead4f9a9f445a4002af2dd8c701c8c",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10645228578970667,
+     "no": 0.8935477142102933
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 9,
+   "ms": 2485.59,
+   "tokens": 1382,
+   "state_chars": 3704,
+   "request_sha256": "8dc02262fcef62b2c2dbd5d66faf014a9fc010d468e60be763db91bfeb109ca6",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.1116850040011623,
+     "no": 0.8883149959988377
+    }
+   },
+   "problems": []
+  }
+ ],
+ "set_aside": [
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 4,
+   "ms": 43254.75,
+   "tokens": 1381,
+   "state_chars": 3704,
+   "request_sha256": "8026e6c1ef5ccb05401bed632f6e44ab6137f178dcc0407ba0af00dea09e1e4e",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10510319838652335,
+     "no": 0.8948968016134766
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (51%)",
+    "process (52%)",
+    "process (60%)",
+    "process (59%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 7,
+   "ms": 4342.36,
+   "tokens": 1380,
+   "state_chars": 3704,
+   "request_sha256": "3c1c47c57f84d1a428d1d9ede53710616c1106d6b39b92f5df851851cc2e6429",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.096643608057827,
+     "no": 0.903356391942173
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (52%)",
+    "process (53%)",
+    "process (72%)"
+   ]
+  }
+ ],
+ "errors": [
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 50,
+   "rep": 0,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 34.40 GiB, max allowed: 37.44 GiB). Tried to allocate 474.04 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 50,
+   "rep": 1,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 34.89 GiB, max allowed: 37.44 GiB). Tried to allocate 232.64 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 35.00 GiB, max allowed: 37.44 GiB). Tried to allocate 21.58 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 35.00 GiB, max allowed: 37.44 GiB). Tried to allocate 11.00 KiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 2,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 35.00 GiB, max allowed: 37.44 GiB). Tried to allocate 11.00 KiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 3,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 35.00 GiB, max allowed: 37.44 GiB). Tried to allocate 11.00 KiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 0,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 1.36 GiB, other allocations: 35.19 GiB, max allowed: 37.44 GiB). Tried to allocate 496.66 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 1,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 1.36 GiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 248.50 KiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 2,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 370.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 465.62 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 3,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 692.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 232.64 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 4,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 776.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 232.98 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 5,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 772.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 232.64 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 6,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 626.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 233.14 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 7,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 754.00 MiB, other allocations: 36.65 GiB, max allowed: 37.44 GiB). Tried to allocate 233.14 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 8,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 708.00 MiB, other allocations: 36.67 GiB, max allowed: 37.44 GiB). Tried to allocate 232.64 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 9,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 750.00 MiB, other allocations: 36.67 GiB, max allowed: 37.44 GiB). Tried to allocate 41.89 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 6,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 774.00 MiB, other allocations: 36.67 GiB, max allowed: 37.44 GiB). Tried to allocate 20.23 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 7,
+   "error": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 806.00 MiB, other allocations: 36.67 GiB, max allowed: 37.44 GiB). Tried to allocate 2.70 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  }
+ ],
+ "complete": true,
+ "busy": [],
+ "activity_errors": [],
+ "end": {
+  "time": "2026-11-04T20:40:16+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by coreaudiod, powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 18432.00M  used = 17377.94M  free = 1054.06M  (encrypted)",
+  "memory_free_pct": "32%",
+  "load_avg": [
+   2.25,
+   2.0244140625,
+   2.38037109375
+  ]
+ },
+ "memory": {
+  "self": {
+   "phys_footprint": 21283368,
+   "lifetime_max_phys_footprint": 21463616
+  },
+  "server": {
+   "phys_footprint": 40824638376,
+   "lifetime_max_phys_footprint": 43132717656
+  },
+  "engine_peak_sampled": 39105628976,
+  "engine_now": {
+   "server_phys_footprint": 40824638376
+  }
+ },
+ "summary": {
+  "1000x1": {
+   "median_ms": 2673.11,
+   "median_ci_ms": null,
+   "n": 4,
+   "min_ms": 2235.48,
+   "max_ms": 3234.42,
+   "tokens": 1379
+  }
+ },
+ "stopped": {
+  "1000x1": "n",
+  "1000x50": "n"
+ }
+}

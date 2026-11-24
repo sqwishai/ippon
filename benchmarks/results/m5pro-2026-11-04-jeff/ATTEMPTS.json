@@ -1,0 +1,66 @@
+[
+  {
+    "kind": "engine-run",
+    "round": 1,
+    "attempt": 1,
+    "engine": "jeff-medium-ippon-serve",
+    "exit": 0,
+    "retry": []
+  },
+  {
+    "kind": "engine-attempt",
+    "round": 1,
+    "attempt": 1,
+    "engine": "jeff-medium-maker-mps",
+    "exit": 0,
+    "problems": [
+      "incomplete or request errors",
+      "timed 1000x1: missing samples",
+      "warmup 1000x50: missing samples",
+      "timed 1000x50: missing samples"
+    ],
+    "failed": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 34.40 GiB, max allowed: 37.44 GiB). Tried to allocate 474.04 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+    "kind": "engine-run",
+    "round": 1,
+    "attempt": 1,
+    "engine": "jeff-medium-maker-mps",
+    "exit": 0,
+    "retry": []
+  },
+  {
+    "kind": "round",
+    "round": 1,
+    "accepted": true,
+    "scheduled": [
+      "jeff-medium-ippon-serve",
+      "jeff-medium-maker-mps"
+    ],
+    "engines": [
+      {
+        "engine": "jeff-medium-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "jeff-medium-maker-mps",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "timed 1000x1: missing samples",
+          "warmup 1000x50: missing samples",
+          "timed 1000x50: missing samples"
+        ],
+        "failed": "RuntimeError: HTTP 500: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 2.46 GiB, other allocations: 34.40 GiB, max allowed: 37.44 GiB). Tried to allocate 474.04 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+      }
+    ]
+  },
+  {
+    "kind": "round",
+    "round": 2,
+    "accepted": true,
+    "scheduled": [],
+    "engines": []
+  }
+]

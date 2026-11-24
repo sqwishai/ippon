@@ -1,0 +1,111 @@
+[
+ {
+  "name": "d1-bells-22k-stereo",
+  "request": {
+   "audio": "poe-bells-5s-22k-stereo.wav",
+   "state": "A recording sent from a phone.",
+   "questions": {
+    "poem": {
+     "type": "noul",
+     "instructions": "Is someone reading a poem aloud?"
+    },
+    "bells": {
+     "type": "choice",
+     "instructions": "What does the speaker talk about?",
+     "criteria": {
+      "bells": "bells and their sound",
+      "weather": null,
+      "traffic": "cars and roads"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "poe-bells-5s-22k-stereo.wav",
+    "sha256": "b5181e4fbd052a012e82c4058a6cb6d4514007f33ef35b211209d63edbbcf287"
+   }
+  ]
+ },
+ {
+  "name": "d1-spoken-question",
+  "request": {
+   "state": "Notes from a call with a customer about a lost parcel.",
+   "questions": {
+    "heard": {
+     "type": "noul",
+     "instructions": {
+      "type": "input_audio",
+      "input_audio": {
+       "file": "armstrong-small-step.wav"
+      }
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "armstrong-small-step.wav",
+    "sha256": "1bf448e903a64cf86783a8e4c51d54ee7325960d20dfdd0d1a572cd038733531"
+   }
+  ]
+ },
+ {
+  "name": "d1-spoken-and-written-after-a-clip",
+  "request": {
+   "audio": "kennedy-rice-30s.wav",
+   "state": {
+    "call": 17,
+    "topic": "space"
+   },
+   "questions": {
+    "first": {
+     "type": "choice",
+     "instructions": {
+      "type": "input_audio",
+      "input_audio": {
+       "file": "poe-bells-5s.wav"
+      }
+     },
+     "criteria": {
+      "bells": "bells ringing",
+      "speech": null,
+      "music": "a song"
+     }
+    },
+    "written": {
+     "type": "noul",
+     "instructions": "Does the recording mention the Moon?"
+    },
+    "last": {
+     "type": "score",
+     "instructions": {
+      "type": "input_audio",
+      "input_audio": {
+       "file": "apollo13-problem-15s.wav"
+      }
+     },
+     "criteria": [
+      "calm",
+      "tense",
+      "alarmed"
+     ]
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "kennedy-rice-30s.wav",
+    "sha256": "102c171879693262cd15aa5541ae8dcfbad54499bde19672bf291115a9523434"
+   },
+   {
+    "name": "poe-bells-5s.wav",
+    "sha256": "851ec55fee915fbf898e79bcb3ac30be3a5d8c60b1f51ddb3dfa14cbec9fbfcd"
+   },
+   {
+    "name": "apollo13-problem-15s.wav",
+    "sha256": "fabec4b8e0cc7adb97ccd38224dbcc0b43413d70f905f33b21923b4abb463542"
+   }
+  ]
+ }
+]

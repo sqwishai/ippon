@@ -1,0 +1,72 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "0b26fc8",
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "mode": "mlx",
+  "options": {
+    "pin_memory": true,
+    "switches": "norm_rope=mlx,compile=off"
+  },
+  "reference": "references/attention/d3-lite-long-expanded.json.gz",
+  "reference_sha256": "6dd6a067a49f513a3dec4a29c8f22c12556794166208c03cae181da3e3ce6578",
+  "case": "long-12k-mixed",
+  "verify": {
+    "model": "~/models/d3-lite",
+    "against": "the reference",
+    "notes": [],
+    "bound": 0.0231,
+    "worst": 0.001941204222669135,
+    "passed": true,
+    "failures": [],
+    "requests": [
+      {
+        "name": "long-12k-mixed",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.001941204222669135,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      }
+    ]
+  },
+  "probabilities": [
+    {
+      "refund": [
+        0.3912337603797388,
+        0.6087662396202612
+      ],
+      "team": [
+        0.2394683522321605,
+        0.015925394571964183,
+        0.039728143743405116,
+        0.09212179185491455,
+        0.0016494296532840473,
+        0.0018567062293312086,
+        0.4588477610025506,
+        0.004035231714510929,
+        0.0026909968577185066,
+        0.0011086135909295323,
+        0.1425675785492308
+      ],
+      "mood": [
+        0.09043646809837412,
+        0.7489239127085261,
+        0.1606396191930998
+      ]
+    }
+  ],
+  "invariance": null,
+  "peak_active_bytes": 5561868184
+}

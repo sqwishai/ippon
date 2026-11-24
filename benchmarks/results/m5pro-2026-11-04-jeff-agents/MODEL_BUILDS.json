@@ -1,0 +1,980 @@
+{
+  "engines": {
+    "jeff-medium-ippon-serve": {
+      "model": "~/models/jeff-1.1-medium",
+      "hub_revision": "540c40924dd67c715d3367309ba6744bac754b00",
+      "files": [
+        "~/models/jeff-1.1-medium/adapter/adapter_config.json",
+        "~/models/jeff-1.1-medium/adapter/adapter_model.safetensors",
+        "~/models/jeff-1.1-medium/config.json",
+        "~/models/jeff-1.1-medium/generation_config.json",
+        "~/models/jeff-1.1-medium/head.safetensors",
+        "~/models/jeff-1.1-medium/head_config.json",
+        "~/models/jeff-1.1-medium/jeff_config.json",
+        "~/models/jeff-1.1-medium/model-00001-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00002-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00003-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00004-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00005-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model.safetensors.index.json",
+        "~/models/jeff-1.1-medium/reasoning.json",
+        "~/models/jeff-1.1-medium/serving_rule.json",
+        "~/models/jeff-1.1-medium/tokenizer.json",
+        "~/models/jeff-1.1-medium/tokenizer_config.json"
+      ]
+    },
+    "jeff-medium-maker-mps": {
+      "model": "~/models/jeff-1.1-medium",
+      "hub_revision": "540c40924dd67c715d3367309ba6744bac754b00",
+      "files": [
+        "~/models/jeff-1.1-medium/adapter/adapter_config.json",
+        "~/models/jeff-1.1-medium/adapter/adapter_model.safetensors",
+        "~/models/jeff-1.1-medium/config.json",
+        "~/models/jeff-1.1-medium/generation_config.json",
+        "~/models/jeff-1.1-medium/head.safetensors",
+        "~/models/jeff-1.1-medium/head_config.json",
+        "~/models/jeff-1.1-medium/jeff_config.json",
+        "~/models/jeff-1.1-medium/model-00001-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00002-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00003-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00004-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model-00005-of-00005.safetensors",
+        "~/models/jeff-1.1-medium/model.safetensors.index.json",
+        "~/models/jeff-1.1-medium/reasoning.json",
+        "~/models/jeff-1.1-medium/serving_rule.json",
+        "~/models/jeff-1.1-medium/tokenizer.json",
+        "~/models/jeff-1.1-medium/tokenizer_config.json"
+      ]
+    }
+  },
+  "files": {
+    "~/models/ollama/blobs/sha256-72ed4a0446561e7f110a0790e0be52874eac90cd2be1638609cce3de680cffd1": {
+      "bytes": 150,
+      "sha256": "72ed4a0446561e7f110a0790e0be52874eac90cd2be1638609cce3de680cffd1"
+    },
+    "~/models/ollama/blobs/sha256-a3f55fde77f87b1d1f7d139ed00a7e59c0b963138587b901e4d68619082e9e44": {
+      "bytes": 592,
+      "sha256": "a3f55fde77f87b1d1f7d139ed00a7e59c0b963138587b901e4d68619082e9e44"
+    },
+    "~/models/ollama/blobs/sha256-2eaeede9c57f432b3bbcfb2921fcec50eee24ed43fe8c75224a2aeb94e260be2": {
+      "bytes": 526432,
+      "sha256": "2eaeede9c57f432b3bbcfb2921fcec50eee24ed43fe8c75224a2aeb94e260be2"
+    },
+    "~/models/ollama/blobs/sha256-d5807dc1ec8adeb83280f34af14347f3522bb853bfd1e5719e83e8feb9c04909": {
+      "bytes": 84,
+      "sha256": "d5807dc1ec8adeb83280f34af14347f3522bb853bfd1e5719e83e8feb9c04909"
+    },
+    "~/models/ollama/blobs/sha256-9a66e7f1edadef478e8b0f96184a88398ce66cf88b8e0b8046870780678e7296": {
+      "bytes": 1112,
+      "sha256": "9a66e7f1edadef478e8b0f96184a88398ce66cf88b8e0b8046870780678e7296"
+    },
+    "~/models/ollama/blobs/sha256-46ddfa00705d10948ba416ba3c66ca2c21714d683385a300d1e0f26a6160c8e3": {
+      "bytes": 2152,
+      "sha256": "46ddfa00705d10948ba416ba3c66ca2c21714d683385a300d1e0f26a6160c8e3"
+    },
+    "~/models/ollama/blobs/sha256-dc060f6c10b51bc4f4af907b868ae1e561e7407564f2f7004435261bb87a7c67": {
+      "bytes": 103153784,
+      "sha256": "dc060f6c10b51bc4f4af907b868ae1e561e7407564f2f7004435261bb87a7c67"
+    },
+    "~/models/ollama/blobs/sha256-5d6dfb696839e264b701b52b3d1aaddfb41ff55eaa60e5bfdfd2e55717ff923b": {
+      "bytes": 2144,
+      "sha256": "5d6dfb696839e264b701b52b3d1aaddfb41ff55eaa60e5bfdfd2e55717ff923b"
+    },
+    "~/models/ollama/blobs/sha256-35bac77ed9f838326985d6b3a3d8e342c48de44de573df3d9756e8456e119035": {
+      "bytes": 2097264,
+      "sha256": "35bac77ed9f838326985d6b3a3d8e342c48de44de573df3d9756e8456e119035"
+    },
+    "~/models/ollama/blobs/sha256-413934ee98e859388a873c8aa882a4c5b78ee5343f00b866ae4eefcbeb4bf47f": {
+      "bytes": 6291568,
+      "sha256": "413934ee98e859388a873c8aa882a4c5b78ee5343f00b866ae4eefcbeb4bf47f"
+    },
+    "~/models/ollama/blobs/sha256-6abb67b40308f81578efe75446b377a2ffc00a614bcd7b2fad70290790db6889": {
+      "bytes": 10748016,
+      "sha256": "6abb67b40308f81578efe75446b377a2ffc00a614bcd7b2fad70290790db6889"
+    },
+    "~/models/ollama/blobs/sha256-9806b118663ca3c2d8f4ab2a121628861f253c7031f989f1201162ea78af222b": {
+      "bytes": 5374064,
+      "sha256": "9806b118663ca3c2d8f4ab2a121628861f253c7031f989f1201162ea78af222b"
+    },
+    "~/models/ollama/blobs/sha256-df41e10db25d928a373174b95547758f71dfc3fec7c75fd717bfcf8760b68b61": {
+      "bytes": 2152,
+      "sha256": "df41e10db25d928a373174b95547758f71dfc3fec7c75fd717bfcf8760b68b61"
+    },
+    "~/models/ollama/blobs/sha256-92c4ee8fd8a062e6e2f1e7013ba17b6a3d51423968ccbbac66261eb247f2dc66": {
+      "bytes": 2097264,
+      "sha256": "92c4ee8fd8a062e6e2f1e7013ba17b6a3d51423968ccbbac66261eb247f2dc66"
+    },
+    "~/models/ollama/blobs/sha256-480740aa6b3b0c06c84e679d85ce61f3326c7b72c266ee9246e053c69208ce89": {
+      "bytes": 6291568,
+      "sha256": "480740aa6b3b0c06c84e679d85ce61f3326c7b72c266ee9246e053c69208ce89"
+    },
+    "~/models/ollama/blobs/sha256-b5ca65e9a2812c895ce5f87df15de2aec68c02b77c3f2707ed0cfdd7ee94393c": {
+      "bytes": 2152,
+      "sha256": "b5ca65e9a2812c895ce5f87df15de2aec68c02b77c3f2707ed0cfdd7ee94393c"
+    },
+    "~/models/ollama/blobs/sha256-dbd8696de3cc1a69efeb94ea03463ae96b6f4c7f66b5578d17be9339c0e5289d": {
+      "bytes": 10748016,
+      "sha256": "dbd8696de3cc1a69efeb94ea03463ae96b6f4c7f66b5578d17be9339c0e5289d"
+    },
+    "~/models/ollama/blobs/sha256-bf2117b6dafbf20b73dfa839dfe30ab3c456c847a6ee3d990b2a9044ef0c8264": {
+      "bytes": 5374064,
+      "sha256": "bf2117b6dafbf20b73dfa839dfe30ab3c456c847a6ee3d990b2a9044ef0c8264"
+    },
+    "~/models/ollama/blobs/sha256-f283add276bfc4c1142ca7110e287ea9cc33ccf81197adb0be4e50ff40c77b28": {
+      "bytes": 2152,
+      "sha256": "f283add276bfc4c1142ca7110e287ea9cc33ccf81197adb0be4e50ff40c77b28"
+    },
+    "~/models/ollama/blobs/sha256-4603a53ec801cacbfe31eb91712d55af29b6e1f1ca044a616d10587f9b90c6ac": {
+      "bytes": 2097264,
+      "sha256": "4603a53ec801cacbfe31eb91712d55af29b6e1f1ca044a616d10587f9b90c6ac"
+    },
+    "~/models/ollama/blobs/sha256-827de4d91685d74b7ff900d7cf0ffffb3d6c6762d0bca307a4caf33f21584c11": {
+      "bytes": 6291568,
+      "sha256": "827de4d91685d74b7ff900d7cf0ffffb3d6c6762d0bca307a4caf33f21584c11"
+    },
+    "~/models/ollama/blobs/sha256-23c6ec1b804e266f0f6a9c3cb75bbfbda929b7d90d1cf9ffcd3ad4a61af0ab3f": {
+      "bytes": 2152,
+      "sha256": "23c6ec1b804e266f0f6a9c3cb75bbfbda929b7d90d1cf9ffcd3ad4a61af0ab3f"
+    },
+    "~/models/ollama/blobs/sha256-7aac1f871662c663b35bd491565110041667727bc27af46f0020d9cd24b6247d": {
+      "bytes": 10748016,
+      "sha256": "7aac1f871662c663b35bd491565110041667727bc27af46f0020d9cd24b6247d"
+    },
+    "~/models/ollama/blobs/sha256-fbab999d820f6b02d6d7221ebdeb71dc1eec5fd025030aa715cc7d05ae9f7777": {
+      "bytes": 5374064,
+      "sha256": "fbab999d820f6b02d6d7221ebdeb71dc1eec5fd025030aa715cc7d05ae9f7777"
+    },
+    "~/models/ollama/blobs/sha256-e1032b0e07a4a48ec70c0771eabef58baf7bdd639eee67c4276d7753d5158660": {
+      "bytes": 2152,
+      "sha256": "e1032b0e07a4a48ec70c0771eabef58baf7bdd639eee67c4276d7753d5158660"
+    },
+    "~/models/ollama/blobs/sha256-a8652c52385d9b8cc2df6c8a88c15e9843fdbc19d60c7bca765f09e545aad29f": {
+      "bytes": 2097264,
+      "sha256": "a8652c52385d9b8cc2df6c8a88c15e9843fdbc19d60c7bca765f09e545aad29f"
+    },
+    "~/models/ollama/blobs/sha256-1d071bf38e4096a9c07117ba411c2840e18fdab7d8d27729d4f00af299e8cbde": {
+      "bytes": 6291568,
+      "sha256": "1d071bf38e4096a9c07117ba411c2840e18fdab7d8d27729d4f00af299e8cbde"
+    },
+    "~/models/ollama/blobs/sha256-74422169738af607f19e4ff22a11f5a67cf2ef4619165c9d56d6d0084e1f8816": {
+      "bytes": 2152,
+      "sha256": "74422169738af607f19e4ff22a11f5a67cf2ef4619165c9d56d6d0084e1f8816"
+    },
+    "~/models/ollama/blobs/sha256-c164cffdd422c7546815a9a5e4651caee287cf993bf3af110c4687ea3dea6077": {
+      "bytes": 10748016,
+      "sha256": "c164cffdd422c7546815a9a5e4651caee287cf993bf3af110c4687ea3dea6077"
+    },
+    "~/models/ollama/blobs/sha256-a26174ed5c023d9a80b6d3540c581e85837e014c379b552e4ac7903ea71555a4": {
+      "bytes": 5374064,
+      "sha256": "a26174ed5c023d9a80b6d3540c581e85837e014c379b552e4ac7903ea71555a4"
+    },
+    "~/models/ollama/blobs/sha256-377a7b34e303cbe70090a81ab8bd4bbed63c03039973616c12e09fbb58e747bc": {
+      "bytes": 2152,
+      "sha256": "377a7b34e303cbe70090a81ab8bd4bbed63c03039973616c12e09fbb58e747bc"
+    },
+    "~/models/ollama/blobs/sha256-4c82728c41d6a180ed9e8fec58e9f61dfdc59a0c31f981bcb7fc2c4e6f63551f": {
+      "bytes": 2097264,
+      "sha256": "4c82728c41d6a180ed9e8fec58e9f61dfdc59a0c31f981bcb7fc2c4e6f63551f"
+    },
+    "~/models/ollama/blobs/sha256-8e3166f2fd49d2d2ac29498f9ec28430ea0254fbf78ca353ccc0f5eec40d69df": {
+      "bytes": 6291568,
+      "sha256": "8e3166f2fd49d2d2ac29498f9ec28430ea0254fbf78ca353ccc0f5eec40d69df"
+    },
+    "~/models/ollama/blobs/sha256-9479a6f792d3e4905d9ef5bb47d1aeb3e8e89d56acffadfa1664c31c78149025": {
+      "bytes": 2152,
+      "sha256": "9479a6f792d3e4905d9ef5bb47d1aeb3e8e89d56acffadfa1664c31c78149025"
+    },
+    "~/models/ollama/blobs/sha256-d218e6f8b1289b61315f438e26894881047c2439db85dc3df77de19ea4ae49b5": {
+      "bytes": 10748016,
+      "sha256": "d218e6f8b1289b61315f438e26894881047c2439db85dc3df77de19ea4ae49b5"
+    },
+    "~/models/ollama/blobs/sha256-a68872a0881f15cc7b8e79b238ede8c4c191b026d79d432918fe1e0582b5f4e6": {
+      "bytes": 5374064,
+      "sha256": "a68872a0881f15cc7b8e79b238ede8c4c191b026d79d432918fe1e0582b5f4e6"
+    },
+    "~/models/ollama/blobs/sha256-d67825cccaeb82ab0764b6ac5170cb755d72fd7b76a4cc901c44eea6f7dcdaa5": {
+      "bytes": 2152,
+      "sha256": "d67825cccaeb82ab0764b6ac5170cb755d72fd7b76a4cc901c44eea6f7dcdaa5"
+    },
+    "~/models/ollama/blobs/sha256-ef30dd3cfb740666c3073aaac54a0cc04c4556d939adace522be7486be7e9e02": {
+      "bytes": 2097264,
+      "sha256": "ef30dd3cfb740666c3073aaac54a0cc04c4556d939adace522be7486be7e9e02"
+    },
+    "~/models/ollama/blobs/sha256-e5f497508747b267a86bbce03dd1dabb9cec5b380ea90fb0ffc8222d09426ac0": {
+      "bytes": 6291568,
+      "sha256": "e5f497508747b267a86bbce03dd1dabb9cec5b380ea90fb0ffc8222d09426ac0"
+    },
+    "~/models/ollama/blobs/sha256-c66b9a3203efed28f7a6543e31690e373b83b23aa94cbef53fbe21c17481f1c3": {
+      "bytes": 2152,
+      "sha256": "c66b9a3203efed28f7a6543e31690e373b83b23aa94cbef53fbe21c17481f1c3"
+    },
+    "~/models/ollama/blobs/sha256-90413fcf702163d1ac37260a970988b92d868d82727b44f7fb0aebf68185fa10": {
+      "bytes": 10748016,
+      "sha256": "90413fcf702163d1ac37260a970988b92d868d82727b44f7fb0aebf68185fa10"
+    },
+    "~/models/ollama/blobs/sha256-a63dedb0cc57da3ddc13c2ed64b80607c3efc3b05af1ab79ce3015e0135c15c1": {
+      "bytes": 5374064,
+      "sha256": "a63dedb0cc57da3ddc13c2ed64b80607c3efc3b05af1ab79ce3015e0135c15c1"
+    },
+    "~/models/ollama/blobs/sha256-e1c399ac07596588d0b8c56c7b083b2ac78f3c2552a63af9de3ea0ba4c3d9500": {
+      "bytes": 2152,
+      "sha256": "e1c399ac07596588d0b8c56c7b083b2ac78f3c2552a63af9de3ea0ba4c3d9500"
+    },
+    "~/models/ollama/blobs/sha256-df24677f32da52b17b004a843bd5b74d89f747e69381120f1e3964af805d54a8": {
+      "bytes": 2097264,
+      "sha256": "df24677f32da52b17b004a843bd5b74d89f747e69381120f1e3964af805d54a8"
+    },
+    "~/models/ollama/blobs/sha256-ba3a6ce6987e60e2b40e1c6464c1fe857688d5d4847eac273a6b420b91acc051": {
+      "bytes": 6291568,
+      "sha256": "ba3a6ce6987e60e2b40e1c6464c1fe857688d5d4847eac273a6b420b91acc051"
+    },
+    "~/models/ollama/blobs/sha256-611540b241d942e6235925ded547db756dd9d73e9f697ccb5012838c4d781746": {
+      "bytes": 2152,
+      "sha256": "611540b241d942e6235925ded547db756dd9d73e9f697ccb5012838c4d781746"
+    },
+    "~/models/ollama/blobs/sha256-9ef4438c51221b769fe5480274329228809f80c4a2b3e5313b6a072e616b34a7": {
+      "bytes": 10748016,
+      "sha256": "9ef4438c51221b769fe5480274329228809f80c4a2b3e5313b6a072e616b34a7"
+    },
+    "~/models/ollama/blobs/sha256-619242a829e4cdd37cb7e582a767cc2f0402249e63432bf29ca8596c1891fc34": {
+      "bytes": 5374064,
+      "sha256": "619242a829e4cdd37cb7e582a767cc2f0402249e63432bf29ca8596c1891fc34"
+    },
+    "~/models/ollama/blobs/sha256-b7bfb7f86afcecf6b27bc8c53dce1a23b731d73d069a864a8771dda3919c72e5": {
+      "bytes": 2152,
+      "sha256": "b7bfb7f86afcecf6b27bc8c53dce1a23b731d73d069a864a8771dda3919c72e5"
+    },
+    "~/models/ollama/blobs/sha256-73fcef6689374d74b60d48b06c423014b971394057377945f317c4b8f40a88bc": {
+      "bytes": 2097264,
+      "sha256": "73fcef6689374d74b60d48b06c423014b971394057377945f317c4b8f40a88bc"
+    },
+    "~/models/ollama/blobs/sha256-f832879764ff305db0d26fc80623ffb2481d741567e9ed9ccd25fe15a201f7e2": {
+      "bytes": 6291568,
+      "sha256": "f832879764ff305db0d26fc80623ffb2481d741567e9ed9ccd25fe15a201f7e2"
+    },
+    "~/models/ollama/blobs/sha256-ebd6a602681d5ce23576d10037e7687d8d46aaa49f63b81c4b2b643669e54437": {
+      "bytes": 2152,
+      "sha256": "ebd6a602681d5ce23576d10037e7687d8d46aaa49f63b81c4b2b643669e54437"
+    },
+    "~/models/ollama/blobs/sha256-4718dd7f14023d73059fdc90a024c75f2379eb56bed1c69c3344e5f76482fd57": {
+      "bytes": 10748016,
+      "sha256": "4718dd7f14023d73059fdc90a024c75f2379eb56bed1c69c3344e5f76482fd57"
+    },
+    "~/models/ollama/blobs/sha256-38ab72aa3139e9179fd94d76ae1ea528944705558360809b530a516af8fa29bc": {
+      "bytes": 5374064,
+      "sha256": "38ab72aa3139e9179fd94d76ae1ea528944705558360809b530a516af8fa29bc"
+    },
+    "~/models/ollama/blobs/sha256-ebe2cfe999fbe1da5625b36d313e2ef446857961d30fe46cd28d0eb161ae023f": {
+      "bytes": 2152,
+      "sha256": "ebe2cfe999fbe1da5625b36d313e2ef446857961d30fe46cd28d0eb161ae023f"
+    },
+    "~/models/ollama/blobs/sha256-aeb67fd840b6a6cf73884264c5bcd680796fcd6ea3ca1b06fd51cc77e62620da": {
+      "bytes": 2097264,
+      "sha256": "aeb67fd840b6a6cf73884264c5bcd680796fcd6ea3ca1b06fd51cc77e62620da"
+    },
+    "~/models/ollama/blobs/sha256-c37efbe2a02dadb6ebc7bd1fc1390b4b6f195fc6cdd2f5826dea69bcc2ade72a": {
+      "bytes": 6291568,
+      "sha256": "c37efbe2a02dadb6ebc7bd1fc1390b4b6f195fc6cdd2f5826dea69bcc2ade72a"
+    },
+    "~/models/ollama/blobs/sha256-c5d3cd73da71d7a18fe453bb7c9c34338fc30462678596c936a869e4653818af": {
+      "bytes": 2152,
+      "sha256": "c5d3cd73da71d7a18fe453bb7c9c34338fc30462678596c936a869e4653818af"
+    },
+    "~/models/ollama/blobs/sha256-cc91be727d14e87b32fd737b7a465663618d813da7d3591f7dbafd6769efdf90": {
+      "bytes": 10748016,
+      "sha256": "cc91be727d14e87b32fd737b7a465663618d813da7d3591f7dbafd6769efdf90"
+    },
+    "~/models/ollama/blobs/sha256-461e82b1e3c95528515fcb8ae40f71c907d757bfb2f70c99aa7b84b3b0753ebc": {
+      "bytes": 5374064,
+      "sha256": "461e82b1e3c95528515fcb8ae40f71c907d757bfb2f70c99aa7b84b3b0753ebc"
+    },
+    "~/models/ollama/blobs/sha256-91c0465d744b3896f9eee0652bb37eac97987223888898224ad30579b402b758": {
+      "bytes": 2152,
+      "sha256": "91c0465d744b3896f9eee0652bb37eac97987223888898224ad30579b402b758"
+    },
+    "~/models/ollama/blobs/sha256-0aa74cc7415bcaff275183156629e90d5615e54601b2266111ce3aee9bce3531": {
+      "bytes": 2097264,
+      "sha256": "0aa74cc7415bcaff275183156629e90d5615e54601b2266111ce3aee9bce3531"
+    },
+    "~/models/ollama/blobs/sha256-884a3b7b1acf99a49a3035e9cc7daffbed0dd1f9f6e541dfd95c853a74e84098": {
+      "bytes": 6291568,
+      "sha256": "884a3b7b1acf99a49a3035e9cc7daffbed0dd1f9f6e541dfd95c853a74e84098"
+    },
+    "~/models/ollama/blobs/sha256-4a91638a368b41b00543e912748a00fcb4bfeec2e4f7431e800049c599afe263": {
+      "bytes": 2152,
+      "sha256": "4a91638a368b41b00543e912748a00fcb4bfeec2e4f7431e800049c599afe263"
+    },
+    "~/models/ollama/blobs/sha256-25668c99044b22759bda24a408426ae1383796bb5adf6e3855fa62c834be117b": {
+      "bytes": 10748016,
+      "sha256": "25668c99044b22759bda24a408426ae1383796bb5adf6e3855fa62c834be117b"
+    },
+    "~/models/ollama/blobs/sha256-6ea3f248255bb2018ddfb6659a01d0c995e6d961a9302d66d122727a4a2f3c1d": {
+      "bytes": 5374064,
+      "sha256": "6ea3f248255bb2018ddfb6659a01d0c995e6d961a9302d66d122727a4a2f3c1d"
+    },
+    "~/models/ollama/blobs/sha256-5f9011ae696ce779141fb53683f1cda6a6991dc8e116d9c6efefe5e8d90d3f49": {
+      "bytes": 2152,
+      "sha256": "5f9011ae696ce779141fb53683f1cda6a6991dc8e116d9c6efefe5e8d90d3f49"
+    },
+    "~/models/ollama/blobs/sha256-ab0692d9b442f09b5651e8ad3fe319913f66c2cc5e9d203ba46eebe501e61a88": {
+      "bytes": 2097264,
+      "sha256": "ab0692d9b442f09b5651e8ad3fe319913f66c2cc5e9d203ba46eebe501e61a88"
+    },
+    "~/models/ollama/blobs/sha256-65d0af29f328bc3443a77bc95e6b3e690a26e8b5ead40584060ea327e35a467d": {
+      "bytes": 6291568,
+      "sha256": "65d0af29f328bc3443a77bc95e6b3e690a26e8b5ead40584060ea327e35a467d"
+    },
+    "~/models/ollama/blobs/sha256-6135ccd888a919c8119200358de6e43f34a328ea5453984c1f50c943ca8c8ce0": {
+      "bytes": 2152,
+      "sha256": "6135ccd888a919c8119200358de6e43f34a328ea5453984c1f50c943ca8c8ce0"
+    },
+    "~/models/ollama/blobs/sha256-2ffb7a1f419633d14630c883201e3f15e4a4fb933f56f567edeb4728869977bf": {
+      "bytes": 10748016,
+      "sha256": "2ffb7a1f419633d14630c883201e3f15e4a4fb933f56f567edeb4728869977bf"
+    },
+    "~/models/ollama/blobs/sha256-a383a6cfd7b820fd796b927ae91f61a1cb1b88fa03b636782e169dc9ecf979cd": {
+      "bytes": 5374064,
+      "sha256": "a383a6cfd7b820fd796b927ae91f61a1cb1b88fa03b636782e169dc9ecf979cd"
+    },
+    "~/models/ollama/blobs/sha256-4cb512850f54b7d226fefd05211bdb8286c5a6d2c17b5880b93d96981c7697a8": {
+      "bytes": 2152,
+      "sha256": "4cb512850f54b7d226fefd05211bdb8286c5a6d2c17b5880b93d96981c7697a8"
+    },
+    "~/models/ollama/blobs/sha256-342f2f9cc464c36fe3f41f6c940658505337b967e3fad6f3aa3b7e23956b90a4": {
+      "bytes": 2097264,
+      "sha256": "342f2f9cc464c36fe3f41f6c940658505337b967e3fad6f3aa3b7e23956b90a4"
+    },
+    "~/models/ollama/blobs/sha256-4424314eddce07df17cff6281ee9db8050f056214bc9044c83d7a9293d951724": {
+      "bytes": 6291568,
+      "sha256": "4424314eddce07df17cff6281ee9db8050f056214bc9044c83d7a9293d951724"
+    },
+    "~/models/ollama/blobs/sha256-10c0ad63d4d80500b685aa4e9caac8f34433ede0641093c2ad246082440a8f89": {
+      "bytes": 2152,
+      "sha256": "10c0ad63d4d80500b685aa4e9caac8f34433ede0641093c2ad246082440a8f89"
+    },
+    "~/models/ollama/blobs/sha256-5988bf7480087011c7e4a176ec9f6426b4977cb753debf5db66d43dfb3952ed3": {
+      "bytes": 10748016,
+      "sha256": "5988bf7480087011c7e4a176ec9f6426b4977cb753debf5db66d43dfb3952ed3"
+    },
+    "~/models/ollama/blobs/sha256-7241463d7215bb31d582e2bc347c98afc5fdd9253d8b3ea99c033735a69aeeb2": {
+      "bytes": 5374064,
+      "sha256": "7241463d7215bb31d582e2bc347c98afc5fdd9253d8b3ea99c033735a69aeeb2"
+    },
+    "~/models/ollama/blobs/sha256-eaca5e8ac1108bbd8c6c2f375fba7a86f4f369372b4c68e7db77840effed8641": {
+      "bytes": 2152,
+      "sha256": "eaca5e8ac1108bbd8c6c2f375fba7a86f4f369372b4c68e7db77840effed8641"
+    },
+    "~/models/ollama/blobs/sha256-69e7a0849721f58119888c6a123a6bba089d1dfaa54ee30445a8048b907c775e": {
+      "bytes": 2097264,
+      "sha256": "69e7a0849721f58119888c6a123a6bba089d1dfaa54ee30445a8048b907c775e"
+    },
+    "~/models/ollama/blobs/sha256-7f27b076329c39bdda3ba711348628946f107e9fdcb467a087139602350502e2": {
+      "bytes": 6291568,
+      "sha256": "7f27b076329c39bdda3ba711348628946f107e9fdcb467a087139602350502e2"
+    },
+    "~/models/ollama/blobs/sha256-c13b816b89ff53059e8aada14793d82579f781abe15a9add22404143b3304355": {
+      "bytes": 2152,
+      "sha256": "c13b816b89ff53059e8aada14793d82579f781abe15a9add22404143b3304355"
+    },
+    "~/models/ollama/blobs/sha256-a5c9eb1fee9bf39e782ad80f421fe828395ee07d39b925563191bffda190e04b": {
+      "bytes": 10748016,
+      "sha256": "a5c9eb1fee9bf39e782ad80f421fe828395ee07d39b925563191bffda190e04b"
+    },
+    "~/models/ollama/blobs/sha256-c7d57595ef4b1c30f9d9ab680b5df2922c970678f015769f95286b0c38bf771a": {
+      "bytes": 5374064,
+      "sha256": "c7d57595ef4b1c30f9d9ab680b5df2922c970678f015769f95286b0c38bf771a"
+    },
+    "~/models/ollama/blobs/sha256-906948a2eef9ec701cb55fbee3b3265b1fd364e78284dcc4f9b417dc95a1d7eb": {
+      "bytes": 2152,
+      "sha256": "906948a2eef9ec701cb55fbee3b3265b1fd364e78284dcc4f9b417dc95a1d7eb"
+    },
+    "~/models/ollama/blobs/sha256-49cf556de60198e41d39313cb1e96ff56a9bda34f8e374234e2e4aa274eb1e49": {
+      "bytes": 2097264,
+      "sha256": "49cf556de60198e41d39313cb1e96ff56a9bda34f8e374234e2e4aa274eb1e49"
+    },
+    "~/models/ollama/blobs/sha256-832fdfa1a0e7d2d35e183fb52bf392eacc03aaedce5061aceb8e1b514e46def8": {
+      "bytes": 6291568,
+      "sha256": "832fdfa1a0e7d2d35e183fb52bf392eacc03aaedce5061aceb8e1b514e46def8"
+    },
+    "~/models/ollama/blobs/sha256-d9622643443e62ae7d179b298748073bdb25480621a2f7d6fb14c9fb3ff33cc3": {
+      "bytes": 2152,
+      "sha256": "d9622643443e62ae7d179b298748073bdb25480621a2f7d6fb14c9fb3ff33cc3"
+    },
+    "~/models/ollama/blobs/sha256-938ea3f4c791e6b8af6e97e8ec203563aaadbf968ba62f8b8fca76449dbdb141": {
+      "bytes": 10748016,
+      "sha256": "938ea3f4c791e6b8af6e97e8ec203563aaadbf968ba62f8b8fca76449dbdb141"
+    },
+    "~/models/ollama/blobs/sha256-05eaeccc5c0497a172e10b7eebbbab6b2154c38dc6a1ce1af82acec07815a742": {
+      "bytes": 5374064,
+      "sha256": "05eaeccc5c0497a172e10b7eebbbab6b2154c38dc6a1ce1af82acec07815a742"
+    },
+    "~/models/ollama/blobs/sha256-4155f8142f55595c4fa529364538d37e1f737e487dfa989d799f238df92ceb73": {
+      "bytes": 2152,
+      "sha256": "4155f8142f55595c4fa529364538d37e1f737e487dfa989d799f238df92ceb73"
+    },
+    "~/models/ollama/blobs/sha256-047447ec4abf3c169d6671fbd79a7f8db7763a985aaef6561a768ccb0f84d2f4": {
+      "bytes": 2097264,
+      "sha256": "047447ec4abf3c169d6671fbd79a7f8db7763a985aaef6561a768ccb0f84d2f4"
+    },
+    "~/models/ollama/blobs/sha256-eb0c0cd8072a5afff13e04a2d099a632e98e324c7505eb2ae63bdfecd7aec6a1": {
+      "bytes": 6291568,
+      "sha256": "eb0c0cd8072a5afff13e04a2d099a632e98e324c7505eb2ae63bdfecd7aec6a1"
+    },
+    "~/models/ollama/blobs/sha256-9baf9a5c53aace45486e4fe4bbc798bb968fedfc72a4384344ccee0b0bc1379c": {
+      "bytes": 2152,
+      "sha256": "9baf9a5c53aace45486e4fe4bbc798bb968fedfc72a4384344ccee0b0bc1379c"
+    },
+    "~/models/ollama/blobs/sha256-9a75b403afe28b98066ca2486dfb9a7b4bdd2f22abf3b97bccf89219a59f6700": {
+      "bytes": 10748016,
+      "sha256": "9a75b403afe28b98066ca2486dfb9a7b4bdd2f22abf3b97bccf89219a59f6700"
+    },
+    "~/models/ollama/blobs/sha256-c88f8155bf8bf7c080993b2aaab379f17d8db8e4370d6e7a2f1b6a5c97138e42": {
+      "bytes": 5374064,
+      "sha256": "c88f8155bf8bf7c080993b2aaab379f17d8db8e4370d6e7a2f1b6a5c97138e42"
+    },
+    "~/models/ollama/blobs/sha256-6925bc6fa5b5a89d184096e396f97e4b44a897ffd84e003352787b521583a04c": {
+      "bytes": 2152,
+      "sha256": "6925bc6fa5b5a89d184096e396f97e4b44a897ffd84e003352787b521583a04c"
+    },
+    "~/models/ollama/blobs/sha256-3c7ede68f7ad21d8694e1dce73cae54a8e95674504d84aeedced2bb2f5053f09": {
+      "bytes": 2097264,
+      "sha256": "3c7ede68f7ad21d8694e1dce73cae54a8e95674504d84aeedced2bb2f5053f09"
+    },
+    "~/models/ollama/blobs/sha256-746769d323eede18489b2e7275b16ac957497da80273b78149f138a35b7ad083": {
+      "bytes": 6291568,
+      "sha256": "746769d323eede18489b2e7275b16ac957497da80273b78149f138a35b7ad083"
+    },
+    "~/models/ollama/blobs/sha256-02841a62df1d02bdc531ee4a8a32a5bfaf48b59ceed962ad3844aae87de698b6": {
+      "bytes": 2152,
+      "sha256": "02841a62df1d02bdc531ee4a8a32a5bfaf48b59ceed962ad3844aae87de698b6"
+    },
+    "~/models/ollama/blobs/sha256-77e3ac892c74e3792422c603de4251f73f6990ae6a9cd5fda7ded5e739f9ab87": {
+      "bytes": 10748016,
+      "sha256": "77e3ac892c74e3792422c603de4251f73f6990ae6a9cd5fda7ded5e739f9ab87"
+    },
+    "~/models/ollama/blobs/sha256-8f5fe7a777f4005712f19e6936201b9260e57224bc215d9c2bc8c7e66e07a70e": {
+      "bytes": 5374064,
+      "sha256": "8f5fe7a777f4005712f19e6936201b9260e57224bc215d9c2bc8c7e66e07a70e"
+    },
+    "~/models/ollama/blobs/sha256-619580867bb43d7e09140d0cd26bba366d1f49c07fe382a559a97b2bba44d938": {
+      "bytes": 2152,
+      "sha256": "619580867bb43d7e09140d0cd26bba366d1f49c07fe382a559a97b2bba44d938"
+    },
+    "~/models/ollama/blobs/sha256-f30f0603ac155b9b1a3403c7d3166e87cc1db02b4ee9dead9e1593d034f2136a": {
+      "bytes": 2097264,
+      "sha256": "f30f0603ac155b9b1a3403c7d3166e87cc1db02b4ee9dead9e1593d034f2136a"
+    },
+    "~/models/ollama/blobs/sha256-a16969a3aecca97185e80c52f2cef8d214960af0b5d51caec5fb1ee7d75938cf": {
+      "bytes": 6291568,
+      "sha256": "a16969a3aecca97185e80c52f2cef8d214960af0b5d51caec5fb1ee7d75938cf"
+    },
+    "~/models/ollama/blobs/sha256-4b58bc57a818c44a4ca65443d182ff07418f818040c077f20101909cdc6013d5": {
+      "bytes": 2152,
+      "sha256": "4b58bc57a818c44a4ca65443d182ff07418f818040c077f20101909cdc6013d5"
+    },
+    "~/models/ollama/blobs/sha256-1bf9dec4757a608c3168f4e077ff4949b4bb1f7aa2562d196b46576b45ff079f": {
+      "bytes": 10748016,
+      "sha256": "1bf9dec4757a608c3168f4e077ff4949b4bb1f7aa2562d196b46576b45ff079f"
+    },
+    "~/models/ollama/blobs/sha256-e5c85d0663f3d39399098b4ee89f78e689b22889474c8bbbb6b799554118ded2": {
+      "bytes": 5374064,
+      "sha256": "e5c85d0663f3d39399098b4ee89f78e689b22889474c8bbbb6b799554118ded2"
+    },
+    "~/models/ollama/blobs/sha256-c8867a72e31193bf09fc6a84fbbb56c85efd0e4d6c6a35ad87f82f270e9b4877": {
+      "bytes": 2152,
+      "sha256": "c8867a72e31193bf09fc6a84fbbb56c85efd0e4d6c6a35ad87f82f270e9b4877"
+    },
+    "~/models/ollama/blobs/sha256-6471748ef5215ef1d621d89b54b983150b5c988a92e718e79f6ebb48ff32cd79": {
+      "bytes": 2097264,
+      "sha256": "6471748ef5215ef1d621d89b54b983150b5c988a92e718e79f6ebb48ff32cd79"
+    },
+    "~/models/ollama/blobs/sha256-864ad6bc118a4f2db0d4fdb280f5f675fd4308e1fc71858c7319b792f324baa4": {
+      "bytes": 6291568,
+      "sha256": "864ad6bc118a4f2db0d4fdb280f5f675fd4308e1fc71858c7319b792f324baa4"
+    },
+    "~/models/ollama/blobs/sha256-398d6b1be377fcd0fe15b429163b19bef91e7476de2f20d6579c76e650b5be8b": {
+      "bytes": 2152,
+      "sha256": "398d6b1be377fcd0fe15b429163b19bef91e7476de2f20d6579c76e650b5be8b"
+    },
+    "~/models/ollama/blobs/sha256-27ba3d0afe08072e906d3ec270ae61954a8033ac18bc8ec48b6585fd75089d08": {
+      "bytes": 10748016,
+      "sha256": "27ba3d0afe08072e906d3ec270ae61954a8033ac18bc8ec48b6585fd75089d08"
+    },
+    "~/models/ollama/blobs/sha256-b8f491ae83be4db260a6babffb475ca250a675b1502254121b66f9d5e872bdc4": {
+      "bytes": 5374064,
+      "sha256": "b8f491ae83be4db260a6babffb475ca250a675b1502254121b66f9d5e872bdc4"
+    },
+    "~/models/ollama/blobs/sha256-701c823e46054d50600157c5b51e8eecf1319c8ac50d1c9822b450b563371750": {
+      "bytes": 2152,
+      "sha256": "701c823e46054d50600157c5b51e8eecf1319c8ac50d1c9822b450b563371750"
+    },
+    "~/models/ollama/blobs/sha256-8827749311f7dbbd93465584e53ce885187dbd1ad0a121fc050724adead1544a": {
+      "bytes": 2097264,
+      "sha256": "8827749311f7dbbd93465584e53ce885187dbd1ad0a121fc050724adead1544a"
+    },
+    "~/models/ollama/blobs/sha256-d27641077bf51c06b07a0b24e7bf3a52654aa440c1fefa3e153c1f6fbf701116": {
+      "bytes": 6291568,
+      "sha256": "d27641077bf51c06b07a0b24e7bf3a52654aa440c1fefa3e153c1f6fbf701116"
+    },
+    "~/models/ollama/blobs/sha256-f849d8010410ce2d785db199732ba08bb10200f40438293d5b1ef0bf3f02a7a4": {
+      "bytes": 2152,
+      "sha256": "f849d8010410ce2d785db199732ba08bb10200f40438293d5b1ef0bf3f02a7a4"
+    },
+    "~/models/ollama/blobs/sha256-aae76fb04833bf70444ceb4b62118040c71a76a3586cd31378c6f0115073167f": {
+      "bytes": 10748016,
+      "sha256": "aae76fb04833bf70444ceb4b62118040c71a76a3586cd31378c6f0115073167f"
+    },
+    "~/models/ollama/blobs/sha256-48f276b0e95d7fecff23879248fb656d5828f52cbb24858913bbac2569ecea58": {
+      "bytes": 5374064,
+      "sha256": "48f276b0e95d7fecff23879248fb656d5828f52cbb24858913bbac2569ecea58"
+    },
+    "~/models/ollama/blobs/sha256-3e2cb5a3714e37b6eb00028f9927c6e57fdce83b2331d04ecbc36c146c15540d": {
+      "bytes": 2152,
+      "sha256": "3e2cb5a3714e37b6eb00028f9927c6e57fdce83b2331d04ecbc36c146c15540d"
+    },
+    "~/models/ollama/blobs/sha256-59b81391b95083280c5784114ff96cfe45cb1f336d4bd3b41436831a1ed62009": {
+      "bytes": 2097264,
+      "sha256": "59b81391b95083280c5784114ff96cfe45cb1f336d4bd3b41436831a1ed62009"
+    },
+    "~/models/ollama/blobs/sha256-f4c9529136ce9e1b0d30409993ca2b95b936d65f4fa2e2470e073a72dae67f50": {
+      "bytes": 6291568,
+      "sha256": "f4c9529136ce9e1b0d30409993ca2b95b936d65f4fa2e2470e073a72dae67f50"
+    },
+    "~/models/ollama/blobs/sha256-9e23beb5f842d8b85fa1c2ec1661678e8318213ded27aed879bcc79041af605d": {
+      "bytes": 2152,
+      "sha256": "9e23beb5f842d8b85fa1c2ec1661678e8318213ded27aed879bcc79041af605d"
+    },
+    "~/models/ollama/blobs/sha256-a3f0dbaed097c71f18d6b6ddaca5223fef8040d2c4218515365708571cd47684": {
+      "bytes": 10748016,
+      "sha256": "a3f0dbaed097c71f18d6b6ddaca5223fef8040d2c4218515365708571cd47684"
+    },
+    "~/models/ollama/blobs/sha256-13d271096867dd2a9e054448847aeed338f9b06fe6d6575ab7e157eb958ad82c": {
+      "bytes": 5374064,
+      "sha256": "13d271096867dd2a9e054448847aeed338f9b06fe6d6575ab7e157eb958ad82c"
+    },
+    "~/models/ollama/blobs/sha256-24373faafb07706f3b3809a393294643ae53c1470d53285222d0f3337b72d812": {
+      "bytes": 2152,
+      "sha256": "24373faafb07706f3b3809a393294643ae53c1470d53285222d0f3337b72d812"
+    },
+    "~/models/ollama/blobs/sha256-b5c1a125075e100d3b43795cae595db3e4fed00b21a12002e4ba15ffdab535ce": {
+      "bytes": 2097264,
+      "sha256": "b5c1a125075e100d3b43795cae595db3e4fed00b21a12002e4ba15ffdab535ce"
+    },
+    "~/models/ollama/blobs/sha256-213b246c6d05ac37f09681e143503b9891665511a242df4b363c281f1a0e64e7": {
+      "bytes": 6291568,
+      "sha256": "213b246c6d05ac37f09681e143503b9891665511a242df4b363c281f1a0e64e7"
+    },
+    "~/models/ollama/blobs/sha256-b842f1d6f7055ce146958733905c324798a49405dae12418d9f04b8e6d9ad1ff": {
+      "bytes": 2152,
+      "sha256": "b842f1d6f7055ce146958733905c324798a49405dae12418d9f04b8e6d9ad1ff"
+    },
+    "~/models/ollama/blobs/sha256-25e02d2b4fc5d6113c16ef785b99ed96e3e4cd30f82b0b52513da807a534e791": {
+      "bytes": 10748016,
+      "sha256": "25e02d2b4fc5d6113c16ef785b99ed96e3e4cd30f82b0b52513da807a534e791"
+    },
+    "~/models/ollama/blobs/sha256-c738550b43ac3098c809fb096e0d7c0b293cfb458f451d2aca0408cd6455e906": {
+      "bytes": 5374064,
+      "sha256": "c738550b43ac3098c809fb096e0d7c0b293cfb458f451d2aca0408cd6455e906"
+    },
+    "~/models/ollama/blobs/sha256-cf9288dbd00e49e468c3a6503730b570da1398651fac32471835b968377b4a98": {
+      "bytes": 2152,
+      "sha256": "cf9288dbd00e49e468c3a6503730b570da1398651fac32471835b968377b4a98"
+    },
+    "~/models/ollama/blobs/sha256-4608da3994a29f384f8acdcfff79805b560c96df9845848a07fb1c1d4da91b40": {
+      "bytes": 2097264,
+      "sha256": "4608da3994a29f384f8acdcfff79805b560c96df9845848a07fb1c1d4da91b40"
+    },
+    "~/models/ollama/blobs/sha256-067b302ce347fd7a6fd9739887caf4a0a5505430a3a0405d97f32d7cd32566e1": {
+      "bytes": 6291568,
+      "sha256": "067b302ce347fd7a6fd9739887caf4a0a5505430a3a0405d97f32d7cd32566e1"
+    },
+    "~/models/ollama/blobs/sha256-621d8b8506f391e53967396eb8d950a87c44e8e475484946ab177af18a6976bf": {
+      "bytes": 2152,
+      "sha256": "621d8b8506f391e53967396eb8d950a87c44e8e475484946ab177af18a6976bf"
+    },
+    "~/models/ollama/blobs/sha256-33dfe6fa4cfea8fb4a9c8b292a104600af067901ac755c88090ec548f41f115e": {
+      "bytes": 10748016,
+      "sha256": "33dfe6fa4cfea8fb4a9c8b292a104600af067901ac755c88090ec548f41f115e"
+    },
+    "~/models/ollama/blobs/sha256-d4ad2da50775e73d61d8873ba1b9777d23f60c8243aba253255252e8a56a20ef": {
+      "bytes": 5374064,
+      "sha256": "d4ad2da50775e73d61d8873ba1b9777d23f60c8243aba253255252e8a56a20ef"
+    },
+    "~/models/ollama/blobs/sha256-725d9a20217838dc0dfd6884ac4956556907c8de2dbcd1ed7484e3efa5195948": {
+      "bytes": 2152,
+      "sha256": "725d9a20217838dc0dfd6884ac4956556907c8de2dbcd1ed7484e3efa5195948"
+    },
+    "~/models/ollama/blobs/sha256-9e79dc03fb3090d2d68edabfb8d5ab1f3416ed04da6c13b2620548e5c37f9a39": {
+      "bytes": 2097264,
+      "sha256": "9e79dc03fb3090d2d68edabfb8d5ab1f3416ed04da6c13b2620548e5c37f9a39"
+    },
+    "~/models/ollama/blobs/sha256-3f2b9957f8c04b27e83cfbc6358b7b3750a2c948f2266a8a0416fb9be1f9c0be": {
+      "bytes": 6291568,
+      "sha256": "3f2b9957f8c04b27e83cfbc6358b7b3750a2c948f2266a8a0416fb9be1f9c0be"
+    },
+    "~/models/ollama/blobs/sha256-9b16fd9af3a46ad44c13e91df65971ef975b6a5f4105a6a9b2272fc621a55bbe": {
+      "bytes": 2152,
+      "sha256": "9b16fd9af3a46ad44c13e91df65971ef975b6a5f4105a6a9b2272fc621a55bbe"
+    },
+    "~/models/ollama/blobs/sha256-e02a676ca0d03c1d1139a78c5f2ac5398e7f3f7a1825c8f7e29195ce48f97f11": {
+      "bytes": 10748016,
+      "sha256": "e02a676ca0d03c1d1139a78c5f2ac5398e7f3f7a1825c8f7e29195ce48f97f11"
+    },
+    "~/models/ollama/blobs/sha256-23695e10c176b3e2724e1bcca70e931fb93ad44ca6de08467e3fd526b289b1e2": {
+      "bytes": 5374064,
+      "sha256": "23695e10c176b3e2724e1bcca70e931fb93ad44ca6de08467e3fd526b289b1e2"
+    },
+    "~/models/ollama/blobs/sha256-7540feb2daddc11cd05e90207aec8385809577a27e56fbee460254e162fbc5e5": {
+      "bytes": 2152,
+      "sha256": "7540feb2daddc11cd05e90207aec8385809577a27e56fbee460254e162fbc5e5"
+    },
+    "~/models/ollama/blobs/sha256-09e1730da56c21788f2fd83ae11dca9da2c413a033b2d4eaf27b0dc1893a04bd": {
+      "bytes": 2097264,
+      "sha256": "09e1730da56c21788f2fd83ae11dca9da2c413a033b2d4eaf27b0dc1893a04bd"
+    },
+    "~/models/ollama/blobs/sha256-d01da402dae3d4807451de23febff8cb2083d6efeb7d30000785a99cb247cb13": {
+      "bytes": 6291568,
+      "sha256": "d01da402dae3d4807451de23febff8cb2083d6efeb7d30000785a99cb247cb13"
+    },
+    "~/models/ollama/blobs/sha256-2d6a6e05e655749ede6a7ae0b92763f1a38b309531087adaed7ccbac29d70a76": {
+      "bytes": 2152,
+      "sha256": "2d6a6e05e655749ede6a7ae0b92763f1a38b309531087adaed7ccbac29d70a76"
+    },
+    "~/models/ollama/blobs/sha256-0a0a73c620a2edc86dbd45c90636756f3ce24a0dd073cb2e51aac7381d949280": {
+      "bytes": 10748016,
+      "sha256": "0a0a73c620a2edc86dbd45c90636756f3ce24a0dd073cb2e51aac7381d949280"
+    },
+    "~/models/ollama/blobs/sha256-6db3af8145605d0860cb9c7cc7f70987a6ffbac93321fb8979cbb74b7222b3db": {
+      "bytes": 5374064,
+      "sha256": "6db3af8145605d0860cb9c7cc7f70987a6ffbac93321fb8979cbb74b7222b3db"
+    },
+    "~/models/ollama/blobs/sha256-e60c5aeb28781f0798c13ac6c738d254604d2e5d5936018b6c492de9900c90b3": {
+      "bytes": 2152,
+      "sha256": "e60c5aeb28781f0798c13ac6c738d254604d2e5d5936018b6c492de9900c90b3"
+    },
+    "~/models/ollama/blobs/sha256-ada18ec887f865946583bceb2ebc44bd5e6aacc82cab2214a1a900ac48eba817": {
+      "bytes": 2097264,
+      "sha256": "ada18ec887f865946583bceb2ebc44bd5e6aacc82cab2214a1a900ac48eba817"
+    },
+    "~/models/ollama/blobs/sha256-f077f9a87f23c9618862616c3de91d2c7684b5f85e7cf13562d9bc53a6695ef4": {
+      "bytes": 6291568,
+      "sha256": "f077f9a87f23c9618862616c3de91d2c7684b5f85e7cf13562d9bc53a6695ef4"
+    },
+    "~/models/ollama/blobs/sha256-6caa975e44cb12401a863e83b46bb44048347c3543e1538f9a86b6471f93e6e6": {
+      "bytes": 2152,
+      "sha256": "6caa975e44cb12401a863e83b46bb44048347c3543e1538f9a86b6471f93e6e6"
+    },
+    "~/models/ollama/blobs/sha256-2e98f3eb4d498fe27a3ac4c4be4f6845cc0ef25622d2fdcc75716fd9e0c1619e": {
+      "bytes": 10748016,
+      "sha256": "2e98f3eb4d498fe27a3ac4c4be4f6845cc0ef25622d2fdcc75716fd9e0c1619e"
+    },
+    "~/models/ollama/blobs/sha256-f8bad9a9c1b297378b21206b2b9ab6116ef223a39d6818b1509171fa4e9815aa": {
+      "bytes": 5374064,
+      "sha256": "f8bad9a9c1b297378b21206b2b9ab6116ef223a39d6818b1509171fa4e9815aa"
+    },
+    "~/models/ollama/blobs/sha256-5a03ca3eb41dca651b717452726b3970d1e7a18669c79ebd380f484c1e0738c0": {
+      "bytes": 2152,
+      "sha256": "5a03ca3eb41dca651b717452726b3970d1e7a18669c79ebd380f484c1e0738c0"
+    },
+    "~/models/ollama/blobs/sha256-204815021a8e9affa0a64e8f3a49f5ebb6afa2b3b85b46de9200d3c03bc903fb": {
+      "bytes": 2097264,
+      "sha256": "204815021a8e9affa0a64e8f3a49f5ebb6afa2b3b85b46de9200d3c03bc903fb"
+    },
+    "~/models/ollama/blobs/sha256-e101ae122a280015bb8965e16c251d72fe7c80c5960013a80a67f0cff4bb3163": {
+      "bytes": 6291568,
+      "sha256": "e101ae122a280015bb8965e16c251d72fe7c80c5960013a80a67f0cff4bb3163"
+    },
+    "~/models/ollama/blobs/sha256-2893a11efa574cc59c172894bcb20071ff1e25c2c0346bdeef1797fa459e9bbd": {
+      "bytes": 2152,
+      "sha256": "2893a11efa574cc59c172894bcb20071ff1e25c2c0346bdeef1797fa459e9bbd"
+    },
+    "~/models/ollama/blobs/sha256-1993170682485979e278a118f62402e44dc61f40c9712242cf01151b78081869": {
+      "bytes": 10748016,
+      "sha256": "1993170682485979e278a118f62402e44dc61f40c9712242cf01151b78081869"
+    },
+    "~/models/ollama/blobs/sha256-b9e6a1139c6c4ce29e2cc839242d0a5bbfb92acf3697e014ea80724408b95011": {
+      "bytes": 5374064,
+      "sha256": "b9e6a1139c6c4ce29e2cc839242d0a5bbfb92acf3697e014ea80724408b95011"
+    },
+    "~/models/ollama/blobs/sha256-549127b567d0c0a0c8f93e0ac92632c9cf63ca6c06eb0c480efe5dcb0a72817d": {
+      "bytes": 2152,
+      "sha256": "549127b567d0c0a0c8f93e0ac92632c9cf63ca6c06eb0c480efe5dcb0a72817d"
+    },
+    "~/models/ollama/blobs/sha256-f01e9727873253ccfd27fb9f9be39d7a05e43c0b6b2144e6d42db47e4897a1c2": {
+      "bytes": 2097264,
+      "sha256": "f01e9727873253ccfd27fb9f9be39d7a05e43c0b6b2144e6d42db47e4897a1c2"
+    },
+    "~/models/ollama/blobs/sha256-9d38ecf40678584cc295357e0dbc343d3143685f0ba7366e64c5d5b6572e7963": {
+      "bytes": 6291568,
+      "sha256": "9d38ecf40678584cc295357e0dbc343d3143685f0ba7366e64c5d5b6572e7963"
+    },
+    "~/models/ollama/blobs/sha256-67793a0d950b430bdf844ab411f33955968176679e0b6c3801e97ab1cc68ab3e": {
+      "bytes": 2152,
+      "sha256": "67793a0d950b430bdf844ab411f33955968176679e0b6c3801e97ab1cc68ab3e"
+    },
+    "~/models/ollama/blobs/sha256-a9721f2fdf9d210f8ed1cad3c211c4318c347716176f3e54900fac6830267d94": {
+      "bytes": 10748016,
+      "sha256": "a9721f2fdf9d210f8ed1cad3c211c4318c347716176f3e54900fac6830267d94"
+    },
+    "~/models/ollama/blobs/sha256-c13bc3b5957d4084ad19477195d4af30ae8ec6955600a0411b8d3e1ba10f2804": {
+      "bytes": 5374064,
+      "sha256": "c13bc3b5957d4084ad19477195d4af30ae8ec6955600a0411b8d3e1ba10f2804"
+    },
+    "~/models/ollama/blobs/sha256-d41e4b05e517a7f01b4da41c5868d302fedb07cb441df398ea84487f20b19702": {
+      "bytes": 2152,
+      "sha256": "d41e4b05e517a7f01b4da41c5868d302fedb07cb441df398ea84487f20b19702"
+    },
+    "~/models/ollama/blobs/sha256-9d531c5e5213ae2e261ebcd4b14d8b2168155fa630086ddad69e6c8da1812ef8": {
+      "bytes": 2097264,
+      "sha256": "9d531c5e5213ae2e261ebcd4b14d8b2168155fa630086ddad69e6c8da1812ef8"
+    },
+    "~/models/ollama/blobs/sha256-19ada60d7594d20aa7124a884e54681bb71cb131770df9f50525fa1f427a8c81": {
+      "bytes": 6291568,
+      "sha256": "19ada60d7594d20aa7124a884e54681bb71cb131770df9f50525fa1f427a8c81"
+    },
+    "~/models/ollama/blobs/sha256-4edeae95575b7904c81fbe4a3178060f649131958ebaf1c4c050aa70f153d1f2": {
+      "bytes": 2152,
+      "sha256": "4edeae95575b7904c81fbe4a3178060f649131958ebaf1c4c050aa70f153d1f2"
+    },
+    "~/models/ollama/blobs/sha256-391975e6b4e6f25a234c1ca248be5801c88c0b7cb4d55d5e09837bc6843c41b0": {
+      "bytes": 10748016,
+      "sha256": "391975e6b4e6f25a234c1ca248be5801c88c0b7cb4d55d5e09837bc6843c41b0"
+    },
+    "~/models/ollama/blobs/sha256-40abac9475865b0d5862ff607362b101c0105fcdba96b9482661278f09dd8e50": {
+      "bytes": 5374064,
+      "sha256": "40abac9475865b0d5862ff607362b101c0105fcdba96b9482661278f09dd8e50"
+    },
+    "~/models/ollama/blobs/sha256-ec9eebb08c6bf325e4421dc8baca45767314db109e8d982cc8ec3486be72bfc8": {
+      "bytes": 2152,
+      "sha256": "ec9eebb08c6bf325e4421dc8baca45767314db109e8d982cc8ec3486be72bfc8"
+    },
+    "~/models/ollama/blobs/sha256-4eb7df9cfb93b5d1d42ea0f8a4a54e5483da321f5af6fc8f45ef080f5f94ba9d": {
+      "bytes": 8288,
+      "sha256": "4eb7df9cfb93b5d1d42ea0f8a4a54e5483da321f5af6fc8f45ef080f5f94ba9d"
+    },
+    "~/models/ollama/blobs/sha256-16020f8b6543008357ffd09b600da759d6feb8a59eb20d6e4974821dd6674d41": {
+      "bytes": 8388712,
+      "sha256": "16020f8b6543008357ffd09b600da759d6feb8a59eb20d6e4974821dd6674d41"
+    },
+    "~/models/ollama/blobs/sha256-1304f0a8bd6d437bc37737ad9b7f517da156da9dca3f0da8cf36563bb27f8d4d": {
+      "bytes": 2144,
+      "sha256": "1304f0a8bd6d437bc37737ad9b7f517da156da9dca3f0da8cf36563bb27f8d4d"
+    },
+    "~/models/ollama/blobs/sha256-78df5d71813d3a3a03c92d10303ab56e7a7c421ba6914618df1296b74cb951ed": {
+      "bytes": 8388712,
+      "sha256": "78df5d71813d3a3a03c92d10303ab56e7a7c421ba6914618df1296b74cb951ed"
+    },
+    "~/models/ollama/blobs/sha256-5aa68adc39eb1d30de92caa8d6a9cb83d7f0ce84bc4c4df2a59d25f67a835c37": {
+      "bytes": 2144,
+      "sha256": "5aa68adc39eb1d30de92caa8d6a9cb83d7f0ce84bc4c4df2a59d25f67a835c37"
+    },
+    "~/models/ollama/blobs/sha256-4d8d904cae1f0a48af5f99351e3fdc669375e2a14978a22feb5021a8ccfbfdb1": {
+      "bytes": 2144,
+      "sha256": "4d8d904cae1f0a48af5f99351e3fdc669375e2a14978a22feb5021a8ccfbfdb1"
+    },
+    "~/models/ollama/blobs/sha256-08274b31d477e9378b9a0d5f9adfb19e9159df4e5ddd47afed4a3d242ad7fb69": {
+      "bytes": 2144,
+      "sha256": "08274b31d477e9378b9a0d5f9adfb19e9159df4e5ddd47afed4a3d242ad7fb69"
+    },
+    "~/models/ollama/blobs/sha256-fb65faffb3f2e567f5dfb3211d536772896f6859d2c8d58e3c6cbd28af6fb91e": {
+      "bytes": 2144,
+      "sha256": "fb65faffb3f2e567f5dfb3211d536772896f6859d2c8d58e3c6cbd28af6fb91e"
+    },
+    "~/models/ollama/blobs/sha256-5f688e2e0f4c77d38c6f425982a52d2190ea44e9bc0e32bfff74c2b4a24e0823": {
+      "bytes": 6248,
+      "sha256": "5f688e2e0f4c77d38c6f425982a52d2190ea44e9bc0e32bfff74c2b4a24e0823"
+    },
+    "~/models/ollama/blobs/sha256-4872725837174276c0a966ce1414b23c47fa5eb8bfee10e1d902587676607ade": {
+      "bytes": 6291576,
+      "sha256": "4872725837174276c0a966ce1414b23c47fa5eb8bfee10e1d902587676607ade"
+    },
+    "~/models/ollama/blobs/sha256-05cfa4b1667b9491e55792f0023dc01ea645609727ec4dfd4ec310952eb49608": {
+      "bytes": 2152,
+      "sha256": "05cfa4b1667b9491e55792f0023dc01ea645609727ec4dfd4ec310952eb49608"
+    },
+    "~/models/ollama/blobs/sha256-50dbe426eb22f717b3cfc8cc8d68158f4d6f7783eed202cffcaece187107dd6d": {
+      "bytes": 2097272,
+      "sha256": "50dbe426eb22f717b3cfc8cc8d68158f4d6f7783eed202cffcaece187107dd6d"
+    },
+    "~/models/ollama/blobs/sha256-81e1a5fec0945e8db74ea6c7273b60adbef53331d4121bcd922baa7f4e74168c": {
+      "bytes": 8288,
+      "sha256": "81e1a5fec0945e8db74ea6c7273b60adbef53331d4121bcd922baa7f4e74168c"
+    },
+    "~/models/ollama/blobs/sha256-8f0993373c3252613205cc1baba88e661e0a63cf63c6e269cdb0389c9041a7cb": {
+      "bytes": 8388712,
+      "sha256": "8f0993373c3252613205cc1baba88e661e0a63cf63c6e269cdb0389c9041a7cb"
+    },
+    "~/models/ollama/blobs/sha256-d98c3af59b2499776d108872c28062b343cf1de72acfed8080fd578ef42a1d50": {
+      "bytes": 2144,
+      "sha256": "d98c3af59b2499776d108872c28062b343cf1de72acfed8080fd578ef42a1d50"
+    },
+    "~/models/ollama/blobs/sha256-5955f7b9a58e29011924ce7899da10e8e5671b84723955b8dbcfc1fac5470e05": {
+      "bytes": 8388712,
+      "sha256": "5955f7b9a58e29011924ce7899da10e8e5671b84723955b8dbcfc1fac5470e05"
+    },
+    "~/models/ollama/blobs/sha256-09250ead5ded34f2bc39b76c415dc8bd2628be6ea5945b247507f5b78f9d95d4": {
+      "bytes": 2144,
+      "sha256": "09250ead5ded34f2bc39b76c415dc8bd2628be6ea5945b247507f5b78f9d95d4"
+    },
+    "~/models/ollama/blobs/sha256-8af484effaec69df53128c9d53143d4e120241073bc1d007f3559f59185e1cc1": {
+      "bytes": 2144,
+      "sha256": "8af484effaec69df53128c9d53143d4e120241073bc1d007f3559f59185e1cc1"
+    },
+    "~/models/ollama/blobs/sha256-7df7ed113925a6021b779cffce5546a1074a98800e4e26e336e43aeb6bf2ea00": {
+      "bytes": 2144,
+      "sha256": "7df7ed113925a6021b779cffce5546a1074a98800e4e26e336e43aeb6bf2ea00"
+    },
+    "~/models/ollama/blobs/sha256-29a438643da73407e5411ec234e482a68b08eb9d02e3aeb0c8ee9076e5ad207c": {
+      "bytes": 2144,
+      "sha256": "29a438643da73407e5411ec234e482a68b08eb9d02e3aeb0c8ee9076e5ad207c"
+    },
+    "~/models/ollama/blobs/sha256-fc040ec0691100cdf981fe6a611435f1cbea3ea378cc93e4d529a777f54889e2": {
+      "bytes": 6248,
+      "sha256": "fc040ec0691100cdf981fe6a611435f1cbea3ea378cc93e4d529a777f54889e2"
+    },
+    "~/models/ollama/blobs/sha256-099c34633b48ddf76f519c26b3854ffe265dff8ca3b35e9abc9aa369cc1c6fbf": {
+      "bytes": 6291576,
+      "sha256": "099c34633b48ddf76f519c26b3854ffe265dff8ca3b35e9abc9aa369cc1c6fbf"
+    },
+    "~/models/ollama/blobs/sha256-69ca4658100f760c84a65a4cbbf538b7d59c5a74f2ec2af33f322db89dabefc6": {
+      "bytes": 2152,
+      "sha256": "69ca4658100f760c84a65a4cbbf538b7d59c5a74f2ec2af33f322db89dabefc6"
+    },
+    "~/models/ollama/blobs/sha256-185b623e83e83b7b1bd9c4a008dc6d26508db502712a77f738de957549af3853": {
+      "bytes": 2097272,
+      "sha256": "185b623e83e83b7b1bd9c4a008dc6d26508db502712a77f738de957549af3853"
+    },
+    "~/models/ollama/blobs/sha256-1b45bc130715d55ed237cea5b419fd1506046bf8a14750e481a99d8bb090dccb": {
+      "bytes": 2128,
+      "sha256": "1b45bc130715d55ed237cea5b419fd1506046bf8a14750e481a99d8bb090dccb"
+    },
+    "~/models/ollama/blobs/sha256-22cbeb63f81ea3e1e61215d7fe95ecaf8a43ffb879e87ffead188c6191e281e4": {
+      "bytes": 2136,
+      "sha256": "22cbeb63f81ea3e1e61215d7fe95ecaf8a43ffb879e87ffead188c6191e281e4"
+    },
+    "~/models/ollama/blobs/sha256-ceba186526f22aaa09b40f9fbbba95b0c50630371c66805382c582f9d1024072": {
+      "bytes": 2128,
+      "sha256": "ceba186526f22aaa09b40f9fbbba95b0c50630371c66805382c582f9d1024072"
+    },
+    "~/models/ollama/blobs/sha256-c6083af4154629ee7c8d30cc2a29a9bba2c3de9c16bb7e3fe756d9615ed466b3": {
+      "bytes": 2097248,
+      "sha256": "c6083af4154629ee7c8d30cc2a29a9bba2c3de9c16bb7e3fe756d9615ed466b3"
+    },
+    "~/models/ollama/blobs/sha256-cdbb182381c0d7b7f254a175be21744fabc3ff9d9797a3d2a69b21771cc69bc6": {
+      "bytes": 82,
+      "sha256": "cdbb182381c0d7b7f254a175be21744fabc3ff9d9797a3d2a69b21771cc69bc6"
+    },
+    "~/models/ollama/blobs/sha256-61a1d015c800a21f4ad146f172050fbdb4ff0018feec5fdd556de7d924fcf2fb": {
+      "bytes": 2136,
+      "sha256": "61a1d015c800a21f4ad146f172050fbdb4ff0018feec5fdd556de7d924fcf2fb"
+    },
+    "~/models/ollama/blobs/sha256-c8493f7953ca1e2d15f6541db1a2c9cdb5faef7b3ff64bd65e06bc933fbb4eba": {
+      "bytes": 92,
+      "sha256": "c8493f7953ca1e2d15f6541db1a2c9cdb5faef7b3ff64bd65e06bc933fbb4eba"
+    },
+    "~/models/ollama/blobs/sha256-6392b7b34457771ef97f86ecac2bb489baf08f79aff155e4caf55d76c6acf1a9": {
+      "bytes": 6232,
+      "sha256": "6392b7b34457771ef97f86ecac2bb489baf08f79aff155e4caf55d76c6acf1a9"
+    },
+    "~/models/ollama/blobs/sha256-ae287b56bbcf5f8c4f4541ae9dfd00c914c4c48b940b8398c3058af37ba92bbd": {
+      "bytes": 745,
+      "sha256": "ae287b56bbcf5f8c4f4541ae9dfd00c914c4c48b940b8398c3058af37ba92bbd"
+    },
+    "~/models/ollama/blobs/sha256-bf3ab80598fdccf414855a2ce80f22859e4492d06ca8a62ddd1cfb63972f8979": {
+      "bytes": 2083,
+      "sha256": "bf3ab80598fdccf414855a2ce80f22859e4492d06ca8a62ddd1cfb63972f8979"
+    },
+    "~/models/ollama/blobs/sha256-6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30": {
+      "bytes": 3583228,
+      "sha256": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30"
+    },
+    "~/models/ollama/blobs/sha256-50044de60daaa73df97d262e15a40d4faf0160e7d742df64b377877a1320dd12": {
+      "bytes": 308,
+      "sha256": "50044de60daaa73df97d262e15a40d4faf0160e7d742df64b377877a1320dd12"
+    },
+    "~/models/ollama/blobs/sha256-6d1ccd4fa8c767801f8a4cc232b051fc22d133356168280fe944e2ce7ce9e452": {
+      "bytes": 173,
+      "sha256": "6d1ccd4fa8c767801f8a4cc232b051fc22d133356168280fe944e2ce7ce9e452"
+    },
+    "~/models/ollama/blobs/sha256-a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9": {
+      "bytes": 10173,
+      "sha256": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9"
+    },
+    "~/models/ollama/blobs/sha256-b837481ff8556a29d9bb27ac280c23495a491e7268d8f043f2e617f7f795d089": {
+      "bytes": 16,
+      "sha256": "b837481ff8556a29d9bb27ac280c23495a491e7268d8f043f2e617f7f795d089"
+    },
+    "~/models/ollama/blobs/sha256-aaba5574a1e14592cb20c64b96292ffa524b3f9ca27263687b87161eacb8d31d": {
+      "bytes": 40561,
+      "sha256": "aaba5574a1e14592cb20c64b96292ffa524b3f9ca27263687b87161eacb8d31d"
+    },
+    "~/models/jeff-1.1-medium/adapter/adapter_config.json": {
+      "bytes": 1345,
+      "sha256": "86fa42ab831a920f279e36cd47f247a7ba7865a1909b41ba85ada397e44443c4"
+    },
+    "~/models/jeff-1.1-medium/adapter/adapter_model.safetensors": {
+      "bytes": 1573739640,
+      "sha256": "9954ed1545dbd7f6b50f9bbcb3305aba4357041fc872d685613f84d138defa51"
+    },
+    "~/models/jeff-1.1-medium/config.json": {
+      "bytes": 3062,
+      "sha256": "6f360209d3dc31a749e8cbcf655cfcd82983037ace8bb396b2d237b9f5f374a1"
+    },
+    "~/models/jeff-1.1-medium/generation_config.json": {
+      "bytes": 255,
+      "sha256": "040d0ccb9e10df02df9738424c1ce6d20d5d15b09362da922093ccd97573dbb4"
+    },
+    "~/models/jeff-1.1-medium/head.safetensors": {
+      "bytes": 538196,
+      "sha256": "8a6445cec1cbe17e1b383e8c7a61ea0472ed3ad970ae32d6f3f7397b81755629"
+    },
+    "~/models/jeff-1.1-medium/head_config.json": {
+      "bytes": 171,
+      "sha256": "81db19c7684a9c541c3f5e67163c5b2d231248be220443dd25f46182f8b8a74e"
+    },
+    "~/models/jeff-1.1-medium/jeff_config.json": {
+      "bytes": 880,
+      "sha256": "09a6e87f03a3f31f875acbd9ae841fb2f36126383ac9c75cb5a40bf6afb40c3a"
+    },
+    "~/models/jeff-1.1-medium/model-00001-of-00005.safetensors": {
+      "bytes": 4974391670,
+      "sha256": "d5c71e3335b86c010f402951a71fb1442e0a8d7f50538819d2abe57aa91062b0"
+    },
+    "~/models/jeff-1.1-medium/model-00002-of-00005.safetensors": {
+      "bytes": 4966685902,
+      "sha256": "a581e1e363ef7b13c463381b8e870076d5d470b820dbc1ea5de644c41df24733"
+    },
+    "~/models/jeff-1.1-medium/model-00003-of-00005.safetensors": {
+      "bytes": 4884111406,
+      "sha256": "99b136faa5ae30beaad82c4b858e86fc105bf36a077adf1ffb81d8793c9e2881"
+    },
+    "~/models/jeff-1.1-medium/model-00004-of-00005.safetensors": {
+      "bytes": 4884111406,
+      "sha256": "cc6a54ba1d1447a680aa2f297a4e58cef7979b634bec44a2eb28483556c75f7d"
+    },
+    "~/models/jeff-1.1-medium/model-00005-of-00005.safetensors": {
+      "bytes": 4105476992,
+      "sha256": "e6aa8c7fd5c36b4c4398181ec564ceedaf9d7ba53c860fadcc33027ca61946cd"
+    },
+    "~/models/jeff-1.1-medium/model.safetensors.index.json": {
+      "bytes": 55408,
+      "sha256": "23054a810c5dedc5dc21d66e4a9de42e613bc966455b48b34dcbcf19333873e8"
+    },
+    "~/models/jeff-1.1-medium/reasoning.json": {
+      "bytes": 7583,
+      "sha256": "071604240f138447fadb4dbf2af7a92c3203382f7753c0b928d4c6e308eee415"
+    },
+    "~/models/jeff-1.1-medium/serving_rule.json": {
+      "bytes": 117,
+      "sha256": "dacac00793aa994101d4b19360062c8c11a3323a890c9a76cbb014bf254f69a4"
+    },
+    "~/models/jeff-1.1-medium/tokenizer.json": {
+      "bytes": 32169626,
+      "sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f"
+    },
+    "~/models/jeff-1.1-medium/tokenizer_config.json": {
+      "bytes": 3735,
+      "sha256": "3776d16773f89b8047057deace4a362c0dc70853abadb2102bc1c19fc4b7af90"
+    }
+  }
+}

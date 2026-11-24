@@ -1,0 +1,55 @@
+{
+  "kit_commit": "9bf858016a325eae439cb3fa33586c6b7465b0be",
+  "library_commit": "f928618bb6a2624e0b682df4c6806a0104e17660",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-17",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "f928618b",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-7"
+  },
+  "workloads": [
+    {
+      "name": "pictures",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "image",
+        "--scenario",
+        "repeat",
+        "--media-history",
+        "7"
+      ],
+      "pairs": [
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 32,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "059d4a53cc33c20ed72e668dae012a47af0ac4c9c37aa3981323be8fc74d7068"
+  }
+}

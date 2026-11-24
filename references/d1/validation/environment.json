@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-29",
+  "machine": "Apple M5 Pro",
+  "memory_bytes": 51539607552,
+  "macos": "27.0.1",
+  "python": "3.12.15",
+  "versions": {
+    "mlx": "0.32.4",
+    "av": "19.0.2",
+    "numpy": "2.5.4"
+  },
+  "fp32_environment": {
+    "IPPON_PROFILE": "m4"
+  },
+  "command": "[env IPPON_PROFILE=m4] uv run ippon verify MODEL --reference REFERENCE --precision PRECISION --json",
+  "decoder": "PyAV; CPU; no soundtrack",
+  "source_sha256": {
+    "src/ippon/adapters/d1.py": "0992b1ae148abac57afe950a19b7527e343bf028edc7c74679b25d267ad91483",
+    "src/ippon/media/lfm3.py": "e2b7ff7bd14788a0f573f587d4d2aa65d577f16db88c3af5b0905216b3192b1c",
+    "src/ippon/media/lfm3_video.py": "d7595659a2a468a65bd9094c315d09067772fb0997ff8506ecd39ce9feaa5837"
+  },
+  "checks": {
+    "ruff_format": "8 owned Python files unchanged",
+    "ruff_check": "passed",
+    "mypy": "passed, 200 source files",
+    "pytest": "983 passed, no skips or failures"
+  },
+  "pyav_18_1_comparison": "All 8 clips: identical RGB frames, indices and clocks (also checked separately from PyAV 19.0.2)."
+}

@@ -1,0 +1,501 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "93c63d5+",
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "model": "ollama://d3:4b-nvfp4",
+  "build": {
+    "attention_mode": "noncausal_full_attention",
+    "temperature": 1.0,
+    "base_model": "Qwen/Qwen3.5-4B",
+    "untuned_shapes": 7,
+    "adapter": "vllm-sr/d3",
+    "formats": {
+      "nvfp4": 200
+    },
+    "build": {
+      "name": "d3-mini:nvfp4",
+      "ollama": "ollama://d3:4b-nvfp4",
+      "manifest": "308d2ec0ed3043ca44fb700cf53c399268e1ec220cada1d3a720aad314de381a",
+      "base": null
+    },
+    "checkpoint": "308d2ec0ed3043ca44fb700cf53c399268e1ec220cada1d3a720aad314de381a",
+    "peak_activation": 267.5,
+    "precision": "fp16",
+    "resident_estimate": 3954922272,
+    "neural_engine": "no Core ML build of this model"
+  },
+  "source_sha256": {
+    "__init__.py": "a511640cc2f3498b4ff8ef6d0705e706e6960cec59376816aa1004c54e2e44bc",
+    "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "_emulate.py": "db35cf84b02ab8c2b041c735c1a0a4f13595b0e6dcf09815bef9c4ba155a213e",
+    "ab.py": "5c8b266993abc99307d8147b9cca3e58e8ee0dedc17be93eccf53fc7f05b4dab",
+    "adapter.py": "8cc8630dff7786dcb1f9ce78c4b3df2c68ced751189fa8189327899af661d232",
+    "adapters/__init__.py": "0c050bcb4d00fc738a90161e759888a9debfa56a822db18ae8f86404e394c420",
+    "adapters/classifier.py": "f453798eb1080d320a4b12cd4cb95a106e3fbd406577aba527d61e257d7a52a9",
+    "adapters/clef.py": "ea9c8e3da81b58c495812d0e82dc0dcd828d48e5ab9fe7d15a7f60b6736f6c35",
+    "adapters/d3.py": "79dd8510e80d82b8a70e5a7b259d65972f2f6a9d114c21ed51f8457458f40c93",
+    "adapters/label_tokens.py": "8f90daadfc42c8ff467a9d232a44002be48c881168c6f2466f881da71ad3e32e",
+    "adapters/liquid.py": "068ab4f75a1c8664d6ed31de4913e68f6c3d9d8222f17b03e16b51b824b0a46f",
+    "adapters/nimble.py": "389e6b366d677431b4443110825c0855bddb61dab6cbe3c7b8d35dcfdf937c0d",
+    "adapters/perplexity.py": "7046502ba0480ac54e4549244c172bb9a5457672e067c1809e8d15ba7c5d4ddc",
+    "adapters/qwen_images.py": "77961abed331ad0ffacaaaee863ab2c7bb597c5faf30a2fcc8e32983a2db6cb5",
+    "admission.py": "be6ec98e76135cc179d9193ba6f7d02b49453a626d4feb4b136ca5f61d653452",
+    "arch/__init__.py": "66bb917be44396c2e9781fedd9ca8fffe55304788321e28d928648ba96154e48",
+    "arch/base.py": "fbe69de64ba3c08978d1ac676df77f6dc87430267e35a85336ef036f224d8999",
+    "arch/bert.py": "07c405281381e74b8efe2040ae685139a60966b28a16e9660632c690f7a47d4d",
+    "arch/cache.py": "dd47fd05ec86c980212e63b4748651ce4f39e6d647b88c5e1d79ff4c2ecf7dad",
+    "arch/common.py": "c3afa506e18f3e62859a8ea7b2fdff68c908471ea743ef56ed72ba188c55329b",
+    "arch/deberta.py": "1746d4776a535a7eb4dcfab6cd07fc3b87dae0a33537a73f76863b1f45138747",
+    "arch/dense.py": "6c9cc8aa33d21d391d285b8fbbb1786001e5cd4edd51353fcada68a2fa79b0f2",
+    "arch/gemma3.py": "dbd966ab3616a2ab94668fe13ee40e07102d44c3a68886862a58be846c0de9c4",
+    "arch/gemma4.py": "8fe891a703ba6f527ae307fbd381c3b804876cd62ba4582efcfb435e1c3900e6",
+    "arch/lfm2.py": "315d8e746ff0228b53cf70e44ed561b5287a4c7a58c5831b0f89d28106b4295d",
+    "arch/modernbert.py": "a1109c3fa7d2c4b7858c533d6247071b593e011c30a3e5086372b36a18c79e87",
+    "arch/ops.py": "d299120e890569c24896fe84277634fa167c0df966140ef57b057c1c4571cbf6",
+    "arch/qwen35.py": "04c73f0cde8df100dc9dbde85f10ba4d29b84fe5d89408004e435012e5c1c2e3",
+    "arch/rope.py": "172f09a1e440c4c7bf99bf13ee59e4a0c983d8822cef6357fe69de63d40424d1",
+    "asks.py": "43b119f0404c317ef3d45513440112119f6467118adc119a322bf32df1c14e49",
+    "batches.py": "a728871b302000cb09186cbe57fc982891f545ce497a469790cdd934fc6dd388",
+    "bench.py": "6a86a9ff7b468769fd12ae950fc47008ce99a9bbd82a05759c1757bbbdbab436",
+    "check.py": "cec0a455bb265e48512d3b63718a72f95418a755897dfa4c70f0847b5054ab85",
+    "cli.py": "96966074ac4458fd6f55341a2aa442f38971ae9803dac77632120044fe7828b3",
+    "compare.py": "76dd954fc6ded16d42722ade47e62dce98c484b122fe794a4f9e693258644fe6",
+    "compare_arms/__init__.py": "42272eb98f7996e07e05e6300cc88a69d390311efa44bfdf7163bdef8f61c918",
+    "compare_arms/bespoke_mlx.py": "9d585856038d35b2ec6f686f5dffb9dd486ecb03d0525d6ddcf06b58725b4475",
+    "compare_arms/community_clef.py": "807fef297da549f8b139dc72e8cc269ef0fa64a35c4dce9e21819b8e1cc267c6",
+    "compare_arms/coreml.py": "177335bbfb68d8c9336b7ac8d564dbb7c87fcac35bba5b59ecf3ab413f34397d",
+    "compare_arms/harness.py": "cdf2329e3340e68f0da883cc0f1e7730e3357ca92ad32d84870104e04e67d1be",
+    "compare_arms/mlx_embeddings_model.py": "50b0e95a264f324d5293d3eca71abc626c970c9c36906c88b94629efc26bde7e",
+    "compare_arms/mlx_lm_model.py": "6983e8c751f8c28c420d77c447014496e68c935820e574f1d7e674f49dbcef6f",
+    "compare_arms/mlx_vlm.py": "66fc2f9385a983350ce1e941e23b8f6082786021b0487a76a8f79b040b021eb6",
+    "compare_arms/mlx_vlm_model.py": "98d3c36d756de194cab3dd062a216549dfc8511fcae073a09cdbf3cf284d0a54",
+    "compare_arms/ours.py": "f930f496b5983925d3e56761a4d894708cb8d7c3a81898942f3f7bbe0162b0b9",
+    "compare_arms/transformers_byo.py": "4619613cd7a26d2c0545fb641b07645d2a2547dc8520d67760c5d74886564063",
+    "daemon.py": "6bbf30ed63d60c703a6db485d4fd7313984db72aa5b3a5e41d63380b9be64ae4",
+    "decider.py": "adf09ab836a989e2536795a73ff80801ec5b516187011e335fab32323f363a05",
+    "device.py": "aa8e8b9e488b989b71503373aed312238e3b03ecb998fb00d5940826b5c2c730",
+    "doctor.py": "78bd8a44f6723b4fa0c6eb696d46abf3d7c5b3f4b201c6e54dd0b52ba56e026d",
+    "engines/__init__.py": "21e3a6244bafc97da0bc68d4a92b38b246eb47f79913ab398c40d21da4ae0139",
+    "engines/builds.py": "043da12bc88fc6b8d50e84b67f1aeab12b135edaa69a264512a2ddeeec92f5ca",
+    "engines/coreml.py": "90a08646c7042dc06f2d2a0b3f2e87f334edd5351bba2611a0c07d5564fced6e",
+    "engines/tune.py": "30df35171b31ec230db83d907ae4d8a637ee264c538d2229d4cd808e818f5ae1",
+    "errors.py": "f656e4b02d4bb452d8010d69057fc6f2f0d2047f2adb619291778afb3effd677",
+    "evaluate.py": "8bdb45be2f757ff22284153ddf80e217970b3fe3d70c423591b012425f8f61cf",
+    "gguf/__init__.py": "8ef5ee4f1db9e0e3a384bb1e8ba7c2f2af460490d6694153237cf42f7ad8e478",
+    "gguf/builds.py": "b1e1aaef8da64358785c031d05cbd616fbd2aa14d75964ea5162cf8cd7dccbd1",
+    "gguf/names.py": "e474a68c9514712a4e9625f387335fd0f7e702f5a5258b17e6b48e1da1ba25f1",
+    "gguf/reader.py": "e32c2ed6a3eb1285d4109c11219f5c90b4cf7a9429bc950f581f463334dfdfd1",
+    "hub.py": "ec4c6b5b6c9cd0901f9edabe4cf29cb332bcaa8cbe7985ac90da28a198591151",
+    "invariance.py": "16da4eb635f773d758fbd32993b898fef08bdd1098053814e80ae11ec2e03ea3",
+    "kernels/__init__.py": "3d8678a1da546fc61dcbc5d352017fccb8255907859a8aebb88554ebfb2690d4",
+    "kernels/_source.py": "527603bb8c42fd41a70bd03b4f52fe140dfe4ff26338e537f59a0569e0811598",
+    "kernels/attention.py": "49c99fdfb5af1a8f94829e7792eb93e494f21f1d9ec79902b49d3ba2c73f5fa0",
+    "kernels/conv.py": "0b48780a569a7d5159d7dfd46167aa6003479a615e34acf4d7e56137ecbfbacd",
+    "kernels/delta.py": "897a03c02089d0f61e854ce8a55f6adf28d1c9a50fb6927a1bf4d0cb1f003679",
+    "kernels/gemm.py": "fd42c40a52212df9ab3734b46830bb5585e1acb3dc26120455634736f3da4045",
+    "kernels/glu.py": "909d45422c569d08f3e79ee0ba489c5233836901e9b1e1a122519fb04fd6cdfe",
+    "kernels/int8.py": "dafc7ca0eb41ebb3eb13b9567e9e819baf088bf480b9528e6a1bf32f40d4a764",
+    "kernels/metal/activation_gelu.metal": "807c006326b22f4b5fb68d97f5dc884265717b7ba6794543635b0acc54871e3c",
+    "kernels/metal/activation_gelu_tanh.metal": "1182b13a386263c4f9161e11e23c8306ed901c97591d6ed79a1c793f95f28840",
+    "kernels/metal/activation_identity.metal": "3e2684ff6da4c076fb091c66f7d322b11ea3dd573eb04109b038efb6ea8a89f4",
+    "kernels/metal/activation_silu.metal": "7d5f249d28fc2ae302b912cfd1a406613db0d8922a69914994ab70a6875336f9",
+    "kernels/metal/attention_mask_args.metal": "bf7b7a72082cc3b7f9d0ed18fcc05fb01949e318a4eee769cd04c699cf4cc186",
+    "kernels/metal/attention_nax.metal": "f30355c50a17639b1ebafdafc8af9a6ba5db04e9c6def910ce83ffa3bc6ca94b",
+    "kernels/metal/attention_nax_launch.metal": "78583e611c03b2cfa3d64ffef63336be017846115de70f29a19ee3e7fe8b7b00",
+    "kernels/metal/attention_simd.metal": "e28b00ed3baefdb87f66a26f6ffda7b49df88b5a8dba16403c3e0e2b5f020144",
+    "kernels/metal/attention_simd_launch.metal": "2d553e43f48292048e43d5a688db01458058d886ad00abd89f9b5ed55edcd429",
+    "kernels/metal/attention_unmasked_args.metal": "2443a5d4e7f6f0410ab0cf9fe164b55bccf3f9322771ba48f2099ef7b6b5034f",
+    "kernels/metal/conv_causal.metal": "b3fa7a58cf49589bacb39aea2600cc356b5ac858f7da0dd8785fd76278d06063",
+    "kernels/metal/conv_gated.metal": "b20ffae4dee514cef0602b23a807f1649811279bdb616cc206021112d5e80c90",
+    "kernels/metal/delta.metal": "465a29662122776ac92f5e43889ec7f6f92943327ba1f0df34a06fe6bb52ab77",
+    "kernels/metal/erf.metal": "8e4afe2ac5be4ef8aba2ae0fe4a9a766c1d3e7588fd0bdcbd3902fdd92d6eaa7",
+    "kernels/metal/gemm.metal": "17a0342c382e7cc2d9e7d32dbf0337146b093fd3c14d7f7c1a3cba2fa68dd0e9",
+    "kernels/metal/gemm_glu.metal": "037370eb8ab437496f21141e958f3c3722c9ccecfce8d13e47721ae6f51e9a7c",
+    "kernels/metal/gemm_simd.metal": "bce863c8e7ac4bd34aa4ee5a0f1010579ee360b452a0058fd2eb15edd785ff8e",
+    "kernels/metal/gemm_thin.metal": "5753c996c81b3f9ecc4c0ac24468744386ef4f91147ab296283f95da4523a80b",
+    "kernels/metal/gemm_tile_loop.metal": "26ff710148c03d3c873fddf9dd0f224026e582351b5bf8cda96c871388829fa9",
+    "kernels/metal/glu.metal": "f5900de3fc186391b8172e9002ed91246d494a59e47b5b2dd6d1f35686492d9d",
+    "kernels/metal/int8_header.metal": "9f4dd0d8b56161e105bb05462f8c25fd76b692ae26440b1f68c5b09651c983fb",
+    "kernels/metal/int8_matmul.metal": "a5225684ba5fb8de4642d77ebd6704aa64a286ed46e7934651533d5eea05d7dd",
+    "kernels/metal/int8_quantize.metal": "8609bbae50d17a430faf5b3f983c7825020a0a9e7d4cffc1965e2529f340798a",
+    "kernels/metal/norm.metal": "73c79cbebcb3cdeb62f0fdf735d42ac001d220377c70d1b3a4e04dc898afadc1",
+    "kernels/metal/norm_add_store.metal": "479711b8fdb0c737b934b8f936e425e395739225808dcc892e977b1b517bf582",
+    "kernels/metal/norm_add_sum.metal": "4440ec43e55bb745c4711269e8be2d181b53a0eb27ef2ca718bdfa09db7104ef",
+    "kernels/metal/norm_gated.metal": "303550f3aebc4cceac0aa9c5dfe8b3e251e5ff94f427caa88acb45f2a99f6c7c",
+    "kernels/metal/norm_rope.metal": "a998f135f3cb36f5a1f05242418d75f9c151fe8cb8a4a1d285110953ea3c2d57",
+    "kernels/metal/norm_weight_at.metal": "31b51e7e7e34c4e119dd64f4f9217b44a97c7797e610881f68364154670bf018",
+    "kernels/metal/qgemm.metal": "b8179c9c698b7b02ca9a86a854740d7ba82700194b73568d388937532ecc09d2",
+    "kernels/metal/qgemm_affine.metal": "ec463472b57ed3f7f521230fc3cce1e30d27f4f11a010f8883854bd1b1c8c870",
+    "kernels/metal/qgemm_affine_loader.metal": "16ac6d72f94e94da5af22b0d5d40d31771307864a26c033c72b5e78eb3a25bb0",
+    "kernels/metal/qgemm_fp.metal": "a74cf1e063930951629ee28577bff7cedfcf1c61964231dac76b461b32179dbd",
+    "kernels/metal/qgemm_fp_loader.metal": "5fb9003ee3508d9bbd24c38b176b9d1063bff4c60e6ae60255eb132ecb69bbe8",
+    "kernels/metal/qgemm_staged.metal": "788eda779f0e54bd6a7b63a5c7bcda2255e100067e74238ce01fb1936a4312aa",
+    "kernels/norm.py": "7bf1952574a84b1d369c91a0be45a239654de06077ceb8eaa4af69ebee79675f",
+    "kernels/qgemm.py": "4cad354fd754458ed9fbdbdae19a6a8b07870f515870f2b39cb0fa0e25a98389",
+    "lint.py": "26de420dd3fbfd4bbea694faffecd3551d18933de18463b6ca8f1cfcfb78cf3d",
+    "machine.py": "1d0e6e6f69bc7c3dd89033efa24bb97b2ba5bf77ed1f4663a518ada72fad433a",
+    "mcp.py": "a4b1f0e03a2adb55dff510cf9897bebeca7a461d0c75c40a05d9c5f04c89b6de",
+    "media/__init__.py": "94a4de5fb9aa4b549ef7fd422ebee3590e54918ee1fdb9ecc6b1cd46ca891388",
+    "media/d1.py": "ae99f2ad2f7b68b1aeb9c856272e3d7ed26378a49a66419defca3ef7c8f21937",
+    "media/d1_audio.py": "563ea10668bc45c645d5bdb9d657b236d7486b0304941bc536cdfe4569488b3a",
+    "media/decode.py": "042d2f50ef1693123b14fcbe31b317323bb279f13b010ea37e3a66a9f2df49d8",
+    "media/qwen.py": "3c4142cd74d2907d2286a3b72164ee89c4bd0e0953a255536d1a1841421dfec1",
+    "media/resize.py": "a86d6a2cd98c19d5b70ad8ae0a8fe43ee34a80c31cfc645d146b266e17975da7",
+    "names.py": "07ceea45c4e7678b59bf3f30f421937e8c61c01271d294ca08359a127c869f76",
+    "ollama.py": "08a7f2045021052d25ff0c78ce9b93b0d4fbd1226629b174a3e03ea1ac4349c8",
+    "plan.py": "4f4a50e807f3c9f402c52241499e4b35df328696907657bd611031f9c89e8a7b",
+    "precision.py": "683365bb4e702131571fa758a3c7df62c9ed5c365bf15220ed53e7ad9be80cea",
+    "prefixes.py": "c9d95ff51b8acf88d3e4dcd3d89c5c5b31229c4179416e8ca47ffd05669c7740",
+    "pressure.py": "1b98855f61e6f2193294c3cc2aede66ad019c9adfb289d67e9fe32ff4efa9555",
+    "processes.py": "71bd85bde31ca752bcb1436ce0fec799829bf211d2538c2ac57181326aa5881b",
+    "profile.py": "e023677f9af8b9d40dc38ce84047197287e427f704f1ec13975bad94dceb7c0e",
+    "profiles.py": "cd8ea4036a73065032bb50f70c65f321885e9101d190daecfc06cf2dcea4d387",
+    "provenance.py": "aeb02da9a0bf1a631db089de21abc452ec87740ece6e0920b9b6dcc46b5806dd",
+    "quant.py": "a75edcadec7e68661f5c86042e8ee864bfd94c8f9936656b6975d64e1b96645f",
+    "quantization.py": "7daa8d200cc568ed87baa48add86467d6295b62535ade889bb6c2e9dc53b680b",
+    "questions.py": "b2e7e657bf72b7d4db53564e48f4328a188d5a4ec10ce7825d09d6a14deb712f",
+    "readout.py": "0add67ce3a94526d253101992c8aa7f68a439f414f2a4a85ec85d4fe378ecdec",
+    "recommend.py": "9b7a97fe4c138e59b82a75a7cd2d27d073dcf1bf17d30580c394a228534d5c5c",
+    "registry.py": "57da9f3837a0196f9875e81427c69b9c0559783697b0493db18f93f5bcc73684",
+    "residency.py": "c944d88183cb60058cef9352690ecab0cc2b6f1e161edf99e2584adbb0a264d0",
+    "runtime.py": "a019a42cd65505bd36f5b31dbae57d30451cc2b14a5be13c99e4ddddd455c607",
+    "scaffold.py": "6433c82ef6084e61ad2480f0046d5c9c0237b71ba61fde28cf8e285f6b228cfb",
+    "schema.py": "ca8bcf8354f3cf5ea8b12bd3c473b5d43d0da6777a3ebd474242a7dd30c317b5",
+    "serve.py": "d5609e1839997d63405e4bb9b2ccf17c3a49bfa71715cf8c49688e55490eaf32",
+    "stats.py": "e9a06b06847aaf5856af1abf5c83d35bb88aec84648cb4edd787d726c5481f82",
+    "storage.py": "d8de01c507cc81b6e5a32f1bcdac1b7091862336f92aa36731f6f797df219340",
+    "suite.py": "7dcf8ebfeedaebad1106d2402378c9b15cc5e7cd123e1ce43b1ed747c0fdc75a",
+    "templates.py": "a5a28916e2bef0d1ebffde0e1bed689b191cb5fc1c430fc02caf8b45a4bd7392",
+    "tokenizer.py": "36f3fdfd2a7c065c349300460560f20c62d0fd1f598fbaab2d843737dbee0733",
+    "tuning.py": "53b24185308481bb8dc004fb16641ad4dc0b7b93e5087ca3b5d7f313261f21c5",
+    "verified.py": "7098fcd7c165d3244ae34fdd3d2e8b581f76eee17363c308f7367fa2b71df171",
+    "verify.py": "9dfca8fa08889736859b5af1f6d48bfbb2dbb4594ea97589968e13cc6d3631b2",
+    "weights.py": "9d03b6dc328c617bbab0e8d60850f1cfec2a44e06fad0ecb9df83fda8461f1c0"
+  },
+  "prompt_lengths": [
+    {
+      "round": 1,
+      "words": 100,
+      "questions": 1,
+      "min": 203,
+      "max": 203
+    },
+    {
+      "round": 1,
+      "words": 100,
+      "questions": 3,
+      "min": 201,
+      "max": 203
+    },
+    {
+      "round": 1,
+      "words": 300,
+      "questions": 1,
+      "min": 403,
+      "max": 403
+    },
+    {
+      "round": 1,
+      "words": 300,
+      "questions": 3,
+      "min": 401,
+      "max": 403
+    },
+    {
+      "round": 1,
+      "words": 1000,
+      "questions": 1,
+      "min": 1103,
+      "max": 1103
+    },
+    {
+      "round": 1,
+      "words": 1000,
+      "questions": 3,
+      "min": 1101,
+      "max": 1103
+    },
+    {
+      "round": 1,
+      "words": 2000,
+      "questions": 1,
+      "min": 2103,
+      "max": 2103
+    },
+    {
+      "round": 1,
+      "words": 2000,
+      "questions": 3,
+      "min": 2101,
+      "max": 2103
+    },
+    {
+      "round": 1,
+      "words": 3993,
+      "questions": 1,
+      "min": 4096,
+      "max": 4096
+    },
+    {
+      "round": 1,
+      "words": 3993,
+      "questions": 3,
+      "min": 4094,
+      "max": 4096
+    },
+    {
+      "round": 2,
+      "words": 100,
+      "questions": 1,
+      "min": 203,
+      "max": 203
+    },
+    {
+      "round": 2,
+      "words": 100,
+      "questions": 3,
+      "min": 201,
+      "max": 203
+    },
+    {
+      "round": 2,
+      "words": 300,
+      "questions": 1,
+      "min": 403,
+      "max": 403
+    },
+    {
+      "round": 2,
+      "words": 300,
+      "questions": 3,
+      "min": 401,
+      "max": 403
+    },
+    {
+      "round": 2,
+      "words": 1000,
+      "questions": 1,
+      "min": 1103,
+      "max": 1103
+    },
+    {
+      "round": 2,
+      "words": 1000,
+      "questions": 3,
+      "min": 1101,
+      "max": 1103
+    },
+    {
+      "round": 2,
+      "words": 2000,
+      "questions": 1,
+      "min": 2103,
+      "max": 2103
+    },
+    {
+      "round": 2,
+      "words": 2000,
+      "questions": 3,
+      "min": 2101,
+      "max": 2103
+    },
+    {
+      "round": 2,
+      "words": 3993,
+      "questions": 1,
+      "min": 4096,
+      "max": 4096
+    },
+    {
+      "round": 2,
+      "words": 3993,
+      "questions": 3,
+      "min": 4094,
+      "max": 4096
+    },
+    {
+      "round": 3,
+      "words": 100,
+      "questions": 1,
+      "min": 203,
+      "max": 203
+    },
+    {
+      "round": 3,
+      "words": 100,
+      "questions": 3,
+      "min": 201,
+      "max": 203
+    },
+    {
+      "round": 3,
+      "words": 300,
+      "questions": 1,
+      "min": 403,
+      "max": 403
+    },
+    {
+      "round": 3,
+      "words": 300,
+      "questions": 3,
+      "min": 401,
+      "max": 403
+    },
+    {
+      "round": 3,
+      "words": 1000,
+      "questions": 1,
+      "min": 1103,
+      "max": 1103
+    },
+    {
+      "round": 3,
+      "words": 1000,
+      "questions": 3,
+      "min": 1101,
+      "max": 1103
+    },
+    {
+      "round": 3,
+      "words": 2000,
+      "questions": 1,
+      "min": 2103,
+      "max": 2103
+    },
+    {
+      "round": 3,
+      "words": 2000,
+      "questions": 3,
+      "min": 2101,
+      "max": 2103
+    },
+    {
+      "round": 3,
+      "words": 3993,
+      "questions": 1,
+      "min": 4096,
+      "max": 4096
+    },
+    {
+      "round": 3,
+      "words": 3993,
+      "questions": 3,
+      "min": 4094,
+      "max": 4096
+    },
+    {
+      "round": 4,
+      "words": 100,
+      "questions": 1,
+      "min": 203,
+      "max": 203
+    },
+    {
+      "round": 4,
+      "words": 100,
+      "questions": 3,
+      "min": 201,
+      "max": 203
+    },
+    {
+      "round": 4,
+      "words": 300,
+      "questions": 1,
+      "min": 403,
+      "max": 403
+    },
+    {
+      "round": 4,
+      "words": 300,
+      "questions": 3,
+      "min": 401,
+      "max": 403
+    },
+    {
+      "round": 4,
+      "words": 1000,
+      "questions": 1,
+      "min": 1103,
+      "max": 1103
+    },
+    {
+      "round": 4,
+      "words": 1000,
+      "questions": 3,
+      "min": 1101,
+      "max": 1103
+    },
+    {
+      "round": 4,
+      "words": 2000,
+      "questions": 1,
+      "min": 2103,
+      "max": 2103
+    },
+    {
+      "round": 4,
+      "words": 2000,
+      "questions": 3,
+      "min": 2101,
+      "max": 2103
+    },
+    {
+      "round": 4,
+      "words": 3993,
+      "questions": 1,
+      "min": 4096,
+      "max": 4096
+    },
+    {
+      "round": 4,
+      "words": 3993,
+      "questions": 3,
+      "min": 4094,
+      "max": 4096
+    }
+  ],
+  "max_prompt_tokens": 4096,
+  "cache": "<tmp>/ippon-attention-gate-untuned",
+  "tunings_sha256": null,
+  "command": [
+    "<repo>/.venv/bin/python",
+    "-m",
+    "ippon",
+    "bench",
+    "ollama://d3:4b-nvfp4",
+    "--ab",
+    "--switch attention=mlx",
+    "--switch attention=kernel",
+    "--sizes",
+    "100,300,1000,2000,3993",
+    "--questions",
+    "1,3",
+    "--scenario",
+    "fresh",
+    "--n",
+    "40",
+    "--warmup",
+    "3",
+    "--rounds",
+    "4",
+    "--seed",
+    "1",
+    "--out",
+    "<repo>/benchmarks/results/m5pro-2026-10-25-attention-4k/d3-mini-nvfp4-kernel-idle/ab.json"
+  ],
+  "environment": {
+    "IPPON_CACHE": "<tmp>/ippon-attention-gate-untuned",
+    "OLLAMA_MODELS": "~/models/ollama",
+    "HF_HUB_OFFLINE": "1"
+  }
+}

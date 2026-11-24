@@ -1,0 +1,179 @@
+{
+  "kit_commit": "88f4f09af1d11bf833ab7dd918d9ac3d2f98e840",
+  "library_commit": "24701b604b40a1c4ab754508865783f3454cab40",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-07",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "24701b6",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-6"
+  },
+  "workloads": [
+    {
+      "name": "text",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1,50"
+      ],
+      "pairs": [
+        [
+          "glide-9b-maker-mps",
+          "glide-9b-ippon-serve"
+        ],
+        [
+          "glide-2b-maker-mps",
+          "glide-2b-ippon-serve"
+        ],
+        [
+          "glide-0.8b-maker-mps",
+          "glide-0.8b-ippon-serve"
+        ],
+        [
+          "glide-0.4b-maker-mps",
+          "glide-0.4b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "typical",
+      "options": [
+        "--sizes",
+        "500",
+        "--questions",
+        "3"
+      ],
+      "pairs": [
+        [
+          "glide-9b-maker-mps",
+          "glide-9b-ippon-serve"
+        ],
+        [
+          "glide-2b-maker-mps",
+          "glide-2b-ippon-serve"
+        ],
+        [
+          "glide-0.8b-maker-mps",
+          "glide-0.8b-ippon-serve"
+        ],
+        [
+          "glide-0.4b-maker-mps",
+          "glide-0.4b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "repeat",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "repeat"
+      ],
+      "pairs": [
+        [
+          "glide-9b-maker-mps",
+          "glide-9b-ippon-serve"
+        ],
+        [
+          "glide-2b-maker-mps",
+          "glide-2b-ippon-serve"
+        ],
+        [
+          "glide-0.8b-maker-mps",
+          "glide-0.8b-ippon-serve"
+        ],
+        [
+          "glide-0.4b-maker-mps",
+          "glide-0.4b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "grow",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "grow"
+      ],
+      "pairs": [
+        [
+          "glide-9b-maker-mps",
+          "glide-9b-ippon-serve"
+        ],
+        [
+          "glide-2b-maker-mps",
+          "glide-2b-ippon-serve"
+        ],
+        [
+          "glide-0.8b-maker-mps",
+          "glide-0.8b-ippon-serve"
+        ],
+        [
+          "glide-0.4b-maker-mps",
+          "glide-0.4b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "burst",
+      "options": [
+        "--sizes",
+        "300",
+        "--questions",
+        "1",
+        "--clients",
+        "16"
+      ],
+      "pairs": [
+        [
+          "glide-9b-maker-mps",
+          "glide-9b-ippon-serve"
+        ],
+        [
+          "glide-2b-maker-mps",
+          "glide-2b-ippon-serve"
+        ],
+        [
+          "glide-0.8b-maker-mps",
+          "glide-0.8b-ippon-serve"
+        ],
+        [
+          "glide-0.4b-maker-mps",
+          "glide-0.4b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "7bf76b2e6ff9b8dc1983af161436648bfed4575bd106d4cddbd76701f7c9bab2"
+  }
+}

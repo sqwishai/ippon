@@ -1,0 +1,110 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "0b26fc8",
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "mode": "shipped",
+  "options": {
+    "pin_memory": true
+  },
+  "reference": "references/attention/pplx-flash-long-expanded.json.gz",
+  "reference_sha256": "ab58e5b2e7ccd2247c8207dabe4e01a33575400b7dcdb3807e99aab2b3b035eb",
+  "case": "long-12k-mixed",
+  "verify": {
+    "model": "~/models/pplx-decider-flash-v1.2",
+    "against": "the reference",
+    "notes": [],
+    "bound": 0.0119,
+    "worst": 0.0001910697930200822,
+    "passed": true,
+    "failures": [],
+    "requests": [
+      {
+        "name": "long-12k-mixed",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.0001910697930200822,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      }
+    ]
+  },
+  "probabilities": [
+    {
+      "refund": [
+        0.047303323256001555,
+        0.9526966767439985
+      ],
+      "team": [
+        0.9557725008211166,
+        0.009989427526063608,
+        0.0015539466880063579,
+        0.0029426245797612347,
+        0.0011521874746580189,
+        0.0031324230182342787,
+        0.00829196063811056,
+        0.001034190754640267,
+        0.010687476221185752,
+        0.0009866956266263655,
+        0.004456566651596915
+      ],
+      "mood": [
+        0.20814586187206305,
+        0.7770209539420263,
+        0.014833184185910604
+      ]
+    }
+  ],
+  "invariance": {
+    "model": "~/models/pplx-decider-flash-v1.2",
+    "tolerance": 0.0119,
+    "passed": true,
+    "skipped": [],
+    "checks": [
+      {
+        "name": "chunks",
+        "requests": 2,
+        "worst": 0.0,
+        "top_changed": [],
+        "near_ties": 0,
+        "passed": true
+      },
+      {
+        "name": "whole",
+        "requests": 1,
+        "worst": 0.0,
+        "top_changed": [],
+        "near_ties": 0,
+        "passed": true
+      },
+      {
+        "name": "order",
+        "requests": 1,
+        "worst": 0.0,
+        "top_changed": [],
+        "near_ties": 0,
+        "passed": true
+      },
+      {
+        "name": "together",
+        "requests": 1,
+        "worst": 0.0,
+        "top_changed": [],
+        "near_ties": 0,
+        "passed": true
+      }
+    ]
+  },
+  "peak_active_bytes": 32724105490
+}

@@ -1,0 +1,143 @@
+ippon
+Copyright 2026 Sqwish
+
+This product includes software developed at Sqwish (https://sqwish.ai), licensed under the Apache License,
+Version 2.0 (LICENSE).
+
+Third-party code
+================
+
+Portions of src/ippon/kernels/metal/gemm_simd.metal and gemm_thin.metal are adapted from MLX
+(https://github.com/ml-explore/mlx): the SIMD-group GEMM body from steel/gemm's GEMMKernel::run and the thin
+neural-accelerator GEMM. Their Python launch wrappers in kernels/gemm.py compile against the kernel headers
+shipped with the installed MLX wheel. The affine unpacking and staged quantized matmul in
+src/ippon/kernels/metal/qgemm_affine.metal and qgemm_staged.metal, launched by kernels/qgemm.py, adapt MLX's
+dequantize, QuantizedBlockLoaderStaged and qmm_t_nax_staged_impl from quantized_nax.h at commit bff10220
+(ml-explore/mlx#4682).
+MLX is licensed under the MIT License:
+
+    MIT License
+
+    Copyright © 2023 Apple Inc.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+The antialiased bilinear uint8 resize in native/src/lib.rs (src/ippon/media/resize.py calls it) is ported from mlx-vlm 0.7.10's numpy version
+(https://github.com/Blaizzy/mlx-vlm, mlx_vlm/models/d1_omni/vision.py), MIT License (the text above), Copyright (c)
+2025 Prince Canuma. Its cubic kernel, negative-weight rounding and support clamp follow PyTorch's ATen
+(https://github.com/pytorch/pytorch, aten/src/ATen/native/cpu/UpSampleKernel.cpp), under PyTorch's BSD 3-Clause
+License:
+
+    Copyright (c) 2016-     Facebook, Inc            (Adam Paszke)
+    Copyright (c) 2014-     Facebook, Inc            (Soumith Chintala)
+    Copyright (c) 2011-2014 Idiap Research Institute (Ronan Collobert)
+    Copyright (c) 2012-2014 Deepmind Technologies    (Koray Kavukcuoglu)
+    Copyright (c) 2011-2012 NEC Laboratories America (Koray Kavukcuoglu)
+    Copyright (c) 2011-2013 NYU                      (Clement Farabet)
+    Copyright (c) 2006-2010 NEC Laboratories America (Ronan Collobert, Leon Bottou, Iain Melvin, Jason Weston)
+    Copyright (c) 2006      Idiap Research Institute (Samy Bengio)
+    Copyright (c) 2001-2004 Idiap Research Institute (Ronan Collobert, Samy Bengio, Johnny Mariethoz)
+
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+
+    3. Neither the names of Facebook, Deepmind Technologies, NYU, NEC Laboratories America
+       and IDIAP Research Institute nor the names of its contributors may be
+       used to endorse or promote products derived from this software without
+       specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+
+The native library (libippon_native.dylib, built from native/) decodes audio files with Symphonia 0.5.5
+(https://github.com/pdeljanov/Symphonia), unmodified, under the Mozilla Public License 2.0, whose source is
+available there; its other dependencies are under the MIT and Apache 2.0 licenses (native/Cargo.lock lists them).
+
+Formats re-implemented from the creators' code
+============================================
+
+Each adapter re-implements its creator's prompt format and decision head. Prompt and numerical checks against
+the creator's code are recorded separately in docs/models.md, docs/accuracy.md and references/; some builds have
+only prompt verification or experimental numerical coverage. No code from a model repository
+is imported or run by ippon.
+
+- Perplexity pplx-decider (src/ippon/adapters/perplexity.py): the chunked joint readout protocol of the
+  pplx_decider package in perplexity-ai's model repositories (source/src/pplx_decider), Apache License 2.0.
+- Cloudflare Clef and Clef-Flash (src/ippon/adapters/clef.py): the prompt and the joint schema head of
+  Cloudflare's joint_schema_model.py, Apache License 2.0.
+- Liquid AI d1-2B and d1-Omni-2B (src/ippon/adapters/d1.py, src/ippon/arch/lfm3.py, src/ippon/media/lfm3.py,
+  src/ippon/media/lfm3_audio.py): the prompts, the set attention and the readout of Liquid AI's prompt.py,
+  attention.py, runner.py, api.py and calibration.py, the LFM3 layers of modeling_lfm3.py, the picture cap, vision
+  tower and projector of media.py and modeling_lfm3_vl.py, and the clip reading and resampler, log-mel front end,
+  speech encoder and projector of media.py, feature_extraction_lfm3_omni.py and modeling_lfm3_omni.py, LFM Open
+  License v1.0.
+- Qwen3.5's image processing, vision tower and multimodal RoPE positions (src/ippon/media/qwen.py), which
+  Perplexity's pplx-decider flash and Cloudflare's Clef-Flash read images through: reimplemented from Hugging Face
+  transformers' Qwen2VLImageProcessor, Qwen3_5VisionModel and get_rope_index, Apache License 2.0.
+- vllm-sr d3 (src/ippon/adapters/d3.py): the prompt and code readout of vllm-sr's d3_runtime and d3_format,
+  Apache License 2.0.
+- Torchcast Decision (src/ippon/adapters/torchcast.py, src/ippon/rounds.py): the prompt (render.py, format
+  jev_render_v3), its cut to the prompt budget, its rounds for a wide choice (model.py) and the letter readout of
+  Torchcast AI's torchcast_decision serving package, Apache License 2.0.
+- H2O.ai H2O-Lightning (src/ippon/adapters/h2o.py, h2o_select.py): the prompt, labels, temperatures, yes/no floor,
+  answers and long-record fitting of the h2o_lightning_shim.py server, its passage selection (selector_v2.py) and
+  serve_config.json in H2O.ai's model repository, Apache License 2.0.
+- AutoTrust Decider Mini 9B (src/ippon/adapters/autotrust.py): the prompt, slot ranges, decision head and per-kind temperatures of
+  the model card's System 1 code (transformers + peft), and how its server writes a state
+  (vl/serve_decide.py, `_parts`), in AutoTrust's model repository, Apache License 2.0.
+- Sqwish Kettei Core and Dot (src/ippon/adapters/kettei.py, kettei_labels.json): the prompt, labels and answers of
+  the sqwishai SDK's local runtime (sqwishai.kettei: _prompt.py, _request.py, alphabets.json), Apache License 2.0,
+  for the models under the Kettei Community Model License 1.0.
+- Base Labs elephant-1 (src/ippon/adapters/elephant.py): the prompt, block attention and slot readout of OneJev's qev
+  serving runtime with the checkpoint's serve.patch (prompt.py, engine.py, readout.py, answers.py), Apache License
+  2.0, for the MIT-licensed model.
+- Ollama's MLX cache layout (manifests, blobs, tensor companion names and quant_type metadata)
+  (src/ippon/ollama.py, quant.py): reimplemented from
+  ollama/ollama's manifest and mlxrunner/model packages (https://github.com/ollama/ollama), MIT License; no Ollama
+  code is included or run by the library.
+- The GGUF format and llama.cpp's conversion (src/ippon/gguf/): the file layout, ggml's block formats and the
+  converter's tensor names and transforms, written from llama.cpp and its gguf-py (MIT License); no llama.cpp code
+  is included.
+
+The models' weights are not distributed with ippon; each keeps its creator's licence.
+
+Test references
+===============
+
+tests/*_numpy.py are independent numpy implementations of the architectures, written from Hugging Face
+transformers' modeling files (Apache License 2.0) to check ippon's MLX ones; tests/lfm3_numpy.py from Liquid AI's
+modeling_lfm3.py and attention.py (LFM Open License v1.0).

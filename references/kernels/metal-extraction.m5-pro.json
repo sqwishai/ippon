@@ -1,0 +1,69 @@
+{
+  "kind": "metal-source-extraction-equivalence",
+  "date": "2026-10-25",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4"
+  },
+  "comparison": "mx.fast.metal_kernel intercepted before compilation; complete keyword arguments compared, including source, header, kernel name, input/output names and contiguity options",
+  "variants": 149,
+  "variants_by_module": {
+    "attention": 8,
+    "conv": 4,
+    "delta": 3,
+    "gemm": 9,
+    "glu": 3,
+    "int8": 2,
+    "norm": 112,
+    "qgemm": 8
+  },
+  "compiler_input_sha256": {
+    "before": "af95572ef45008a0b1d6a8504a6f00b388f88b4281b3635f3f3ead270fe4e6d5",
+    "after": "af95572ef45008a0b1d6a8504a6f00b388f88b4281b3635f3f3ead270fe4e6d5",
+    "installed": "af95572ef45008a0b1d6a8504a6f00b388f88b4281b3635f3f3ead270fe4e6d5"
+  },
+  "tuning_header_hash": "95bf8d5097d9",
+  "tuning_kernels": 3,
+  "resources": {
+    "metal_files": 35,
+    "wheel_and_sdist_match_checkout": true,
+    "wheel_built_from_sdist": true,
+    "installed_wheel_imported_outside_checkout": true
+  },
+  "checks": {
+    "ruff_format": "pass",
+    "ruff_check": "pass",
+    "mypy": "207 source files passed",
+    "pytest": {
+      "passed": 1020,
+      "skipped": 1,
+      "skip_reason": "coremltools unavailable (existing skip)"
+    },
+    "installed_wheel_gpu_smoke": {
+      "passed": 20,
+      "coverage": "RMSNorm/LayerNorm across widths/dtypes; sliced attention heads, NAX and SIMD families on M5"
+    }
+  },
+  "limits": [
+    "No performance benchmark; source extraction only.",
+    "No physical M1-M4 validation.",
+    "No new model-reference runs: compiler inputs and arithmetic are unchanged."
+  ],
+  "finalization_checks": {
+    "cpu": {
+      "passed": 806,
+      "existing_skips": 1
+    },
+    "metal_and_nax": {
+      "passed": 216,
+      "skipped": 0
+    },
+    "wheel_built_from_sdist": true,
+    "installed_resource_count": 35,
+    "compiler_input_variants": 149,
+    "identical_to_before_extraction": true,
+    "tuning_header_hash": "95bf8d5097d9"
+  }
+}

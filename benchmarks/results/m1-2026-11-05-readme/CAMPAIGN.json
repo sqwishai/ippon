@@ -1,0 +1,211 @@
+{
+  "kit_commit": "7a2f105885b93805f5f1282d1d69214b421748eb",
+  "library_commit": "7a2f105885b93805f5f1282d1d69214b421748eb",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-05",
+  "machine": {
+    "chip": "Apple M1",
+    "architecture": "applegpu_g13g",
+    "memory_gib": 8,
+    "macos": "26.5.2",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "7a2f105",
+    "power": {
+      "mode": null,
+      "ac": true
+    },
+    "kernel_rule": "m5-6"
+  },
+  "workloads": [
+    {
+      "name": "text",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1,50"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "typical",
+      "options": [
+        "--sizes",
+        "500",
+        "--questions",
+        "3"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "repeat",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "repeat"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "grow",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "grow"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "concurrent",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--clients",
+        "8"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "burst",
+      "options": [
+        "--sizes",
+        "300",
+        "--questions",
+        "1",
+        "--clients",
+        "16"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "image",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "image"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-mxfp8-ollama",
+          "d1-2B-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 20,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "7b367a253acda70fa26489a48101386182d32e4a77d9feb6836fae9c177419b4"
+  }
+}

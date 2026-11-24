@@ -1,0 +1,1413 @@
+{
+  "reference": "references/d1/d1-omni-2B.json.gz",
+  "reference_sha256": "8310d1f01c0a39d19f90500158ded4f6e6dac9f1e166c557b4679da47032c43e",
+  "maker": {
+    "repo": "LiquidAI/d1-Omni-2B",
+    "revision": "c8d48c08dada0191c6b362820f055cfb49c99426",
+    "model_type": "lfm3_omni"
+  },
+  "bound": 0.0172,
+  "llama_server_version": "version: 0.8.0-dev (build 11960, commit 8642541b2)\nbuilt with AppleClang 21.0.0.21000101 for Darwin arm64",
+  "gguf": "d1-Omni-2B-Q8_0.gguf",
+  "gguf_sha256": "aedf1a7c341b4281979423dbc39e9c3d3ad1da8834156c8e75af5399ca3b0861",
+  "flags": [
+    "-ngl",
+    "all",
+    "-c",
+    "32768",
+    "-b",
+    "32768",
+    "-ub",
+    "32768",
+    "-np",
+    "16",
+    "-kvu"
+  ],
+  "requests": 30,
+  "answered": 28,
+  "worst": 0.441206005026454,
+  "past_bound": 11,
+  "top_changed": 5,
+  "refused": [
+    {
+      "name": "noul-without-instructions",
+      "status": 400,
+      "error": "{\"error\":{\"code\":400,\"message\":\"questions.bank: \\\"instructions\\\" must be provided\",\"type\":\"invalid_request_error\"}}"
+    },
+    {
+      "name": "choice-list",
+      "status": 400,
+      "error": "{\"error\":{\"code\":400,\"message\":\"questions.team: \\\"criteria\\\" must be a non-empty object\",\"type\":\"invalid_request_error\"}}"
+    }
+  ],
+  "cases": [
+    {
+      "name": "noul",
+      "worst": 0.0007674439850045012,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.9488363919393525
+          }
+        },
+        "usage": {
+          "input_tokens": 136,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "noul-criteria",
+      "worst": 0.00037610852593383814,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "urgent": {
+            "type": "noul",
+            "noul": 0.9596099585814246
+          }
+        },
+        "usage": {
+          "input_tokens": 147,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "noul-false-first",
+      "worst": 0.0005171835944514092,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "urgent": {
+            "type": "noul",
+            "noul": 0.8713952035246113
+          }
+        },
+        "usage": {
+          "input_tokens": 142,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "choice-2",
+      "worst": 0.000937681178351038,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "team": {
+            "type": "choice",
+            "choice": "billing",
+            "probabilities": {
+              "billing": 0.9055064149340328,
+              "sales": 0.09449358506596718
+            },
+            "confidence": 0.9055064149340328
+          }
+        },
+        "usage": {
+          "input_tokens": 148,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "score-5",
+      "worst": 0.0051418151789053845,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "mood": {
+            "type": "score",
+            "score": 3.0,
+            "legend": {
+              "0": "calm",
+              "1": "mildly annoyed",
+              "2": "annoyed",
+              "3": "angry",
+              "4": "furious"
+            },
+            "probabilities": {
+              "0": 0.02022726300360199,
+              "1": 0.10822829318455884,
+              "2": 0.33643707697532826,
+              "3": 0.44129460535913156,
+              "4": 0.09381276147737931
+            },
+            "confidence": 0.44129460535913156
+          }
+        },
+        "usage": {
+          "input_tokens": 158,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "score-2",
+      "worst": 0.0034714235908986923,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "severity": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "minor",
+              "1": "major"
+            },
+            "probabilities": {
+              "0": 0.3284455964940295,
+              "1": 0.6715544035059706
+            },
+            "confidence": 0.6715544035059706
+          }
+        },
+        "usage": {
+          "input_tokens": 141,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "score-10",
+      "worst": 0.0012708987453837473,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "priority": {
+            "type": "score",
+            "score": 7.0,
+            "legend": {
+              "0": "priority 0",
+              "1": "priority 1",
+              "2": "priority 2",
+              "3": "priority 3",
+              "4": "priority 4",
+              "5": "priority 5",
+              "6": "priority 6",
+              "7": "priority 7",
+              "8": "priority 8",
+              "9": "priority 9"
+            },
+            "probabilities": {
+              "0": 0.002390501227093737,
+              "1": 0.005426576475745042,
+              "2": 0.01855958967240338,
+              "3": 0.05058149705342221,
+              "4": 0.09908486391337307,
+              "5": 0.1265599951001193,
+              "6": 0.12359994662296898,
+              "7": 0.24301226481716598,
+              "8": 0.1671378055602465,
+              "9": 0.16364695955746192
+            },
+            "confidence": 0.24301226481716598
+          }
+        },
+        "usage": {
+          "input_tokens": 190,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "unicode",
+      "worst": 0.0063728899650499216,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "lang": {
+            "type": "choice",
+            "choice": "Spanish",
+            "probabilities": {
+              "Spanish": 0.6117225636752902,
+              "Chinese": 0.03511656048914488,
+              "French": 0.34748920660983934,
+              "English": 0.005671669225725625
+            },
+            "confidence": 0.6117225636752902
+          }
+        },
+        "usage": {
+          "input_tokens": 66,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "json-state",
+      "worst": 0.042627363686693065,
+      "top_changed": [
+        "lost"
+      ],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "lost": {
+            "type": "noul",
+            "noul": 0.49519496395126406
+          }
+        },
+        "usage": {
+          "input_tokens": 445,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "several-questions",
+      "worst": 0.16765802518188022,
+      "top_changed": [
+        "mood"
+      ],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.9442218210750656
+          },
+          "team": {
+            "type": "choice",
+            "choice": "billing",
+            "probabilities": {
+              "billing": 0.9506258136677785,
+              "sales": 0.03206010560116842,
+              "support": 0.017314080731052933
+            },
+            "confidence": 0.9506258136677785
+          },
+          "mood": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "calm",
+              "1": "annoyed",
+              "2": "furious"
+            },
+            "probabilities": {
+              "0": 0.09887986645228727,
+              "1": 0.4225765006261804,
+              "2": 0.4785436329215324
+            },
+            "confidence": 0.4785436329215324
+          },
+          "bank": {
+            "type": "noul",
+            "noul": 0.7099116470676304
+          }
+        },
+        "usage": {
+          "input_tokens": 569,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "40-questions",
+      "worst": 0.441206005026454,
+      "top_changed": [
+        "q13"
+      ],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "q00": {
+            "type": "noul",
+            "noul": 0.22655050909446323
+          },
+          "q01": {
+            "type": "noul",
+            "noul": 0.3126330422624946
+          },
+          "q02": {
+            "type": "noul",
+            "noul": 0.7433276786216513
+          },
+          "q03": {
+            "type": "noul",
+            "noul": 0.8422254604028455
+          },
+          "q04": {
+            "type": "noul",
+            "noul": 0.8549116683210265
+          },
+          "q05": {
+            "type": "noul",
+            "noul": 0.8126704749405277
+          },
+          "q06": {
+            "type": "noul",
+            "noul": 0.0843455457298495
+          },
+          "q07": {
+            "type": "noul",
+            "noul": 0.1674373252682643
+          },
+          "q08": {
+            "type": "noul",
+            "noul": 0.26800425400909306
+          },
+          "q09": {
+            "type": "noul",
+            "noul": 0.35808080179884616
+          },
+          "q10": {
+            "type": "noul",
+            "noul": 0.22644560784204631
+          },
+          "q11": {
+            "type": "noul",
+            "noul": 0.10332106381069789
+          },
+          "q12": {
+            "type": "noul",
+            "noul": 0.21311923372723576
+          },
+          "q13": {
+            "type": "noul",
+            "noul": 0.5113996061959076
+          },
+          "q14": {
+            "type": "noul",
+            "noul": 0.30358053413315383
+          },
+          "q15": {
+            "type": "noul",
+            "noul": 0.15318101954994212
+          },
+          "q16": {
+            "type": "noul",
+            "noul": 0.1443697460412749
+          },
+          "q17": {
+            "type": "noul",
+            "noul": 0.486431235323004
+          },
+          "q18": {
+            "type": "noul",
+            "noul": 0.10712082956952625
+          },
+          "q19": {
+            "type": "noul",
+            "noul": 0.17965522905010964
+          },
+          "q20": {
+            "type": "noul",
+            "noul": 0.1138532033524725
+          },
+          "q21": {
+            "type": "noul",
+            "noul": 0.11985961821401478
+          },
+          "q22": {
+            "type": "noul",
+            "noul": 0.07018099634163667
+          },
+          "q23": {
+            "type": "noul",
+            "noul": 0.11441087443873732
+          },
+          "q24": {
+            "type": "noul",
+            "noul": 0.09433329069932597
+          },
+          "q25": {
+            "type": "noul",
+            "noul": 0.07159348626584705
+          },
+          "q26": {
+            "type": "noul",
+            "noul": 0.0636938818583026
+          },
+          "q27": {
+            "type": "noul",
+            "noul": 0.0573249307247953
+          },
+          "q28": {
+            "type": "noul",
+            "noul": 0.09210609253823797
+          },
+          "q29": {
+            "type": "noul",
+            "noul": 0.08522608003329485
+          },
+          "q30": {
+            "type": "noul",
+            "noul": 0.19943815908430357
+          },
+          "q31": {
+            "type": "noul",
+            "noul": 0.0958537036207538
+          },
+          "q32": {
+            "type": "noul",
+            "noul": 0.05841201279727706
+          },
+          "q33": {
+            "type": "noul",
+            "noul": 0.05784275633293281
+          },
+          "q34": {
+            "type": "noul",
+            "noul": 0.060700729937160934
+          },
+          "q35": {
+            "type": "noul",
+            "noul": 0.05914951392764646
+          },
+          "q36": {
+            "type": "noul",
+            "noul": 0.05585451189953399
+          },
+          "q37": {
+            "type": "noul",
+            "noul": 0.05257050863461264
+          },
+          "q38": {
+            "type": "noul",
+            "noul": 0.051750965999984855
+          },
+          "q39": {
+            "type": "noul",
+            "noul": 0.05341712473935303
+          }
+        },
+        "usage": {
+          "input_tokens": 5480,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "choice-10",
+      "worst": 0.005060508078138404,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "topic_2",
+            "probabilities": {
+              "topic_0": 0.014132791279030632,
+              "topic_1": 0.34001248537184436,
+              "topic_2": 0.5353002929944338,
+              "topic_3": 0.006255228225411461,
+              "topic_4": 0.03003899045940334,
+              "topic_5": 0.048473435324186305,
+              "topic_6": 0.007213786320921014,
+              "topic_7": 0.005408569828563824,
+              "topic_8": 0.006793986661737214,
+              "topic_9": 0.006370433534468074
+            },
+            "confidence": 0.5353002929944338
+          }
+        },
+        "usage": {
+          "input_tokens": 205,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "choice-11",
+      "worst": 0.004858499304605413,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "topic_2",
+            "probabilities": {
+              "topic_0": 0.01171776189494378,
+              "topic_1": 0.28632257716380777,
+              "topic_2": 0.42061533155204034,
+              "topic_3": 0.006108990259801279,
+              "topic_4": 0.02339128373902887,
+              "topic_5": 0.03449584905341957,
+              "topic_6": 0.006606037093196423,
+              "topic_7": 0.00582453805769435,
+              "topic_8": 0.005703410877029874,
+              "topic_9": 0.006462409555558242,
+              "topic_10": 0.19275181075347955
+            },
+            "confidence": 0.42061533155204034
+          }
+        },
+        "usage": {
+          "input_tokens": 212,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "choice-26",
+      "worst": 0.002443205516122926,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "topic_2",
+            "probabilities": {
+              "topic_0": 0.012655972712932059,
+              "topic_1": 0.15343735793335844,
+              "topic_2": 0.3116572937622609,
+              "topic_3": 0.007233127127029068,
+              "topic_4": 0.027038016067991093,
+              "topic_5": 0.022786481245802386,
+              "topic_6": 0.006401085942288894,
+              "topic_7": 0.00546929687734168,
+              "topic_8": 0.005393910078290114,
+              "topic_9": 0.0061498862587573274,
+              "topic_10": 0.08983876098524012,
+              "topic_11": 0.021355467770430386,
+              "topic_12": 0.007916174444799147,
+              "topic_13": 0.020793561884693463,
+              "topic_14": 0.009556270785107597,
+              "topic_15": 0.016211858173977918,
+              "topic_16": 0.007681179818115983,
+              "topic_17": 0.009945516526749706,
+              "topic_18": 0.0028414236998906476,
+              "topic_19": 0.038474649845386115,
+              "topic_20": 0.004713282474550702,
+              "topic_21": 0.018273180010234955,
+              "topic_22": 0.06601076013183554,
+              "topic_23": 0.0948229745634999,
+              "topic_24": 0.0109236692714678,
+              "topic_25": 0.022418841607967754
+            },
+            "confidence": 0.3116572937622609
+          }
+        },
+        "usage": {
+          "input_tokens": 317,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "choice-40",
+      "worst": 0.0031608798492706314,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "topic_2",
+            "probabilities": {
+              "topic_0": 0.0077734289833168504,
+              "topic_1": 0.11899988120033868,
+              "topic_2": 0.20771347728996856,
+              "topic_3": 0.0047665116669550625,
+              "topic_4": 0.011441676249859645,
+              "topic_5": 0.011065364120043008,
+              "topic_6": 0.006251809660355403,
+              "topic_7": 0.005217660870563161,
+              "topic_8": 0.002666785175014869,
+              "topic_9": 0.004713201258125862,
+              "topic_10": 0.06869037528939215,
+              "topic_11": 0.017736564673492407,
+              "topic_12": 0.005578946196495103,
+              "topic_13": 0.01179021876027091,
+              "topic_14": 0.006047245722688069,
+              "topic_15": 0.00585869889853062,
+              "topic_16": 0.0062088372346730996,
+              "topic_17": 0.006682979692483662,
+              "topic_18": 0.0018629233103311979,
+              "topic_19": 0.017781641834984756,
+              "topic_20": 0.004291228661282081,
+              "topic_21": 0.0105795074928606,
+              "topic_22": 0.05034159952395289,
+              "topic_23": 0.06456524931679118,
+              "topic_24": 0.006534581480320483,
+              "topic_25": 0.01177922741716761,
+              "topic_26": 0.010169857095570747,
+              "topic_27": 0.005758542065243011,
+              "topic_28": 0.006392519234119086,
+              "topic_29": 0.0033661547332315776,
+              "topic_30": 0.007563521347841035,
+              "topic_31": 0.17715072399113876,
+              "topic_32": 0.019400614349417998,
+              "topic_33": 0.007758293251337104,
+              "topic_34": 0.003813181960908034,
+              "topic_35": 0.004961033250897931,
+              "topic_36": 0.05571780654605168,
+              "topic_37": 0.009797306827557863,
+              "topic_38": 0.007198889789731937,
+              "topic_39": 0.004011933576695172
+            },
+            "confidence": 0.20771347728996856
+          }
+        },
+        "usage": {
+          "input_tokens": 415,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "state-300",
+      "worst": 0.14331338353823042,
+      "top_changed": [
+        "topic"
+      ],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.9131804098633002
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "shipping",
+            "probabilities": {
+              "billing": 0.39357089070212536,
+              "shipping": 0.4684426964749001,
+              "account": 0.0029172213894629907,
+              "other": 0.13506919143351143
+            },
+            "confidence": 0.4684426964749001
+          },
+          "tone": {
+            "type": "score",
+            "score": 0.0,
+            "legend": {
+              "0": "neutral",
+              "1": "somewhat negative",
+              "2": "very negative"
+            },
+            "probabilities": {
+              "0": 0.5872398443327315,
+              "1": 0.3821805766838971,
+              "2": 0.03057957898337147
+            },
+            "confidence": 0.5872398443327315
+          }
+        },
+        "usage": {
+          "input_tokens": 816,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "state-1000",
+      "worst": 0.13685012856600662,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.6628454953679992
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "shipping",
+            "probabilities": {
+              "billing": 0.1966407103727079,
+              "shipping": 0.46758417018705306,
+              "account": 0.0278063304057514,
+              "other": 0.3079687890344875
+            },
+            "confidence": 0.46758417018705306
+          },
+          "tone": {
+            "type": "score",
+            "score": 0.0,
+            "legend": {
+              "0": "neutral",
+              "1": "somewhat negative",
+              "2": "very negative"
+            },
+            "probabilities": {
+              "0": 0.7079899268812333,
+              "1": 0.2695312007944612,
+              "2": 0.022478872324305482
+            },
+            "confidence": 0.7079899268812333
+          }
+        },
+        "usage": {
+          "input_tokens": 2652,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "state-3000",
+      "worst": 0.15520256529101684,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.6297967600962592
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "shipping",
+            "probabilities": {
+              "billing": 0.09915851599915294,
+              "shipping": 0.7467130577663587,
+              "account": 0.005905843465230534,
+              "other": 0.1482225827692578
+            },
+            "confidence": 0.7467130577663587
+          },
+          "tone": {
+            "type": "score",
+            "score": 0.0,
+            "legend": {
+              "0": "neutral",
+              "1": "somewhat negative",
+              "2": "very negative"
+            },
+            "probabilities": {
+              "0": 0.6457472992806357,
+              "1": 0.3024688293720224,
+              "2": 0.051783871347342046
+            },
+            "confidence": 0.6457472992806357
+          }
+        },
+        "usage": {
+          "input_tokens": 7437,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "state-6000",
+      "worst": 0.19834461812249965,
+      "top_changed": [
+        "topic"
+      ],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "refund": {
+            "type": "noul",
+            "noul": 0.8374537085307516
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "shipping",
+            "probabilities": {
+              "billing": 0.36061791803912047,
+              "shipping": 0.4870217714436674,
+              "account": 0.004412854964445779,
+              "other": 0.14794745555276628
+            },
+            "confidence": 0.4870217714436674
+          },
+          "tone": {
+            "type": "score",
+            "score": 0.0,
+            "legend": {
+              "0": "neutral",
+              "1": "somewhat negative",
+              "2": "very negative"
+            },
+            "probabilities": {
+              "0": 0.6337915219409886,
+              "1": 0.3246483189918322,
+              "2": 0.04156015906717912
+            },
+            "confidence": 0.6337915219409886
+          }
+        },
+        "usage": {
+          "input_tokens": 14706,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-17-questions",
+      "worst": 0.1724789296858371,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "q00": {
+            "type": "noul",
+            "noul": 0.16691747052810124
+          },
+          "q01": {
+            "type": "noul",
+            "noul": 0.4282049376670471
+          },
+          "q02": {
+            "type": "noul",
+            "noul": 0.8751263066141561
+          },
+          "q03": {
+            "type": "noul",
+            "noul": 0.9136850278794756
+          },
+          "q04": {
+            "type": "noul",
+            "noul": 0.05654506817001096
+          },
+          "q05": {
+            "type": "noul",
+            "noul": 0.9080711444883135
+          },
+          "q06": {
+            "type": "noul",
+            "noul": 0.09787138517115819
+          },
+          "q07": {
+            "type": "noul",
+            "noul": 0.8990776834331058
+          },
+          "q08": {
+            "type": "noul",
+            "noul": 0.07109826785796126
+          },
+          "q09": {
+            "type": "noul",
+            "noul": 0.38871434597014193
+          },
+          "q10": {
+            "type": "noul",
+            "noul": 0.9164728900445974
+          },
+          "q11": {
+            "type": "noul",
+            "noul": 0.08434175751646716
+          },
+          "q12": {
+            "type": "noul",
+            "noul": 0.9290781570229684
+          },
+          "q13": {
+            "type": "noul",
+            "noul": 0.0667885194789313
+          },
+          "q14": {
+            "type": "noul",
+            "noul": 0.05986493130274469
+          },
+          "q15": {
+            "type": "noul",
+            "noul": 0.06605289271704058
+          },
+          "q16": {
+            "type": "score",
+            "score": 0.0,
+            "legend": {
+              "0": "short",
+              "1": "medium",
+              "2": "long"
+            },
+            "probabilities": {
+              "0": 0.5620265060525554,
+              "1": 0.4151837020075794,
+              "2": 0.022789791939865026
+            },
+            "confidence": 0.5620265060525554
+          }
+        },
+        "usage": {
+          "input_tokens": 1030,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-special-tokens",
+      "worst": 0.18392031046309432,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "injection": {
+            "type": "noul",
+            "noul": 0.5556851291174846
+          },
+          "kind": {
+            "type": "choice",
+            "choice": "attack",
+            "probabilities": {
+              "attack": 0.6721277250015738,
+              "request": 0.2585067896543056,
+              "chat": 0.06936548534412053
+            },
+            "confidence": 0.6721277250015738
+          }
+        },
+        "usage": {
+          "input_tokens": 223,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-no-state",
+      "worst": 0.0684583641030444,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "math": {
+            "type": "noul",
+            "noul": 0.8974573494110291
+          },
+          "size": {
+            "type": "score",
+            "score": 3.0,
+            "legend": {
+              "0": "tiny",
+              "1": "small",
+              "2": "big",
+              "3": "huge"
+            },
+            "probabilities": {
+              "0": 0.013917485099883935,
+              "1": 0.035012087905307944,
+              "2": 0.3723926303476408,
+              "3": 0.5786777966471673
+            },
+            "confidence": 0.5786777966471673
+          }
+        },
+        "usage": {
+          "input_tokens": 64,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-choice-30-described",
+      "worst": 0.001128263516681216,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "billing",
+            "probabilities": {
+              "billing": 0.30517848993779345,
+              "shipping": 0.010911619452293317,
+              "account": 0.009438607528047543,
+              "refund": 0.02270545607801554,
+              "fraud": 0.004804154787603108,
+              "returns": 0.014699284586267921,
+              "warranty": 0.005187359261015262,
+              "pricing": 0.0247242795619769,
+              "coupon": 0.254788511849735,
+              "gift_card": 0.020474255721320486,
+              "subscription": 0.00900847931319581,
+              "cancellation": 0.00949994058212214,
+              "delivery_delay": 0.005722299808716932,
+              "damaged_item": 0.005273149414868513,
+              "wrong_item": 0.007531000948509059,
+              "missing_item": 0.004599938900183906,
+              "login": 0.0058177503796970256,
+              "password": 0.0052493799225641034,
+              "privacy": 0.0059282289379250655,
+              "feedback": 0.011601299537149204,
+              "complaint": 0.07736419650631873,
+              "praise": 0.005138346623334369,
+              "question": 0.006870392686337327,
+              "partnership": 0.0045471564104634064,
+              "press": 0.005516246095394239,
+              "careers": 0.00503706180825148,
+              "store_hours": 0.012978992276927281,
+              "app_bug": 0.012519678030548095,
+              "website_bug": 0.014774987817742771,
+              "other": 0.11210945523568203
+            },
+            "confidence": 0.30517848993779345
+          }
+        },
+        "usage": {
+          "input_tokens": 155,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-choice-letters",
+      "worst": 0.009297409901730683,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "lower": {
+            "type": "choice",
+            "choice": "b",
+            "probabilities": {
+              "a": 0.05877549267626737,
+              "b": 0.8997771199940846,
+              "c": 0.04144738732964798
+            },
+            "confidence": 0.8997771199940846
+          },
+          "upper": {
+            "type": "choice",
+            "choice": "B",
+            "probabilities": {
+              "A": 0.11515197346924747,
+              "B": 0.8848480265307526
+            },
+            "confidence": 0.8848480265307526
+          }
+        },
+        "usage": {
+          "input_tokens": 93,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-noul-criteria-shapes",
+      "worst": 0.007370815079099646,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "one_side": {
+            "type": "noul",
+            "noul": 0.05040694598766926
+          },
+          "not_text": {
+            "type": "noul",
+            "noul": 0.9527486373637148
+          },
+          "empty": {
+            "type": "noul",
+            "noul": 0.9126164597530919
+          }
+        },
+        "usage": {
+          "input_tokens": 135,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-underscores-and-empty",
+      "worst": 0.0003143390636172194,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "change_delivery_date",
+            "probabilities": {
+              "change_delivery_date": 0.979486387502648,
+              "cancel_order": 0.012271827897242703,
+              "track_parcel": 0.008241784600109105
+            },
+            "confidence": 0.979486387502648
+          }
+        },
+        "usage": {
+          "input_tokens": 50,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-blank-instructions",
+      "worst": 0.0,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "blank": {
+            "type": "noul",
+            "noul": 0.5860810377557001
+          }
+        },
+        "usage": {
+          "input_tokens": 24,
+          "output_tokens": 0
+        }
+      }
+    },
+    {
+      "name": "d1-33-mixed",
+      "worst": 0.35115094718763296,
+      "top_changed": [],
+      "answers": {
+        "model": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+        "answers": {
+          "n00": {
+            "type": "noul",
+            "noul": 0.9316765571797545
+          },
+          "n01": {
+            "type": "noul",
+            "noul": 0.9176667102386202
+          },
+          "n02": {
+            "type": "noul",
+            "noul": 0.3027109020633305
+          },
+          "n03": {
+            "type": "noul",
+            "noul": 0.08510565782320705
+          },
+          "n04": {
+            "type": "noul",
+            "noul": 0.07683395963403122
+          },
+          "n05": {
+            "type": "noul",
+            "noul": 0.07188548698084571
+          },
+          "n06": {
+            "type": "noul",
+            "noul": 0.07784604307426155
+          },
+          "n07": {
+            "type": "noul",
+            "noul": 0.08194357622628759
+          },
+          "n08": {
+            "type": "noul",
+            "noul": 0.08108100497746348
+          },
+          "n09": {
+            "type": "noul",
+            "noul": 0.07903624533439757
+          },
+          "n10": {
+            "type": "noul",
+            "noul": 0.07754972844301876
+          },
+          "n11": {
+            "type": "noul",
+            "noul": 0.0782271322906133
+          },
+          "n12": {
+            "type": "noul",
+            "noul": 0.07811720137655212
+          },
+          "n13": {
+            "type": "noul",
+            "noul": 0.07498438121185387
+          },
+          "n14": {
+            "type": "noul",
+            "noul": 0.07711977224109985
+          },
+          "n15": {
+            "type": "noul",
+            "noul": 0.07475098284287268
+          },
+          "n16": {
+            "type": "noul",
+            "noul": 0.07662661281425273
+          },
+          "n17": {
+            "type": "noul",
+            "noul": 0.0764433253045944
+          },
+          "n18": {
+            "type": "noul",
+            "noul": 0.0759575782921409
+          },
+          "n19": {
+            "type": "noul",
+            "noul": 0.07764469375696728
+          },
+          "s00": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.010626710054095323,
+              "1": 0.7254010435377776,
+              "2": 0.26397224640812694
+            },
+            "confidence": 0.7254010435377776
+          },
+          "s01": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.008481533263478433,
+              "1": 0.6654411966520346,
+              "2": 0.32607727008448706
+            },
+            "confidence": 0.6654411966520346
+          },
+          "s02": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.009286505566843179,
+              "1": 0.615895181050809,
+              "2": 0.37481831338234795
+            },
+            "confidence": 0.615895181050809
+          },
+          "s03": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.010865889683053489,
+              "1": 0.5686639770083817,
+              "2": 0.42047013330856475
+            },
+            "confidence": 0.5686639770083817
+          },
+          "s04": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.011687966326892894,
+              "1": 0.555053921299102,
+              "2": 0.4332581123740049
+            },
+            "confidence": 0.555053921299102
+          },
+          "s05": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.010549678056509986,
+              "1": 0.5722214971130064,
+              "2": 0.41722882483048357
+            },
+            "confidence": 0.5722214971130064
+          },
+          "s06": {
+            "type": "score",
+            "score": 1.0,
+            "legend": {
+              "0": "on time",
+              "1": "late",
+              "2": "very late"
+            },
+            "probabilities": {
+              "0": 0.01908835091991164,
+              "1": 0.588587447819222,
+              "2": 0.3923242012608664
+            },
+            "confidence": 0.588587447819222
+          },
+          "c00": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.9393512228666044,
+              "on_time": 0.03614015844000684,
+              "lost": 0.024508618693388662
+            },
+            "confidence": 0.9393512228666044
+          },
+          "c01": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.9321821105331931,
+              "on_time": 0.035427195913288884,
+              "lost": 0.032390693553518084
+            },
+            "confidence": 0.9321821105331931
+          },
+          "c02": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.8927403947096607,
+              "on_time": 0.05476492078235941,
+              "lost": 0.0524946845079799
+            },
+            "confidence": 0.8927403947096607
+          },
+          "c03": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.9241673000617503,
+              "on_time": 0.03407175560604149,
+              "lost": 0.04176094433220804
+            },
+            "confidence": 0.9241673000617503
+          },
+          "c04": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.9419369345938045,
+              "on_time": 0.02720385203750778,
+              "lost": 0.030859213368687795
+            },
+            "confidence": 0.9419369345938045
+          },
+          "c05": {
+            "type": "choice",
+            "choice": "late",
+            "probabilities": {
+              "late": 0.9474783225646339,
+              "on_time": 0.02550121406598211,
+              "lost": 0.027020463369383997
+            },
+            "confidence": 0.9474783225646339
+          }
+        },
+        "usage": {
+          "input_tokens": 3555,
+          "output_tokens": 0
+        }
+      }
+    }
+  ]
+}

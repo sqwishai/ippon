@@ -1,0 +1,30 @@
+[
+  {"name": "binary", "request": {"context": "My order arrived broken and I want my money back.", "decisions": [
+    {"id": "refund", "question": "Should this customer get a refund?", "kind": "binary"}]}},
+  {"name": "binary-described", "request": {"context": "The deploy script ran rm -rf on the build folder.", "decisions": [
+    {"id": "safe", "question": "Is this command safe to run?", "kind": "binary",
+     "outcomes": {"yes": "it only touches temporary files", "no": "it can delete work"}}]}},
+  {"name": "single-list", "request": {"context": "The invoice page throws a 500 error after the update.", "decisions": [
+    {"id": "team", "question": "Which team should take this ticket?", "outcomes": ["billing", "engineering", "sales"]}]}},
+  {"name": "single-described", "request": {"context": {"ticket": "Can I move to the yearly plan?", "tier": "gold"},
+    "decisions": [{"id": "team", "question": "Which team should take this ticket?", "kind": "single",
+      "outcomes": {"billing": "payments and invoices", "engineering": null, "sales": "plans and upgrades"}}]}},
+  {"name": "ordinal", "request": {"context": "The site is down for every customer.", "decisions": [
+    {"id": "urgency", "question": "How urgent is this?", "kind": "ordinal", "outcomes": ["low", "medium", "high"],
+     "rubric": ["can wait a week", "this week", "right now"]}]}},
+  {"name": "several", "request": {"context": "I was charged twice and the app crashes when I open my invoices.",
+    "decisions": [
+      {"id": "refund", "question": "Should this customer get a refund?", "kind": "binary"},
+      {"id": "team", "question": "Which team should take this ticket?", "outcomes": ["billing", "engineering"],
+       "policy": {"abstain_below": 0.6}},
+      {"id": "urgency", "question": "How urgent is this?", "kind": "ordinal", "outcomes": ["1", "2", "3", "4"],
+       "rubric": ["no rush", "soon", "today", "now"]}]}},
+  {"name": "many-options", "request": {"context": "A note about the quarterly budget review.", "decisions": [
+    {"id": "folder", "question": "Which folder does this note belong in?",
+     "outcomes": ["finance", "hiring", "legal", "marketing", "ops", "product", "research", "sales", "security",
+                  "support", "travel", "misc"]}]}},
+  {"name": "empty-context", "request": {"context": "", "decisions": [
+    {"id": "ok", "question": "Is there enough information to decide?", "kind": "binary"}]}},
+  {"name": "list-context", "request": {"context": ["first message: hello", "second message: refund please"],
+    "decisions": [{"id": "refund", "question": {"ask": "refund?", "policy": "30 days"}, "kind": "binary"}]}}
+]

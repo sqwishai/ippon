@@ -1,0 +1,64 @@
+# ippon
+
+> Run decision models on Apple silicon with typed answers and their creators' published weights.
+
+## Start
+
+- `ippon setup`: choose a model for this Mac, download it and connect agents (`--use claude,codex,opencode,pi`).
+- `ippon claude`, `ippon codex`, `ippon opencode`, `ippon pi`: that agent for one session, with the model beside it.
+- `ippon start`, `ippon status --json`, `ippon stop`: the background server; `ippon remove AGENT|login|all` undoes setup.
+- `ippon skills`: guides for agents. Read `ippon skills ippon` first. `ippon skills --path` prints their folder,
+  to copy or link into the agent's skills folder.
+- `ippon recommend --json`: available builds and their fit on this Mac.
+- `ippon check MODEL --json`: support and memory estimate; a complete recorded download works offline.
+- `ippon pull MODEL`: explicitly download the model. A name loads the commit its answers were checked at.
+- Starter requests are in docs/evaluating.md, and `ippon lint request.json --json` checks one.
+
+## Shared inference
+
+- `ippon mcp [MODEL ...]`: stdio MCP tools: decide, models, recommend, lint.
+- MCP clients share one local HTTP server and do not load model weights themselves.
+- `ippon serve MODEL [NAME=MODEL ...] --detach --json`: background server, actual URL, PID and log.
+- `ippon decide MODEL request.json --server --json`: use the shared server.
+- `ippon status --json` (or `ippon ps`): server/model/memory status.
+- `ippon stop [MODEL] [--port PORT] [--all] --json`: stop the only server, or the selected one. With several
+  servers and no selection it stops none and lists them.
+- HTTP: POST /v1/decide (the Sqwish SDK's format); POST /v1/systemone?diagnostics=1; POST /v1/decisions (Perplexity's
+  and SGLang's formats); GET /v1/models; GET /v1/status; GET /health.
+- Pass IPPON_API_KEY when the server requires authentication.
+
+## Request and result
+
+- Request: state plus questions keyed by caller-selected IDs.
+- noul: instructions; answer is P(yes).
+- choice: instructions and criteria labels/descriptions; answer includes every option's probability.
+- score: instructions and an ordered scale of levels, within the model's limit. The answer is the creator's score
+  with every level's probability, and `Answer.expected_level` in Python gives the expected level.
+- Answers are under `answers`; inspect `usage`, optional `truncated`, and `diagnostics` provenance.
+- Ask questions about one state together; use lint to catch ambiguous or overlapping choices.
+- Models may refuse unsupported media; image URLs are never fetched.
+- Weight-changing precision options and experimental kernels require explicit selection; memory pressure never
+  substitutes a different model. Bare families can resolve to a published quantized build; use FAMILY:TAG to pin it.
+
+## Failure handling
+
+- JSON CLI errors: error.type, error.message, error.exit_code; nonzero process exit.
+- MCP tool errors: isError=true, structuredContent.error; JSON-RPC errors for malformed protocol messages.
+- HTTP503 overloaded includes Retry-After: wait, rather than start another copy of the model.
+- Exit codes: 1 decision_error (with --server also unauthorized, forbidden, not_found, internal), 3 invalid_request, 4 unsupported_model, 5 context_too_long, 6 insufficient_memory,
+  7 unsupported_profile, 8 overloaded (with --server also timeout), 9 unavailable, 10 model_not_found, 11 license_not_accepted (accept the
+  model's licence with `ippon pull MODEL --accept-license`), 12 insufficient_disk (free disk space, then pull again),
+  13 download_failed (repeat the pull to resume it), 14 runtime_unavailable (install or repair what the message
+  names).
+- Model downloads are explicit. MCP automatic startup uses downloaded models and offline Hub access.
+- Direct Decider.load in Python owns a separate model; HTTP shares the server's pool.
+
+## Documentation
+
+- [Agent guide](docs/agents.md): MCP configuration, tool schemas, HTTP/Python examples, lifecycle and errors.
+- [README](README.md): installation and a quick start.
+- [Architecture](docs/architecture.md): complete CLI/API, server lifecycle, authentication and memory contract.
+- [Errors](docs/errors.md): CLI exit codes, HTTP statuses and retry behavior.
+- [Models](docs/models.md): supported builds and validation status.
+- [Accuracy](docs/accuracy.md): creator parity bounds and experimental-path limitations.
+- [Evaluation](docs/evaluating.md): measure decisions on labelled examples.

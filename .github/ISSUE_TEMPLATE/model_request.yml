@@ -1,0 +1,37 @@
+name: Model request
+description: Ask for a decision model ippon doesn't run yet.
+labels: [model request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ippon runs a model only once its answers match its creator's own code, so a request needs that code to
+        check against. A fine-tune of a model it already runs usually works today: see
+        [docs/bring-your-own.md](https://github.com/sqwishai/ippon/blob/main/docs/bring-your-own.md).
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Its Hugging Face repository.
+      placeholder: org/model
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: The creator's inference code
+      description: Where the code that produces its answers lives (a file in the model repository, a package, a server).
+    validations:
+      required: true
+  - type: input
+    id: licence
+    attributes:
+      label: Licence
+      description: The licence of the weights and of the inference code.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What you would use it for
+      description: The task, and the builds or precisions you need (full precision, MLX 8-bit or 4-bit, GGUF).

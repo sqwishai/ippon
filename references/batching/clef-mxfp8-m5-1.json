@@ -1,0 +1,72 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": null,
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "model": "ollama://clef-flash:9b-mxfp8",
+  "precision": "fp16",
+  "tokens": 1344,
+  "count": 7,
+  "repeat": 3,
+  "singles": {
+    "ms": [
+      5057.530957972631,
+      5058.153541991487,
+      5071.812125155702
+    ],
+    "median_ms": 5058.153541991487,
+    "operations_ms": {
+      "norm": 11.06003683526069,
+      "joined matmul 8192x4096 mxfp8 + matmul 4096x4096 mxfp8 + matmul 32x4096 + matmul 32x4096": 837.5375873874873,
+      "convolution": 46.31717409938574,
+      "gated delta inputs": 49.373971996828914,
+      "gated delta recurrence": 157.96717489138246,
+      "gated norm": 31.82104602456093,
+      "matmul 4096x4096 mxfp8": 350.00717965885997,
+      "add + norm": 76.51388784870505,
+      "matmul 24576x4096 mxfp8 + silu (fused)": 2087.50307362061,
+      "matmul 4096x12288 mxfp8": 1171.8829730525613,
+      "matmul 10240x4096 mxfp8": 218.59872131608427,
+      "attention": 41.15543584339321,
+      "matmul 24576x4096 mxfp8": 2.560502733103931,
+      "glu": 0.04462909419089556
+    }
+  },
+  "batch": {
+    "ms": [
+      7452.031083172187,
+      7465.362082934007,
+      7458.197125000879
+    ],
+    "median_ms": 7458.197125000879,
+    "operations_ms": {
+      "norm": 12.951211188919842,
+      "joined matmul 8192x4096 mxfp8 + matmul 4096x4096 mxfp8 + matmul 32x4096 + matmul 32x4096": 1213.9345894102007,
+      "convolution": 45.31938279978931,
+      "gated delta inputs": 47.30692249722779,
+      "gated delta recurrence": 141.20746683329344,
+      "gated norm": 28.4181737806648,
+      "matmul 4096x4096 mxfp8": 549.8494689818472,
+      "add + norm": 75.88918576948345,
+      "matmul 24576x4096 mxfp8 + silu (fused)": 3230.3536761319265,
+      "matmul 4096x12288 mxfp8": 1633.8211765978485,
+      "matmul 10240x4096 mxfp8": 353.95996109582484,
+      "attention": 37.249417742714286,
+      "matmul 24576x4096 mxfp8": 0.6148760439828038,
+      "glu": 0.048166955821216106
+    }
+  },
+  "hidden_max_difference": 0.1328125,
+  "round_trip_ms": 0.16483303625136614,
+  "readout": "last-row",
+  "kernel_rule": "m5-1"
+}

@@ -1,0 +1,68 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": null,
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "model": "ollama://clef-flash:9b-mxfp8",
+  "precision": "fp16",
+  "kernel_rule": "m5-1",
+  "readout": "maker",
+  "tokens": 1344,
+  "count": 7,
+  "repeat": 3,
+  "singles": {
+    "ms": [
+      5432.0224998518825,
+      5500.762375071645,
+      5312.564583960921
+    ],
+    "median_ms": 5432.0224998518825,
+    "operations_ms": {
+      "norm": 15.504866023547947,
+      "joined matmul 8192x4096 mxfp8 + matmul 4096x4096 mxfp8 + matmul 32x4096 + matmul 32x4096": 856.1305571347475,
+      "convolution": 52.75765317492187,
+      "gated delta inputs": 57.18511715531349,
+      "gated delta recurrence": 163.54134283028543,
+      "gated norm": 36.862780107185245,
+      "matmul 4096x4096 mxfp8": 372.91267002001405,
+      "add + norm": 92.56536676548421,
+      "matmul 24576x4096 mxfp8 + silu (fused)": 2189.2826419789344,
+      "matmul 4096x12288 mxfp8": 1240.287420572713,
+      "matmul 10240x4096 mxfp8": 223.9987412467599,
+      "attention": 48.93357749097049
+    }
+  },
+  "batch": {
+    "ms": [
+      7765.456791967154,
+      7772.128666983917,
+      7774.853250011802
+    ],
+    "median_ms": 7772.128666983917,
+    "operations_ms": {
+      "norm": 13.955164584331214,
+      "joined matmul 8192x4096 mxfp8 + matmul 4096x4096 mxfp8 + matmul 32x4096 + matmul 32x4096": 1299.7095827013254,
+      "convolution": 46.87970713712275,
+      "gated delta inputs": 48.63574611954391,
+      "gated delta recurrence": 143.98795552551746,
+      "gated norm": 31.59803571179509,
+      "matmul 4096x4096 mxfp8": 577.2071648389101,
+      "add + norm": 81.05232031084597,
+      "matmul 24576x4096 mxfp8 + silu (fused)": 3386.9502022862434,
+      "matmul 4096x12288 mxfp8": 1710.0743695627898,
+      "matmul 10240x4096 mxfp8": 357.7082909177989,
+      "attention": 42.65112383291125
+    }
+  },
+  "hidden_max_difference": 0.734375,
+  "round_trip_ms": 0.13462512288242579
+}

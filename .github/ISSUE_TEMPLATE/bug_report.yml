@@ -1,0 +1,62 @@
+name: Bug report
+description: Something fails, crashes, or answers differently from the model's creator.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. The details below let us reproduce it on the same kind of Mac.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The Hub id or path you loaded, with its build (e.g. `LiquidAI/d1-2B`, `LiquidAI/d1-2B-GGUF:Q8_0`).
+      placeholder: LiquidAI/d1-2B
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: A request that reproduces it
+      description: The System One request (JSON) or the Python call. Leave out anything private; a made-up state that fails the same way is ideal.
+      render: json
+  - type: textarea
+    id: info
+    attributes:
+      label: "`ippon info --json` and `ippon doctor --json`"
+      description: Your chip, macOS, Python, MLX and ippon versions (info), and what doctor found on this Mac, in one paste.
+      render: json
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How ippon was installed
+      options:
+        - pip or uv from PyPI
+        - from source (git clone)
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output and traceback
+      description: The full error, as printed.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I reproduced this on the latest release.
+          required: true
+        - label: I searched the existing issues.
+          required: true

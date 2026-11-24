@@ -1,0 +1,173 @@
+{
+  "schema": "ippon-attention-verification/1",
+  "created": "2026-10-24T23:27:01.964158+00:00",
+  "device": {
+    "name": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_bytes": 51539607552,
+    "working_set_bytes": 40200896512,
+    "macos": [
+      27,
+      0,
+      1
+    ],
+    "gpu": true,
+    "emulated_architecture": null
+  },
+  "mlx": "0.32.4",
+  "ippon": "0.1.0.dev0",
+  "switches": "attention=bounded",
+  "precision": "auto",
+  "actual_builds": [
+    {
+      "precision": "fp16",
+      "peak_activation": 102.1,
+      "weights": null,
+      "tuned_quantized_matrices": 0,
+      "untuned_shapes": 6
+    }
+  ],
+  "load_options": {
+    "pin_memory": true
+  },
+  "chunk": null,
+  "reference": {
+    "file": "d3-lite-4k-expanded.json.gz",
+    "sha256": "c059188f2d6fe9aec0e082f89bf4e259ec914aff5b3fda98460d814ef93fe438"
+  },
+  "source_sha256": {
+    "arch/ops.py": "d299120e890569c24896fe84277634fa167c0df966140ef57b057c1c4571cbf6",
+    "arch/common.py": "c3afa506e18f3e62859a8ea7b2fdff68c908471ea743ef56ed72ba188c55329b",
+    "profiles.py": "cd8ea4036a73065032bb50f70c65f321885e9101d190daecfc06cf2dcea4d387",
+    "verify.py": "9dfca8fa08889736859b5af1f6d48bfbb2dbb4594ea97589968e13cc6d3631b2",
+    "quant.py": "a75edcadec7e68661f5c86042e8ee864bfd94c8f9936656b6975d64e1b96645f",
+    "tuning.py": "53b24185308481bb8dc004fb16641ad4dc0b7b93e5087ca3b5d7f313261f21c5",
+    "kernels/attention.py": "04776016a7dced2c57dce96f4d803b53cc81b07b692b4eb1fe404d31da31c93a",
+    "kernels/attention_nax.metal": "f30355c50a17639b1ebafdafc8af9a6ba5db04e9c6def910ce83ffa3bc6ca94b",
+    "kernels/attention_simd.metal": "e28b00ed3baefdb87f66a26f6ffda7b49df88b5a8dba16403c3e0e2b5f020144"
+  },
+  "runner_sha256": "ec1c4287b46aef1270aaaa1ef931e4f3f1d92f325fe08520c7637122e865c529",
+  "peak_active_mlx_bytes": 3650752344,
+  "request_memory": [
+    {
+      "input_tokens": 12101,
+      "active_bytes": 1506828072,
+      "cached_bytes": 3716519117,
+      "peak_active_bytes": 3650752344
+    },
+    {
+      "input_tokens": 4000,
+      "active_bytes": 1507094328,
+      "cached_bytes": 4023259747,
+      "peak_active_bytes": 3650752344
+    },
+    {
+      "input_tokens": 4096,
+      "active_bytes": 1515536252,
+      "cached_bytes": 4040257899,
+      "peak_active_bytes": 3650752344
+    },
+    {
+      "input_tokens": 4005,
+      "active_bytes": 1576918528,
+      "cached_bytes": 4050286905,
+      "peak_active_bytes": 3650752344
+    },
+    {
+      "input_tokens": 8000,
+      "active_bytes": 1506832244,
+      "cached_bytes": 4060348689,
+      "peak_active_bytes": 3650752344
+    }
+  ],
+  "memory_note": "Fresh-process peak MLX active allocations, including model loading and warm-up; not RSS.",
+  "tuning_kernel_version": 3,
+  "tunings_sha256": null,
+  "environment": {
+    "IPPON_PROFILE": null,
+    "IPPON_SWITCHES": null
+  },
+  "prompt_lengths": {
+    "4k-limit-mixed": [
+      4000,
+      4096,
+      4005
+    ],
+    "4k-limit-mixed/single-refund": [
+      4000
+    ],
+    "4k-limit-mixed/single-team": [
+      4096
+    ],
+    "4k-limit-mixed/single-mood": [
+      4005
+    ],
+    "4k-limit-mixed/equal-pair": [
+      4000,
+      4000
+    ]
+  },
+  "attention_graphs": [],
+  "graph_count_note": "Python graph builds, including probes/warm-up; compiled replay is not counted.",
+  "report": {
+    "model": "~/models/d3-lite",
+    "against": "the reference",
+    "notes": [],
+    "bound": 0.0231,
+    "worst": 0.004707247900751277,
+    "passed": true,
+    "failures": [],
+    "requests": [
+      {
+        "name": "4k-limit-mixed",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.002595700128464995,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      },
+      {
+        "name": "4k-limit-mixed/single-refund",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.000778496265411377,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      },
+      {
+        "name": "4k-limit-mixed/single-team",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.004707247900751277,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      },
+      {
+        "name": "4k-limit-mixed/single-mood",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.0004677717672878501,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      },
+      {
+        "name": "4k-limit-mixed/equal-pair",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 0.00077716571293307,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      }
+    ]
+  }
+}

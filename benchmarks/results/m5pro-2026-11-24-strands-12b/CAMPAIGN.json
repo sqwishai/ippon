@@ -1,0 +1,137 @@
+{
+  "kit_commit": "6540c75aa5d3ffc60156588098030d4bb9f56295",
+  "library_commit": "5ba345cb75f3071879d83bc632f262ea3f104be2",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-24",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0",
+    "revision": "5ba345cb",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-7"
+  },
+  "workloads": [
+    {
+      "name": "text",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1,50"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "typical",
+      "options": [
+        "--sizes",
+        "500",
+        "--questions",
+        "3"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "concurrent",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--clients",
+        "8"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "repeat",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "repeat"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "grow",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--scenario",
+        "grow"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "burst",
+      "options": [
+        "--sizes",
+        "300",
+        "--questions",
+        "1",
+        "--clients",
+        "16"
+      ],
+      "pairs": [
+        [
+          "strands-12b-maker-mps",
+          "strands-12b-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 20,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "d194218080c4ec75271413ca513c2048804012cbc135947f73452a394030c07c"
+  }
+}

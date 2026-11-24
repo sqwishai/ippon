@@ -1,0 +1,131 @@
+name: CI
+
+# Every job runs once the repository is public, where GitHub's macOS runners are free; while it is private, the same
+# checks run locally before each commit (CONTRIBUTING.md).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * *"  # nightly, on every supported Python
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Format, lint, types and tests
+    if: ${{ !github.event.repository.private }}
+    runs-on: macos-15  # Apple silicon
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - run: uv sync --locked
+      - name: Format
+        run: uv run ruff format --check .
+      - name: Lint
+        run: uv run ruff check .
+      - name: Native library (Rust) format and lint
+        working-directory: native
+        run: cargo fmt --check && cargo clippy --release --locked -- -D warnings
+      - name: Types  # once, on the development Python (.python-version): numpy's stubs differ by Python version
+        run: uv run mypy
+      - name: Tests
+        run: uv run pytest -q
+      - name: Generated docs match their sources
+        # The README's speed section and charts, docs/benchmarks.md and docs/models.md are generated from the
+        # committed results and verified.py (AGENTS.md); regenerating them must change nothing.
+        run: |
+          uv run python -I benchmarks/kit/summarize.py --readme-round --recorded --readme README.md --docs docs/benchmarks.md > /dev/null
+          uv run python -I benchmarks/kit/chart.py --readme-round --recorded > /dev/null
+          uv run python scripts/models_table.py docs/models.md
+          git diff --exit-code
+
+  python:
+    name: Tests (Python ${{ matrix.python }})
+    if: ${{ !github.event.repository.private }}
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.12 runs in checks; every other supported Python runs here on each change too.
+        python: ["3.11", "3.13", "3.14", "3.15"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked
+      - run: uv run pytest -q
+
+  package:
+    name: Package
+    if: ${{ !github.event.repository.private }}
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - name: Build the sdist and wheel
+        run: uv build
+      - name: Check the package metadata
+        run: |
+          uvx twine check --strict dist/*
+          # PyPI shows the README without the repository: every link and image must be absolute
+          if unzip -p dist/ippon-*.whl '*/METADATA' | grep -nE '\]\([^h#]|(src|srcset|href)="[^h#]'; then
+            echo "relative links in the wheel's description" >&2
+            exit 1
+          fi
+      - name: Install the wheel into a clean environment
+        run: |
+          uv venv "$RUNNER_TEMP/clean" --python 3.12
+          uv pip install --python "$RUNNER_TEMP/clean/bin/python" dist/*.whl
+      - name: Smoke-test the installed command
+        run: |
+          "$RUNNER_TEMP/clean/bin/ippon" --version
+          "$RUNNER_TEMP/clean/bin/ippon" --help > /dev/null
+          "$RUNNER_TEMP/clean/bin/ippon" info --json
+      - name: Check bundled Metal sources in the installed wheel
+        run: |
+          "$RUNNER_TEMP/clean/bin/python" - <<'PY'
+          from pathlib import Path
+          from ippon.kernels._source import metal_source
+
+          sources = list(Path("src/ippon/kernels/metal").glob("*.metal"))
+          assert sources, "no Metal sources found in the checkout"
+          for source in sources:
+              assert metal_source(source.name) == source.read_text(encoding="utf-8"), source.name
+          print(f"Checked {len(sources)} bundled Metal sources")
+          PY
+      - name: Check the native library in the installed wheel
+        run: |
+          "$RUNNER_TEMP/clean/bin/python" -I -c 'import numpy as np; from ippon.media import resize_frames; assert resize_frames(np.zeros((1, 8, 8, 3), np.uint8), 4, 4, "bicubic").shape == (1, 4, 4, 3)'
+      # GitHub's macOS runners have no usable Apple GPU, so this checks installing and repairing the wheel; serving
+      # and the soak run on a real Mac before a release (docs/releasing.md)
+      - name: Installed package on every supported Python
+        run: |
+          uv run --locked python scripts/check_package.py --wheel dist/*.whl --out "$RUNNER_TEMP/package-checks" \
+            --install-only
+      - name: Keep lifecycle reports and server logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: package-checks
+          path: ${{ runner.temp }}/package-checks/
+          retention-days: 14
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7

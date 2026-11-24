@@ -1,0 +1,545 @@
+{
+ "engine": "jeff-medium-maker-mps",
+ "campaign": {
+  "kit_commit": "08a7b8a465789bd611defa32663ab123915e0863",
+  "library_commit": "08a7b8a465789bd611defa32663ab123915e0863",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-04",
+  "machine": {
+   "chip": "Apple M5 Pro",
+   "architecture": "applegpu_g17s",
+   "memory_gib": 48,
+   "macos": "27.0.1",
+   "mlx": "0.32.4",
+   "ippon": "0.1.0.dev0",
+   "revision": "08a7b8a",
+   "power": {
+    "mode": "2",
+    "ac": true
+   },
+   "kernel_rule": "m5-6"
+  },
+  "workloads": [
+   {
+    "name": "typical",
+    "options": [
+     "--sizes",
+     "500",
+     "--questions",
+     "3"
+    ],
+    "pairs": [
+     [
+      "jeff-medium-maker-mps",
+      "jeff-medium-ippon-serve"
+     ]
+    ],
+    "alone": []
+   },
+   {
+    "name": "repeat",
+    "options": [
+     "--sizes",
+     "1000",
+     "--questions",
+     "1",
+     "--scenario",
+     "repeat"
+    ],
+    "pairs": [
+     [
+      "jeff-medium-maker-mps",
+      "jeff-medium-ippon-serve"
+     ]
+    ],
+    "alone": []
+   },
+   {
+    "name": "grow",
+    "options": [
+     "--sizes",
+     "1000",
+     "--questions",
+     "1",
+     "--scenario",
+     "grow"
+    ],
+    "pairs": [
+     [
+      "jeff-medium-maker-mps",
+      "jeff-medium-ippon-serve"
+     ]
+    ],
+    "alone": []
+   },
+   {
+    "name": "burst",
+    "options": [
+     "--sizes",
+     "300",
+     "--questions",
+     "1",
+     "--clients",
+     "16"
+    ],
+    "pairs": [
+     [
+      "jeff-medium-maker-mps",
+      "jeff-medium-ippon-serve"
+     ]
+    ],
+    "alone": []
+   }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+   "file": "MODEL_BUILDS.json",
+   "sha256": "0bf72541b9bf6ac47bafed5b29cc76ae0d863ac4274bb9ecf54cc00ed4409eb5"
+  }
+ },
+ "meta": {
+  "runtime": "transformers 5.17.0 + torch 2.13.0 (mps)",
+  "versions": {
+   "accelerate": "1.15.0",
+   "tokenizers": "0.23.3",
+   "transformers": "5.17.0",
+   "safetensors": "0.8.0",
+   "torch": "2.13.0"
+  },
+  "family": "jeff",
+  "device": "mps",
+  "server_cmd": [
+   "python",
+   "-I",
+   "-c",
+   "import functools, sys; import jeff.model as m, jeff.serve as s; s.JeffModel = functools.partial(m.JeffModel, device='mps'); sys.argv = ['jeff-serve', '~/models/jeff-1.1-medium', '--host', '127.0.0.1', '--port', '65147']; s.main()"
+  ],
+  "endpoint": "/v1/systemone",
+  "server_source": "src/jeff/serve.py",
+  "source_sha256": {
+   "src/jeff/serve.py": "bcec8e1f8a48c1ff9dfdbe7df0c5f18ff64afdecd2ae3b22b6e25074aac7c50b",
+   "src/jeff/model.py": "d337f9719d07f0d204b8af3306d98c9fb4589fea0c817e54b781af81c1bac30a",
+   "src/jeff/batching.py": "e9efe72946d668eda14b2e7036a6b717de2b1e5509469e119a023bcc847aaab0",
+   "src/jeff/prompting.py": "560704b8b5be51eeb4a30c543f6100c35f640d3a4d2b548544e470aa79bd0d3d"
+  },
+  "model_dir": "~/models/jeff-1.1-medium",
+  "revision": "540c40924dd67c715d3367309ba6744bac754b00",
+  "health": {
+   "status": "ok",
+   "model": "Jeff-1.1-Medium"
+  },
+  "question_method": "one native /v1/systemone request containing all questions, run batched with other requests' questions (jeff.batching)",
+  "transport": "native HTTP"
+ },
+ "device": {
+  "chip": "Apple M5 Pro",
+  "memory_bytes": 51539607552,
+  "gpu_cores": "20",
+  "macos": "27.0.1",
+  "macos_build": "26A434",
+  "python": "3.12.15",
+  "python_executable": "benchmarks/envs/harness/bin/python",
+  "platform": "macOS-27.0.1-arm64-arm-64bit"
+ },
+ "start": {
+  "time": "2026-11-04T20:49:06+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by coreaudiod, coreaudiod, powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 11264.00M  used = 10151.62M  free = 1112.38M  (encrypted)",
+  "memory_free_pct": "58%",
+  "load_avg": [
+   2.28173828125,
+   1.822265625,
+   2.08544921875
+  ]
+ },
+ "config": {
+  "http_transport_retries": 2,
+  "http_retry_backoff_s": 0.05,
+  "n": 10,
+  "warmup": 2,
+  "sizes": [
+   1000
+  ],
+  "questions": [
+   1
+  ],
+  "seed": 0,
+  "max_input": 8192,
+  "gap_s": 0.0,
+  "chars_per_token": 3.7,
+  "clients": 1,
+  "media": null,
+  "scenario": "grow",
+  "min_n": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0
+ },
+ "skipped_sizes": {},
+ "after_load": {
+  "self": {
+   "phys_footprint": 21807656,
+   "lifetime_max_phys_footprint": 21807656
+  },
+  "server": {
+   "phys_footprint": 29936126912,
+   "lifetime_max_phys_footprint": 29952134080
+  },
+  "engine": {
+   "server_phys_footprint": 29936126912
+  }
+ },
+ "requests": [
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "ms": 2078.4,
+   "tokens": 1440,
+   "state_chars": 3924,
+   "request_sha256": "e261f5f733829ebbaa8ba03e5fd15516707139ae1e27a3e38f205a6fd6097aa7",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.06767198090013904,
+     "no": 0.932328019099861
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "ms": 2316.73,
+   "tokens": 1489,
+   "state_chars": 4128,
+   "request_sha256": "ab7b2c5b261927ffb952401a51d29cc897bddab1f53f6a55eb535e8cd7a7a009",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.07402377271956902,
+     "no": 0.9259762272804309
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 3,
+   "ms": 2506.56,
+   "tokens": 1711,
+   "state_chars": 4999,
+   "request_sha256": "ddbb584b89f171047c7ce118aa20cf9b0c430319a8e58f96258e54e11d82c4b1",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.199,
+     "no": 0.8009999999999999
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 4,
+   "ms": 2554.6,
+   "tokens": 1774,
+   "state_chars": 5218,
+   "request_sha256": "6fef2202ac01534a07aca4f2844a979d3395166851fc5235e8891181ce5b3d75",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.14432240086160028,
+     "no": 0.8556775991383997
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 5,
+   "ms": 2614.65,
+   "tokens": 1824,
+   "state_chars": 5439,
+   "request_sha256": "879ddfb7224e05c510b38df82a514c9b50a9cd102cb48c7398b13e549877e14f",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.1680271206096781,
+     "no": 0.8319728793903219
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 6,
+   "ms": 2749.1,
+   "tokens": 1878,
+   "state_chars": 5659,
+   "request_sha256": "e84eec272a18663d0bcc24fad262b4745bd9e5e0c041b74a9f2d07624742b503",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9481190061915823,
+     "no": 0.05188099380841771
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 7,
+   "ms": 2893.52,
+   "tokens": 1926,
+   "state_chars": 5878,
+   "request_sha256": "043afb4a5b25363afa730a1b176fbdaaf68c1d133fc9dc9ef203be768103ebad",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9194436598257989,
+     "no": 0.0805563401742011
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 8,
+   "ms": 3016.9,
+   "tokens": 1969,
+   "state_chars": 6096,
+   "request_sha256": "8ef5a54b697b2eaf16677b80134c31911f6ecfdb8dc874fbf3b73af61bf8aa90",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9209514085345075,
+     "no": 0.07904859146549248
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 9,
+   "ms": 3051.03,
+   "tokens": 2018,
+   "state_chars": 6315,
+   "request_sha256": "336117a1f48073bda8df7a487423011db89f1625f9e25f85c6aa8112ed5e99d2",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9486042181133929,
+     "no": 0.051395781886607095
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 10,
+   "ms": 3236.72,
+   "tokens": 2069,
+   "state_chars": 6532,
+   "request_sha256": "3d4703e430250a32b3a2a8a57eb1f2dbf01fc1e75fb3246c2dec191750c9b35a",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9474665105568646,
+     "no": 0.052533489443135406
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 11,
+   "ms": 3347.85,
+   "tokens": 2120,
+   "state_chars": 6750,
+   "request_sha256": "67aba6eef8a777b49b930507bfc19c41c917e702bbb68c7ea2e54633a7c6d195",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.942905500391191,
+     "no": 0.05709449960880897
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 12,
+   "ms": 3415.94,
+   "tokens": 2169,
+   "state_chars": 6967,
+   "request_sha256": "75d788134849f6377b4b5e9b6587c14491fa2e997b2efdbab2bfeb508449e5ce",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.9116246105885107,
+     "no": 0.08837538941148926
+    }
+   },
+   "problems": []
+  }
+ ],
+ "set_aside": [
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "ms": 2191.43,
+   "tokens": 1544,
+   "state_chars": 4340,
+   "request_sha256": "c627b2d7e8e3d95c9a1cceb0a0b4b70b77c529af7c905cbab1845c638c8f74a9",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.0768221918195439,
+     "no": 0.9231778081804561
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (101%)",
+    "process (106%)",
+    "process (114%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "ms": 2278.5,
+   "tokens": 1594,
+   "state_chars": 4561,
+   "request_sha256": "7971fa1c5ccdcd6c16f903930e4fbd65643872065f51a4c8752361b5f268db2c",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.10300887852459537,
+     "no": 0.8969911214754046
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (60%)",
+    "process (54%)",
+    "process (68%)",
+    "process (54%)",
+    "process (87%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 2,
+   "ms": 2403.94,
+   "tokens": 1652,
+   "state_chars": 4781,
+   "request_sha256": "7f245eb01e3b07578dac46214750d2d5e1d7d6550a77d5845d383c77b75acb59",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.199,
+     "no": 0.8009999999999999
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (60%)",
+    "process (52%)",
+    "process (83%)",
+    "process (87%)",
+    "process (91%)"
+   ]
+  }
+ ],
+ "errors": [],
+ "complete": true,
+ "busy": [],
+ "activity_errors": [],
+ "end": {
+  "time": "2026-11-04T20:49:48+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by coreaudiod, powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 11264.00M  used = 9791.56M  free = 1472.44M  (encrypted)",
+  "memory_free_pct": "56%",
+  "load_avg": [
+   1.84521484375,
+   1.7802734375,
+   2.0556640625
+  ]
+ },
+ "memory": {
+  "self": {
+   "phys_footprint": 21987880,
+   "lifetime_max_phys_footprint": 22037056
+  },
+  "server": {
+   "phys_footprint": 37680336216,
+   "lifetime_max_phys_footprint": 37977345368
+  },
+  "engine_peak_sampled": 37685988696,
+  "engine_now": {
+   "server_phys_footprint": 37680336216
+  }
+ },
+ "summary": {
+  "1000x1": {
+   "median_ms": 2955.21,
+   "median_ci_ms": [
+    2554.6,
+    3347.85
+   ],
+   "n": 10,
+   "min_ms": 2506.56,
+   "max_ms": 3415.94,
+   "tokens": 1711
+  }
+ },
+ "stopped": {
+  "1000x1": "n"
+ }
+}

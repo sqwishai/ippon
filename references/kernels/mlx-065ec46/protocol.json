@@ -1,0 +1,99 @@
+{
+  "ippon_new": "c4c2bd41f3c8f37b9a89eb0b22b9e784df578a4f",
+  "ippon_baseline": "d3406e18b95fbd4a84410884782c47a481648582",
+  "new_mlx": "0.32.5.dev20261030+065ec4683",
+  "baseline_mlx": "0.32.4",
+  "rule": "m5-5",
+  "script_sha256": "00d3e3046c94bd9df98d444b3443f26e7e527dc8a7e56a8c0045374797523a76",
+  "rows": [
+    16,
+    32,
+    64,
+    96,
+    128,
+    192,
+    256,
+    384,
+    512,
+    1024,
+    2048,
+    4096
+  ],
+  "kinds": [
+    "qgemm",
+    "qglu"
+  ],
+  "copies": 8,
+  "precise_rounds": 6,
+  "options": [
+    "--bound",
+    "--rule"
+  ],
+  "date": "2026-10-30",
+  "chip": "Apple M5 Pro",
+  "gpu_cores": 20,
+  "memory_gib": 48,
+  "macos": "27.0.1",
+  "python": "3.12.15",
+  "compute_dtype": "fp16",
+  "metal_available": true,
+  "mlx_git_describe": "v0.32.4-31-g065ec4683",
+  "containing_release_tags": [],
+  "mlx_source_modified": false,
+  "metallib_symbol_counts": {
+    "affine_qmm_t_nax": 2688,
+    "qmm_n_nax": 504,
+    "qmm_rhs_nax": 1620,
+    "mxfp8_qmm_t_nax": 96,
+    "gated_delta_update_nax": 72
+  },
+  "power": {
+    "ac": true,
+    "mode": "High Power",
+    "screen_locked": true
+  },
+  "gate": {
+    "seconds": 20,
+    "gpu_max_percent": 5,
+    "gpu_max_spread_percent": 3,
+    "locks": [
+      "heavy-job lock",
+      "shared GPU lock"
+    ]
+  },
+  "ab": {
+    "rounds": 4,
+    "n_per_cell_total": 20,
+    "warmup": 2,
+    "sizes_words": [
+      300,
+      500,
+      1000
+    ],
+    "questions": [
+      1,
+      3
+    ],
+    "a": "",
+    "b": "--switch gemm=mlx",
+    "clef_mxfp8": "Terminated on screen unlock in round 1, arm B; not repeated at user instruction."
+  },
+  "source_sha256_before_home_path_abbreviation": {
+    "0.32.4/clef-flash-mlx-8bit.jsonl": "21832845e1389eac7793cd2614546dad1bf04a4d189435a1367e140c80c4342d",
+    "0.32.4/clef-flash_9b-mxfp8.jsonl": "c30dbeffe875a8776ea1033bf1e582417c5680db16567e8767eea862705317c8",
+    "0.32.4/d1_2b-mxfp8.jsonl": "8687b8ffe96ace7a893a7865a72d1234a6db3417d6b2c235b1665a7439e82e73",
+    "0.32.4/d3_4b-mxfp8.jsonl": "e70e4cbdc62d77d779448df838dc700b86fdb52e66e48ba80c27ef6eb16f434b",
+    "0.32.4/d3_9b-mxfp8.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "065ec46/clef-flash-mlx-8bit.jsonl": "9998c173aaa8f5d56aad152c461ad97df8855f09efff3c2560841838f33bdecc",
+    "065ec46/clef-flash_9b-mxfp8.jsonl": "b8d724162da72f3a49f4a64539d58063630d0097c33daee2311bc3c5394a747b",
+    "065ec46/d1_2b-mxfp8.jsonl": "1efc27ae3e4980efb3c31837e7d468529457a4bb59cff80f99a37efd0e94695a",
+    "065ec46/d3_4b-mxfp8.jsonl": "2cf191ec49e97ff2a5305740ee81a19c26887b574675dd043e820927b546a992",
+    "065ec46/d3_9b-mxfp8.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ab/clef-affine8.json": "beff531b38866991218da35d879964b672391e85bc90d2834a1f5af637cfed85",
+    "ab/d1-mxfp8.json": "fb9a2adb8de6e16cb541738ef84518079c6548a7a0f07f4f3b68e6dc412f5944",
+    "ab/d3-flash-mxfp8.json": "225f346a80ccc54e9238f0b639b9ba547ef36aa80c855d2cc2746db247f771bd",
+    "ab/d3-mini-mxfp8.json": "2f04dd2f6844e21ff74508d8dce46490e7ac5e07bc323b9d6d0764c55f3479e6"
+  },
+  "recorded_data_changes": "Home directory abbreviated to ~ in published copies; timings unchanged.",
+  "decision": "Keep m5-5. All four completed all-MLX A/Bs reject; no narrower rule has a promotion verdict."
+}

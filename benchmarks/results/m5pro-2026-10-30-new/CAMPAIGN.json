@@ -1,0 +1,79 @@
+{
+  "kit_commit": "e49b63004ecaff85ff84ea77592c06ee9731e3c6",
+  "library_commit": "d3406e18b95fbd4a84410884782c47a481648582",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-10-29",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "d3406e1",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-5"
+  },
+  "workloads": [
+    {
+      "name": "text",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1,50"
+      ],
+      "pairs": [
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-bf16-ollama",
+          "d1-omni-2B-bf16-ollama-ippon-serve"
+        ]
+      ],
+      "alone": [
+        "nimble-9b-v3-ippon-serve"
+      ]
+    },
+    {
+      "name": "concurrent",
+      "options": [
+        "--sizes",
+        "1000",
+        "--questions",
+        "1",
+        "--clients",
+        "8"
+      ],
+      "pairs": [
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-bf16-ollama",
+          "d1-omni-2B-bf16-ollama-ippon-serve"
+        ]
+      ],
+      "alone": [
+        "nimble-9b-v3-ippon-serve"
+      ]
+    }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "267b753dae0e1e0c003b29583deb24ff1ee5277795e8a60ddd13c623702ad4cf"
+  }
+}

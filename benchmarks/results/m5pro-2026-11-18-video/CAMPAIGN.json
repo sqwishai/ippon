@@ -1,0 +1,63 @@
+{
+  "kit_commit": "be7468c1a77d1b1bc7833a39a6999886773f241d",
+  "library_commit": "be7468c1a77d1b1bc7833a39a6999886773f241d",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-18",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "be7468c1",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-7"
+  },
+  "workloads": [
+    {
+      "name": "video",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "3",
+        "--media",
+        "video"
+      ],
+      "pairs": [
+        [
+          "d3-mini-tf",
+          "d3-mini-ippon-serve"
+        ],
+        [
+          "d1-2B-tf",
+          "d1-2B-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-tf",
+          "d1-omni-2B-ippon-serve"
+        ],
+        [
+          "d3-flash-tf",
+          "d3-flash-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 32,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "172515065c9812cdc66d9e2e89af4b8dfd469704e87d44dcad4dafdae45f28b9"
+  }
+}

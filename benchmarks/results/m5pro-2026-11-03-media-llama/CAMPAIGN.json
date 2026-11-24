@@ -1,0 +1,77 @@
+{
+  "kit_commit": "2e83a48ff4bc705ca4cd3ca088704a05ba04863a",
+  "library_commit": "2e83a48ff4bc705ca4cd3ca088704a05ba04863a",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-11-03",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "2e83a48",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-6"
+  },
+  "workloads": [
+    {
+      "name": "image",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "image"
+      ],
+      "pairs": [
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-llama-Q8_0",
+          "d1-omni-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "h2o-4b-llama-Q8_0",
+          "h2o-4b-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    },
+    {
+      "name": "audio",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "audio"
+      ],
+      "pairs": [
+        [
+          "d1-omni-2B-llama-Q8_0",
+          "d1-omni-2B-gguf-q8-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 2,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "ff0f370fed7cc313ffa5c588ad223722ef4650e4e9b26f150a6ec8357b1b4372"
+  }
+}

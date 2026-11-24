@@ -1,0 +1,75 @@
+{
+  "kit_commit": "6b2f58e10ca29415401e13f57f37c81976f5d7fc",
+  "library_commit": "488acb2abfb202b020b06d4af64314929fb1e1d0",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-18",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "488acb2a",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-7"
+  },
+  "workloads": [
+    {
+      "name": "pictures",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "image",
+        "--scenario",
+        "repeat",
+        "--media-history",
+        "7"
+      ],
+      "pairs": [
+        [
+          "d3-mini-mxfp8-ollama",
+          "d3-mini-mxfp8-ollama-ippon-serve"
+        ],
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-llama-Q8_0",
+          "d1-omni-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-2B-bf16-ollama",
+          "d1-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-bf16-ollama",
+          "d1-omni-2B-bf16-ollama-ippon-serve"
+        ],
+        [
+          "d3-flash-mxfp8-ollama",
+          "d3-flash-mxfp8-ollama-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 32,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "dba2fa4119c7f3c95802843834aad7731b7376a154539d7d61abe6c713524b5d"
+  }
+}

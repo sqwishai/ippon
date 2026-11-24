@@ -1,0 +1,236 @@
+{
+  "model": "~/models/d1-omni-600M",
+  "idle_model": "~/models/d1-3B",
+  "pid": 20546,
+  "url": "http://127.0.0.1:50130",
+  "before": {
+    "status": "ok",
+    "waiting": 0,
+    "memory": {
+      "footprint": 8640697000,
+      "budget": 36180806861,
+      "pressure": "normal",
+      "monitor_error": null,
+      "sample_age_s": 0.047,
+      "macos": "normal",
+      "available": 25769803776,
+      "total": 51539607552,
+      "compressed": 3930996736,
+      "soft_below": 4123168604,
+      "hard_below": 1546188226,
+      "clear_above": 6184752906
+    },
+    "models": [
+      {
+        "name": "primary",
+        "loaded": true,
+        "weights": 1174322314,
+        "prefixes": 0,
+        "prefix_budget": 0
+      },
+      {
+        "name": "secondary",
+        "loaded": true,
+        "weights": 6246967776,
+        "prefixes": 37142528,
+        "prefix_budget": 67108864
+      }
+    ],
+    "given_back": []
+  },
+  "soft": {
+    "status": "ok",
+    "waiting": 0,
+    "memory": {
+      "footprint": 6279909648,
+      "budget": 36180806861,
+      "pressure": "soft",
+      "monitor_error": null,
+      "sample_age_s": 0.044,
+      "macos": "normal",
+      "available": 2576980377,
+      "total": 51539607552,
+      "compressed": 3930996736,
+      "soft_below": 4123168604,
+      "hard_below": 1546188226,
+      "clear_above": 6184752906
+    },
+    "models": [
+      {
+        "name": "primary",
+        "loaded": true,
+        "weights": 1174322314,
+        "prefixes": 0,
+        "prefix_budget": 0
+      },
+      {
+        "name": "secondary",
+        "loaded": false,
+        "weights": 6246967776,
+        "prefixes": 0,
+        "prefix_budget": 0
+      }
+    ],
+    "given_back": [
+      {
+        "at": 1792891750.069,
+        "pressure": "soft",
+        "step": "prefixes",
+        "bytes": 37142528
+      },
+      {
+        "at": 1792891750.075,
+        "pressure": "soft",
+        "step": "cache",
+        "bytes": 2211199336
+      },
+      {
+        "at": 1792891750.171,
+        "pressure": "soft",
+        "step": "unload",
+        "bytes": 682459520,
+        "model": "secondary"
+      }
+    ]
+  },
+  "hard": {
+    "status": "ok",
+    "waiting": 0,
+    "memory": {
+      "footprint": 1032570536,
+      "budget": 36180806861,
+      "pressure": "hard",
+      "monitor_error": null,
+      "sample_age_s": 0.045,
+      "macos": "normal",
+      "available": 515396075,
+      "total": 51539607552,
+      "compressed": 3930996736,
+      "soft_below": 4123168604,
+      "hard_below": 1546188226,
+      "clear_above": 6184752906
+    },
+    "models": [
+      {
+        "name": "primary",
+        "loaded": true,
+        "weights": 1174322314,
+        "prefixes": 0,
+        "prefix_budget": 0
+      },
+      {
+        "name": "secondary",
+        "loaded": false,
+        "weights": 6246967776,
+        "prefixes": 0,
+        "prefix_budget": 0
+      }
+    ],
+    "given_back": [
+      {
+        "at": 1792891750.069,
+        "pressure": "soft",
+        "step": "prefixes",
+        "bytes": 37142528
+      },
+      {
+        "at": 1792891750.075,
+        "pressure": "soft",
+        "step": "cache",
+        "bytes": 2211199336
+      },
+      {
+        "at": 1792891750.171,
+        "pressure": "soft",
+        "step": "unload",
+        "bytes": 682459520,
+        "model": "secondary"
+      },
+      {
+        "at": 1792891750.231,
+        "pressure": "hard",
+        "step": "prefixes",
+        "bytes": 0
+      },
+      {
+        "at": 1792891750.232,
+        "pressure": "hard",
+        "step": "cache",
+        "bytes": 0
+      }
+    ]
+  },
+  "rejected": {
+    "status": 503,
+    "retry_after": "5",
+    "body": {
+      "error": {
+        "type": "overloaded",
+        "message": "this Mac is very short of memory: send it again later"
+      }
+    }
+  },
+  "recovered_answer": {
+    "model": "primary",
+    "answers": {
+      "refund": {
+        "type": "noul",
+        "noul": 0.7803078889846802
+      }
+    },
+    "usage": {
+      "input_tokens": 50,
+      "output_tokens": 0
+    }
+  },
+  "trace": [
+    {
+      "step": "prefixes",
+      "thread": "ippon-model",
+      "before": 37142528,
+      "after": 0,
+      "previous_budget": 67108864,
+      "budget": 16777216
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "unload",
+      "thread": "ippon-model",
+      "model": "secondary"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "cache",
+      "thread": "ippon-model"
+    },
+    {
+      "step": "unload",
+      "thread": "ippon-model",
+      "model": "primary"
+    }
+  ],
+  "sigterm_exit_code": 0,
+  "socket_closed": true
+}

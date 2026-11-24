@@ -1,0 +1,83 @@
+{
+  "kit_commit": "5727fc2a7b6d29bc6f6e055cb844826d4a157096",
+  "library_commit": "136fefa920f9cc591a5fe5c52dcd3a36f522fd2e",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-19",
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "136fefa9",
+    "power": {
+      "mode": "2",
+      "ac": true
+    },
+    "kernel_rule": "m5-7"
+  },
+  "workloads": [
+    {
+      "name": "video-again",
+      "options": [
+        "--sizes",
+        "100",
+        "--questions",
+        "1",
+        "--media",
+        "video",
+        "--scenario",
+        "repeat",
+        "--same-media",
+        "1"
+      ],
+      "pairs": [
+        [
+          "d3-mini-omlx",
+          "d3-mini-ippon-serve"
+        ],
+        [
+          "d3-mini-tf",
+          "d3-mini-ippon-serve"
+        ],
+        [
+          "d1-2B-llama-Q8_0",
+          "d1-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-llama-Q8_0",
+          "d1-omni-2B-gguf-q8-ippon-serve"
+        ],
+        [
+          "d3-flash-omlx",
+          "d3-flash-ippon-serve"
+        ],
+        [
+          "d1-2B-tf",
+          "d1-2B-ippon-serve"
+        ],
+        [
+          "d1-omni-2B-tf",
+          "d1-omni-2B-ippon-serve"
+        ],
+        [
+          "d3-flash-tf",
+          "d3-flash-ippon-serve"
+        ]
+      ],
+      "alone": []
+    }
+  ],
+  "samples": 32,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+    "file": "MODEL_BUILDS.json",
+    "sha256": "c6684030a5dfe0def0bf763e33bd35311f4eb1f329a0698271a9bf24c4842ba8"
+  }
+}

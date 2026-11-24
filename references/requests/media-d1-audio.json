@@ -1,0 +1,487 @@
+[
+ {
+  "name": "armstrong-noul",
+  "request": {
+   "audio": "armstrong-small-step.wav",
+   "questions": {
+    "moon": {
+     "type": "noul",
+     "instructions": "Is the speaker describing a step onto the Moon?"
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "armstrong-small-step.wav",
+    "sha256": "1bf448e903a64cf86783a8e4c51d54ee7325960d20dfdd0d1a572cd038733531"
+   }
+  ]
+ },
+ {
+  "name": "armstrong-choice-3",
+  "request": {
+   "state": "",
+   "audio": "armstrong-small-step.wav",
+   "questions": {
+    "doing": {
+     "type": "choice",
+     "instructions": "What is the speaker doing?",
+     "criteria": {
+      "landing": "Describing a step onto the surface of the Moon",
+      "cooking": "Giving a recipe",
+      "weather": "Reading a weather forecast"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "armstrong-small-step.wav",
+    "sha256": "1bf448e903a64cf86783a8e4c51d54ee7325960d20dfdd0d1a572cd038733531"
+   }
+  ]
+ },
+ {
+  "name": "kennedy-30s-three-types",
+  "request": {
+   "state": "Recording from a university archive.",
+   "audio": "kennedy-rice-30s.wav",
+   "questions": {
+    "speech": {
+     "type": "noul",
+     "instructions": "Is the speaker giving a speech to an audience?",
+     "criteria": {
+      "true": "A public speech to a crowd",
+      "false": "A private conversation"
+     }
+    },
+    "topic": {
+     "type": "choice",
+     "instructions": "What is the speaker talking about?",
+     "criteria": {
+      "knowledge": "Knowledge, progress and change",
+      "sports": "A football game",
+      "medicine": "A medical treatment",
+      "food": "Food and cooking"
+     }
+    },
+    "formality": {
+     "type": "score",
+     "instructions": "How formal is the speaker's tone?",
+     "criteria": [
+      "very casual",
+      "casual",
+      "neutral",
+      "formal",
+      "very formal"
+     ]
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "kennedy-rice-30s.wav",
+    "sha256": "102c171879693262cd15aa5541ae8dcfbad54499bde19672bf291115a9523434"
+   }
+  ]
+ },
+ {
+  "name": "kennedy-labels-json-state",
+  "request": {
+   "state": {
+    "source": "voice note",
+    "user": 4812,
+    "tags": [
+     "archive",
+     "speech"
+    ],
+    "verified": true
+   },
+   "audio": "kennedy-rice-30s.wav",
+   "questions": {
+    "kind": {
+     "type": "choice",
+     "instructions": "What kind of recording is this?",
+     "criteria": {
+      "speech": null,
+      "conversation": "",
+      "song": null
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "kennedy-rice-30s.wav",
+    "sha256": "102c171879693262cd15aa5541ae8dcfbad54499bde19672bf291115a9523434"
+   }
+  ]
+ },
+ {
+  "name": "kennedy-empty-object-state",
+  "request": {
+   "state": {},
+   "audio": "kennedy-rice-30s.wav",
+   "questions": {
+    "crowd": {
+     "type": "noul",
+     "instructions": "Is the speaker addressing a crowd?"
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "kennedy-rice-30s.wav",
+    "sha256": "102c171879693262cd15aa5541ae8dcfbad54499bde19672bf291115a9523434"
+   }
+  ]
+ },
+ {
+  "name": "kennedy-eight-questions",
+  "request": {
+   "state": [
+    "voice note",
+    "forwarded by a user",
+    3
+   ],
+   "audio": "kennedy-rice-30s.wav",
+   "questions": {
+    "english": {
+     "type": "noul",
+     "instructions": "Is the speaker speaking English?"
+    },
+    "male": {
+     "type": "noul",
+     "instructions": "Is the speaker a man?",
+     "criteria": {
+      "true": "A man is speaking"
+     }
+    },
+    "applause": {
+     "type": "noul",
+     "instructions": "Can you hear applause?"
+    },
+    "intent": {
+     "type": "choice",
+     "instructions": "What is the speaker doing?",
+     "criteria": {
+      "question": "Asking a question",
+      "complaint": "Making a complaint",
+      "thanks": "Thanking someone",
+      "report": "Reporting what is happening",
+      "order": "Placing an order",
+      "booking": "Booking an appointment",
+      "cancel": "Cancelling something",
+      "greeting": "Greeting an audience",
+      "story": "Telling a story",
+      "poem": "Reciting a poem",
+      "instruction": "Giving instructions",
+      "other": "Something else"
+     }
+    },
+    "content": {
+     "type": "choice",
+     "instructions": "What is in the recording?",
+     "criteria": {
+      "speech": "Someone speaking",
+      "music": "Music playing",
+      "silence": "Nothing, or silence",
+      "tone": "A steady electronic tone"
+     }
+    },
+    "clarity": {
+     "type": "score",
+     "instructions": "How clear is the recording?",
+     "criteria": [
+      "muffled",
+      "acceptable",
+      "clear"
+     ]
+    },
+    "pace": {
+     "type": "score",
+     "instructions": "How fast does the speaker talk?",
+     "criteria": [
+      "slow",
+      "average",
+      "fast"
+     ]
+    },
+    "mood": {
+     "type": "choice",
+     "instructions": "What is the speaker's mood?",
+     "criteria": {
+      "calm": "Calm",
+      "angry": "Angry",
+      "sad": "Sad"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "kennedy-rice-30s.wav",
+    "sha256": "102c171879693262cd15aa5541ae8dcfbad54499bde19672bf291115a9523434"
+   }
+  ]
+ },
+ {
+  "name": "apollo13-float32",
+  "request": {
+   "audio": "apollo13-problem-15s.wav",
+   "questions": {
+    "exchange": {
+     "type": "choice",
+     "instructions": "What is this recording?",
+     "criteria": {
+      "radio": "A radio exchange between a crew and mission control",
+      "lecture": "A classroom lecture",
+      "advert": "An advertisement"
+     }
+    },
+    "problem": {
+     "type": "noul",
+     "instructions": "Is something going wrong?",
+     "criteria": {
+      "true": "A fault is being reported"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "apollo13-problem-15s.wav",
+    "sha256": "fabec4b8e0cc7adb97ccd38224dbcc0b43413d70f905f33b21923b4abb463542"
+   }
+  ]
+ },
+ {
+  "name": "apollo13-score-10",
+  "request": {
+   "state": "Mission audio, excerpt.",
+   "audio": "apollo13-problem-15s.wav",
+   "questions": {
+    "urgency": {
+     "type": "score",
+     "instructions": "How urgent does the situation sound, from 0 to 9?",
+     "criteria": [
+      "level 0",
+      "level 1",
+      "level 2",
+      "level 3",
+      "level 4",
+      "level 5",
+      "level 6",
+      "level 7",
+      "level 8",
+      "level 9"
+     ]
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "apollo13-problem-15s.wav",
+    "sha256": "fabec4b8e0cc7adb97ccd38224dbcc0b43413d70f905f33b21923b4abb463542"
+   }
+  ]
+ },
+ {
+  "name": "keats-40s-cut",
+  "request": {
+   "audio": "keats-chapman-40s.wav",
+   "questions": {
+    "poem": {
+     "type": "noul",
+     "instructions": "Is a poem being read aloud?"
+    },
+    "about": {
+     "type": "choice",
+     "instructions": "What is the text about?",
+     "criteria": {
+      "reading": "Discovering a great book",
+      "war": "A battle",
+      "love": "A lost love",
+      "sea": "A storm at sea"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "keats-chapman-40s.wav",
+    "sha256": "afd49ccb82a232262eed1eda5e554a4aad0710dd48c6d3172b39fe5a565154ef"
+   }
+  ]
+ },
+ {
+  "name": "keats-long-state",
+  "request": {
+   "state": "Order call voice ticket address refund follow payment account support update reply. Request record reply call delivery order note address. Follow address payment customer support customer voice payment. Record support payment voice payment voice ticket schedule voice order. Message note voice reply message message message issue schedule follow support voice delivery order delivery. Customer voice update voice update voice schedule delivery payment ticket issue ticket reply issue. Update account delivery record delivery note request schedule issue account voice. Refund message reply customer customer address refund call message. Call request customer issue reply order payment call refund note support. Order update reply issue support reply ticket support. Delivery issue follow message issue issue request update delivery. Message call reply schedule address message record address order request issue ticket address address. Issue record issue customer ticket delivery call account schedule issue address request. Order schedule issue issue delivery request issue note reply update. Schedule refund call account refund support call message. Address order address update note record issue issue message follow issue ticket update order request. Note refund call reply record address ticket schedule. Payment ticket update schedule message refund customer address note issue update issue update order. Support update account follow payment delivery record reply delivery update voice reply call customer. Delivery request voice note customer address order update support payment voice account. Message follow refund record payment ticket order record record. Customer delivery message call account record account ticket note ticket. Customer record voice delivery schedule call account payment. Message support support address schedule record request issue voice. Payment issue request issue ticket reply account payment refund ticket customer note refund payment. Issue message support schedule address address customer customer schedule address note. Voice address payment request schedule customer ticket reply message refund. Voice note call issue record address record message reply support address order reply. Refund refund update customer customer address refund payment. Message account record order voice follow reply issue delivery order address note. Ticket delivery record call follow record support issue support payment. Update ticket address note issue issue ticket schedule call request voice issue. Order account delivery ticket update delivery voice order order customer. Customer follow update update issue voice address call support order account message support note customer. Update call record refund customer voice voice address customer call. Account call payment voice follow issue address call note order. Schedule ticket record customer message support ticket delivery account message account voice delivery record address. Support message follow issue voice record support order update record delivery voice account delivery follow address. Order support follow refund schedule delivery request account payment address reply support message. Issue request schedule customer voice voice delivery account account order issue payment customer customer reply customer. Update payment support reply schedule ticket order address note delivery. Issue refund refund call message voice order call customer schedule account delivery schedule refund. Address ticket account follow update follow issue record record voice. Refund message record update refund schedule account call schedule ticket issue order note note payment customer. Order update message delivery call record record request payment address request record order follow. Update support support message issue account note schedule address schedule payment issue. Voice address customer refund schedule voice delivery order customer account delivery. Delivery address ticket account payment message delivery payment schedule ticket. Record support voice refund record record ticket follow customer message customer reply issue refund customer. Note call payment reply request issue account support customer update. Delivery ticket note voice call update update note follow note message. Address support delivery support refund call address delivery update message update request support request. Ticket follow support address order message address support. Customer issue support order call call message payment customer voice call. Address schedule voice note order request update customer account call delivery customer support delivery order request. Order reply follow update note note follow customer customer issue. Call schedule follow record note call voice refund request schedule. Schedule follow issue follow message note payment order. Ticket schedule record ticket ticket request address request customer customer order. Refund voice refund address request voice order follow message request support address delivery. Order reply voice customer note update order refund delivery follow request customer schedule message issue refund. Follow update message support schedule account account issue. Payment note message refund call customer support issue address request. Payment account reply call voice issue record note support request issue. Issue reply order delivery reply payment issue address schedule order request schedule message ticket schedule. Call payment voice reply ticket record request support order message record. Customer payment order request order issue order support. Follow delivery schedule request schedule record delivery request payment schedule account voice request reply. Ticket update delivery schedule note request message voice address issue. Follow support record message record refund record refund record address ticket message. Call note delivery voice order record order call ticket record message call address account. Schedule refund ticket voice payment refund update payment support refund account address schedule refund request. Delivery address account payment call refund address follow order message. Reply update order request voice call account voice. Payment delivery voice request note update delivery note request address note reply. Support reply payment note order order request address. Order payment issue customer delivery update call follow delivery record. Voice payment support note record issue schedule schedule account request payment. Request ticket refund call reply follow request message. Delivery follow follow reply issue account follow refund. Ticket reply order schedule request voice customer customer issue payment delivery refund follow reply. Support account request message reply delivery ticket follow update update note. Delivery call reply update note voice payment payment. Payment customer support issue refund reply order call record address address. Order issue follow reply schedule message voice account. Note order call call schedule ticket customer note note payment payment call. Call ticket voice request issue schedule order customer order request request voice request issue update. Update reply reply customer customer request delivery account schedule record ticket schedule request order. Schedule reply call account refund record payment voice request account address update message. Account address order ticket request address follow update record. Schedule schedule follow address schedule request ticket call. Update customer follow request note message customer follow record reply delivery. Message call support ticket address reply payment follow voice note. Voice refund note schedule ticket payment issue refund order customer update delivery payment update. Call schedule account issue note reply record update schedule update follow ticket record. Message order address message message ticket note account message schedule record payment record follow follow address. Support issue payment issue follow message customer account delivery customer update reply support message. Reply reply call follow refund message issue customer message request delivery schedule delivery reply call. Voice follow account record update voice update customer. Note address order voice order account delivery update support voice message follow.",
+   "audio": "keats-chapman-40s.wav",
+   "questions": {
+    "intent": {
+     "type": "choice",
+     "instructions": "What is the speaker doing?",
+     "criteria": {
+      "question": "Asking a question",
+      "complaint": "Making a complaint",
+      "thanks": "Thanking someone",
+      "report": "Reporting what is happening",
+      "order": "Placing an order",
+      "booking": "Booking an appointment",
+      "cancel": "Cancelling something",
+      "greeting": "Greeting an audience",
+      "story": "Telling a story",
+      "poem": "Reciting a poem",
+      "instruction": "Giving instructions",
+      "other": "Something else"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "keats-chapman-40s.wav",
+    "sha256": "afd49ccb82a232262eed1eda5e554a4aad0710dd48c6d3172b39fe5a565154ef"
+   }
+  ]
+ },
+ {
+  "name": "keats-cut-instructions-and-options",
+  "request": {
+   "state": "Clip sent from the reading app.",
+   "audio": "keats-chapman-40s.wav",
+   "questions": {
+    "listen": {
+     "type": "noul",
+     "instructions": "Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider Listen carefully to the whole recording before you answer, and consider?"
+    },
+    "style": {
+     "type": "choice",
+     "instructions": "How is the text delivered?",
+     "criteria": {
+      "plain": "Read plainly and slowly by a single narrator, with long pauses between the lines and no music, sound effects or other voices anywhere in the background of the recording at all",
+      "dramatic": "Performed dramatically by several actors who take turns, with music and sound effects playing under every line and an audience reacting loudly from start to finish",
+      "sung": "Sung to a melody with instruments, as a song with a chorus that repeats several times, recorded in a studio and mixed with a full band behind the singer"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "keats-chapman-40s.wav",
+    "sha256": "afd49ccb82a232262eed1eda5e554a4aad0710dd48c6d3172b39fe5a565154ef"
+   }
+  ]
+ },
+ {
+  "name": "bells-5s",
+  "request": {
+   "state": "Audiobook sample <|reserved_7|> chapter 1 <|mask|>.",
+   "audio": "poe-bells-5s.wav",
+   "questions": {
+    "author": {
+     "type": "noul",
+     "instructions": "Does the speaker name an author?"
+    },
+    "quality": {
+     "type": "score",
+     "instructions": "How good is the audio quality?",
+     "criteria": [
+      "poor",
+      "fair",
+      "good"
+     ]
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "poe-bells-5s.wav",
+    "sha256": "851ec55fee915fbf898e79bcb3ac30be3a5d8c60b1f51ddb3dfa14cbec9fbfcd"
+   }
+  ]
+ },
+ {
+  "name": "bells-0.3s-padded",
+  "request": {
+   "audio": "poe-bells-0.3s.wav",
+   "questions": {
+    "content": {
+     "type": "choice",
+     "instructions": "What is in the clip?",
+     "criteria": {
+      "speech": "Someone speaking",
+      "music": "Music playing",
+      "silence": "Nothing, or silence",
+      "tone": "A steady electronic tone"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "poe-bells-0.3s.wav",
+    "sha256": "a30bd5aaa6ec4fd2239589cc454b7a6ca4766227fccb5a069fc8609ff1ac38db"
+   }
+  ]
+ },
+ {
+  "name": "silence-1s",
+  "request": {
+   "audio": "silence-1s.wav",
+   "questions": {
+    "speaking": {
+     "type": "noul",
+     "instructions": "Is anyone speaking?"
+    },
+    "content": {
+     "type": "choice",
+     "instructions": "What is in the clip?",
+     "criteria": {
+      "speech": "Someone speaking",
+      "music": "Music playing",
+      "silence": "Nothing, or silence",
+      "tone": "A steady electronic tone"
+     }
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "silence-1s.wav",
+    "sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc"
+   }
+  ]
+ },
+ {
+  "name": "tone-2s-float32",
+  "request": {
+   "state": "Test signal.",
+   "audio": "tone-440hz-2s.wav",
+   "questions": {
+    "content": {
+     "type": "choice",
+     "instructions": "What is in the clip?",
+     "criteria": {
+      "speech": "Someone speaking",
+      "music": "Music playing",
+      "silence": "Nothing, or silence",
+      "tone": "A steady electronic tone"
+     }
+    },
+    "music": {
+     "type": "noul",
+     "instructions": "Is this music?"
+    }
+   }
+  },
+  "media": [
+   {
+    "name": "tone-440hz-2s.wav",
+    "sha256": "f2e32d61ebb4b17510ee0a7236eef5533de93136f9395c420bfc30c954e15ee3"
+   }
+  ]
+ }
+]

@@ -1,0 +1,72 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "fef0d6a",
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "model": "~/models/clef-flash",
+  "precision": "bf16",
+  "tokens": 1344,
+  "count": 7,
+  "repeat": 3,
+  "singles": {
+    "ms": [
+      4418.512208154425,
+      4398.894707905129,
+      4407.8001249581575
+    ],
+    "median_ms": 4407.8001249581575,
+    "operations_ms": {
+      "norm": 12.03220896422863,
+      "matmul 12352x4096": 764.8591506294906,
+      "convolution": 49.67047832906246,
+      "gated delta inputs": 52.91272862814367,
+      "gated delta recurrence": 161.91048338077962,
+      "gated norm": 33.42297486960888,
+      "matmul 4096x4096": 334.01772170327604,
+      "add + norm": 79.03926237486303,
+      "matmul 24576x4096 + silu (fused)": 1898.64124590531,
+      "matmul 4096x12288": 1017.3528480809182,
+      "matmul 10240x4096": 213.1427393760532,
+      "attention": 43.0144090205431,
+      "matmul 24576x4096": 4.9045218620449305,
+      "glu": 0.12493645772337914
+    }
+  },
+  "batch": {
+    "ms": [
+      4659.896834054962,
+      4731.943249935284,
+      4786.155416164547
+    ],
+    "median_ms": 4731.943249935284,
+    "operations_ms": {
+      "norm": 13.766645221039653,
+      "matmul 12352x4096": 776.4481615740806,
+      "convolution": 49.04724610969424,
+      "gated delta inputs": 50.01091375015676,
+      "gated delta recurrence": 146.02257730439305,
+      "gated norm": 29.02016369625926,
+      "matmul 4096x4096": 327.9448738321662,
+      "add + norm": 76.60745177417994,
+      "matmul 24576x4096 + silu (fused)": 1923.9519762340933,
+      "matmul 4096x12288": 1050.3322477452457,
+      "matmul 10240x4096": 213.36208167485893,
+      "attention": 38.988332729786634,
+      "matmul 24576x4096": 0.7026458624750376,
+      "glu": 0.02410472370684147
+    }
+  },
+  "hidden_max_difference": 0.015625,
+  "round_trip_ms": 0.15597930178046227,
+  "readout": "last-row",
+  "kernel_rule": "m5-3"
+}

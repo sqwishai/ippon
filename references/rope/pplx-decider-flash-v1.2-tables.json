@@ -1,0 +1,72 @@
+{
+  "machine": {
+    "chip": "Apple M5 Pro",
+    "architecture": "applegpu_g17s",
+    "memory_gib": 48,
+    "macos": "27.0.1",
+    "mlx": "0.32.4",
+    "ippon": "0.1.0.dev0",
+    "revision": "0b26fc8",
+    "power": {
+      "mode": "2",
+      "ac": true
+    }
+  },
+  "mode": "tables",
+  "options": {
+    "pin_memory": true,
+    "switches": "norm_rope=mlx,compile=off"
+  },
+  "reference": "references/attention/pplx-flash-long-expanded.json.gz",
+  "reference_sha256": "ab58e5b2e7ccd2247c8207dabe4e01a33575400b7dcdb3807e99aab2b3b035eb",
+  "case": "long-12k-mixed",
+  "verify": {
+    "model": "~/models/pplx-decider-flash-v1.2",
+    "against": "the reference",
+    "notes": [],
+    "bound": 0.0119,
+    "worst": 7.717054694678094e-05,
+    "passed": true,
+    "failures": [],
+    "requests": [
+      {
+        "name": "long-12k-mixed",
+        "tokens_match": true,
+        "input_tokens_match": true,
+        "max_abs_difference": 7.717054694678094e-05,
+        "top_agrees": true,
+        "near_ties": 0,
+        "threshold_crossings": {},
+        "engine": "mlx"
+      }
+    ]
+  },
+  "probabilities": [
+    {
+      "refund": [
+        0.047540359553250366,
+        0.9524596404467496
+      ],
+      "team": [
+        0.9557280119100234,
+        0.010008854043133333,
+        0.0015549758966233599,
+        0.002942882532024821,
+        0.00115283557458259,
+        0.0031007307682669174,
+        0.008270759286651063,
+        0.0010304120557586072,
+        0.010773147653250976,
+        0.0009865055506678032,
+        0.004450884729017143
+      ],
+      "mood": [
+        0.20798372912431168,
+        0.7772492054514706,
+        0.0147670654242178
+      ]
+    }
+  ],
+  "invariance": null,
+  "peak_active_bytes": 15614565500
+}

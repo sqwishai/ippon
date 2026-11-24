@@ -1,0 +1,828 @@
+[
+  {
+    "kind": "engine-attempt",
+    "round": 1,
+    "attempt": 1,
+    "engine": "d1-3B-tf",
+    "exit": 0,
+    "problems": [
+      "incomplete or request errors",
+      "warmup 1000x1: missing samples",
+      "timed 1000x1: missing samples",
+      "warmup 1000x50: missing samples",
+      "timed 1000x50: missing samples"
+    ],
+    "kit_error": "RuntimeError: {\"error\": \"TypeError: D1Model.system_one() got an unexpected keyword argument 'audio'\"}",
+    "note": "the kit's adapter passed audio= to d1-3B's system_one, which takes none; fixed in ippon 1c4bab4 and run again"
+  },
+  {
+    "kind": "engine-attempt",
+    "round": 1,
+    "attempt": 1,
+    "engine": "clef-flash-tf",
+    "exit": 0,
+    "problems": [
+      "incomplete or request errors",
+      "timed 1000x50: missing samples"
+    ],
+    "failed": "RuntimeError: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 19.55 GiB, other allocations: 21.35 GiB, max allowed: 37.44 GiB). Tried to allocate 45.09 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+  },
+  {
+    "kind": "engine-attempt",
+    "round": 1,
+    "attempt": 1,
+    "engine": "clef-flash-mlx-8bit.c8",
+    "exit": 0,
+    "problems": [
+      "incomplete or request errors",
+      "warmup 1000x1: missing samples",
+      "timed 1000x1: missing samples"
+    ],
+    "failed": "URLError: <urlopen error [Errno 54] Connection reset by peer>"
+  },
+  {
+    "kind": "round-reopened",
+    "round": 1,
+    "accepted": true,
+    "engines": [
+      {
+        "engine": "d1-omni-600M-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "nimble-9b-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "nimble-9b-bespoke-mlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-tf",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "warmup 1000x1: missing samples",
+          "timed 1000x1: missing samples",
+          "warmup 1000x50: missing samples",
+          "timed 1000x50: missing samples"
+        ],
+        "failed": "RuntimeError: {\"error\": \"TypeError: D1Model.system_one() got an unexpected keyword argument 'audio'\"}"
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-tf",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "timed 1000x50: missing samples"
+        ],
+        "failed": "RuntimeError: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 19.55 GiB, other allocations: 21.35 GiB, max allowed: 37.44 GiB). Tried to allocate 45.09 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+      },
+      {
+        "engine": "pplx-flash-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-maker-mps-bf16",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit.c8",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "warmup 1000x1: missing samples",
+          "timed 1000x1: missing samples"
+        ],
+        "failed": "URLError: <urlopen error [Errno 54] Connection reset by peer>"
+      },
+      {
+        "engine": "d3-lite-tf.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-tf.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-maker-mps-bf16.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf.audio",
+        "exit": 0,
+        "problems": []
+      }
+    ],
+    "note": "reopened to run d1-3B-tf again after a kit error; the round's accepted entry is appended when it completes"
+  },
+  {
+    "kind": "resume",
+    "kit_commit": "1c4bab4e20f448239ba88ee4e2df78ed733b715f",
+    "time": "2026-10-28T08:01:20.861472+00:00"
+  },
+  {
+    "kind": "round",
+    "round": 1,
+    "accepted": true,
+    "engines": [
+      {
+        "engine": "d1-omni-600M-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-gguf-q8-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-llama-Q8_0",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-omlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "nimble-9b-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "nimble-9b-bespoke-mlx",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-tf",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "timed 1000x50: missing samples"
+        ],
+        "failed": "RuntimeError: {\"error\": \"RuntimeError: MPS backend out of memory (MPS allocated: 19.55 GiB, other allocations: 21.35 GiB, max allowed: 37.44 GiB). Tried to allocate 45.09 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).\"}"
+      },
+      {
+        "engine": "pplx-flash-ippon-serve",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-maker-mps-bf16",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-tf",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-gguf-q8-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-llama-Q8_0.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mxfp8-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-mxfp8-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-nvfp4-ollama.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-lite-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-omlx.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-8bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-3B-mlx-4bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "clef-flash-mlx-8bit.c8",
+        "exit": 0,
+        "problems": [
+          "incomplete or request errors",
+          "warmup 1000x1: missing samples",
+          "timed 1000x1: missing samples"
+        ],
+        "failed": "URLError: <urlopen error [Errno 54] Connection reset by peer>"
+      },
+      {
+        "engine": "d3-lite-tf.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d3-mini-tf.c8",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-ippon-serve.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "pplx-flash-maker-mps-bf16.image",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit-ippon-serve.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-mlx-8bit.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-ippon-serve.audio",
+        "exit": 0,
+        "problems": []
+      },
+      {
+        "engine": "d1-omni-600M-tf.audio",
+        "exit": 0,
+        "problems": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,842 @@
+[
+ {
+  "name": "noul",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is the customer asking for a refund?"
+    }
+   }
+  }
+ },
+ {
+  "name": "noul-criteria",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "urgent": {
+     "type": "noul",
+     "instructions": "Is it urgent?",
+     "criteria": {
+      "true": "A deadline or threat is stated",
+      "false": "It can wait"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "noul-false-first",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "urgent": {
+     "type": "noul",
+     "instructions": "Is it urgent?",
+     "criteria": {
+      "false": "It can wait"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "noul-without-instructions",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "bank": {
+     "type": "noul",
+     "criteria": {
+      "true": "The customer threatens a bank dispute"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-2",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "team": {
+     "type": "choice",
+     "instructions": "Which team should handle this?",
+     "criteria": {
+      "billing": "Charges, refunds and invoices",
+      "sales": null
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-list",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "team": {
+     "type": "choice",
+     "instructions": "Which team?",
+     "criteria": [
+      "billing",
+      "sales",
+      "support"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "score-5",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "mood": {
+     "type": "score",
+     "instructions": "How upset is the customer?",
+     "criteria": [
+      "calm",
+      "mildly annoyed",
+      "annoyed",
+      "angry",
+      "furious"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "score-2",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "severity": {
+     "type": "score",
+     "instructions": "How severe?",
+     "criteria": [
+      "minor",
+      "major"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "score-10",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "priority": {
+     "type": "score",
+     "instructions": "Priority from 0 to 9?",
+     "criteria": [
+      "priority 0",
+      "priority 1",
+      "priority 2",
+      "priority 3",
+      "priority 4",
+      "priority 5",
+      "priority 6",
+      "priority 7",
+      "priority 8",
+      "priority 9"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "unicode",
+  "request": {
+   "state": "Mi pedido llegó dañado — ¿pueden enviarme otro? 我需要退款。 Ça ne marche pas…",
+   "questions": {
+    "lang": {
+     "type": "choice",
+     "instructions": "Which language comes first?",
+     "criteria": {
+      "Spanish": null,
+      "Chinese": null,
+      "French": null,
+      "English": null
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "json-state",
+  "request": {
+   "state": {
+    "ticket": {
+     "id": 48213,
+     "messages": [
+      {
+       "from": "customer",
+       "text": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank."
+      },
+      {
+       "from": "agent",
+       "text": "We are looking into it."
+      }
+     ]
+    },
+    "history": [
+     {
+      "order": 40000,
+      "status": "returned"
+     },
+     {
+      "order": 40001,
+      "status": "delivered"
+     },
+     {
+      "order": 40002,
+      "status": "returned"
+     },
+     {
+      "order": 40003,
+      "status": "lost"
+     },
+     {
+      "order": 40004,
+      "status": "delivered"
+     },
+     {
+      "order": 40005,
+      "status": "delivered"
+     },
+     {
+      "order": 40006,
+      "status": "lost"
+     },
+     {
+      "order": 40007,
+      "status": "delivered"
+     },
+     {
+      "order": 40008,
+      "status": "returned"
+     },
+     {
+      "order": 40009,
+      "status": "lost"
+     },
+     {
+      "order": 40010,
+      "status": "delivered"
+     },
+     {
+      "order": 40011,
+      "status": "lost"
+     }
+    ]
+   },
+   "questions": {
+    "lost": {
+     "type": "noul",
+     "instructions": "Has any earlier order been lost?"
+    }
+   }
+  }
+ },
+ {
+  "name": "several-questions",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund asked for?"
+    },
+    "team": {
+     "type": "choice",
+     "instructions": "Which team?",
+     "criteria": {
+      "billing": "Charges, refunds and invoices",
+      "sales": "New purchases and upgrades",
+      "support": "Using the product"
+     }
+    },
+    "mood": {
+     "type": "score",
+     "instructions": "How upset?",
+     "criteria": [
+      "calm",
+      "annoyed",
+      "furious"
+     ]
+    },
+    "bank": {
+     "type": "noul",
+     "instructions": "Does the customer mention their bank?"
+    }
+   }
+  }
+ },
+ {
+  "name": "40-questions",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "q00": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 0?"
+    },
+    "q01": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 1?"
+    },
+    "q02": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 2?"
+    },
+    "q03": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 3?"
+    },
+    "q04": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 4?"
+    },
+    "q05": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 5?"
+    },
+    "q06": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 6?"
+    },
+    "q07": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 7?"
+    },
+    "q08": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 8?"
+    },
+    "q09": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 9?"
+    },
+    "q10": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 10?"
+    },
+    "q11": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 11?"
+    },
+    "q12": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 12?"
+    },
+    "q13": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 13?"
+    },
+    "q14": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 14?"
+    },
+    "q15": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 15?"
+    },
+    "q16": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 16?"
+    },
+    "q17": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 17?"
+    },
+    "q18": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 18?"
+    },
+    "q19": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 19?"
+    },
+    "q20": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 20?"
+    },
+    "q21": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 21?"
+    },
+    "q22": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 22?"
+    },
+    "q23": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 23?"
+    },
+    "q24": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 24?"
+    },
+    "q25": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 25?"
+    },
+    "q26": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 26?"
+    },
+    "q27": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 27?"
+    },
+    "q28": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 28?"
+    },
+    "q29": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 29?"
+    },
+    "q30": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 30?"
+    },
+    "q31": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 31?"
+    },
+    "q32": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 32?"
+    },
+    "q33": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 33?"
+    },
+    "q34": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 34?"
+    },
+    "q35": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 35?"
+    },
+    "q36": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 36?"
+    },
+    "q37": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 37?"
+    },
+    "q38": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 38?"
+    },
+    "q39": {
+     "type": "noul",
+     "instructions": "Does the ticket mention the number 39?"
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-10",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "topic": {
+     "type": "choice",
+     "instructions": "Which topic fits best?",
+     "criteria": {
+      "topic_0": "About account number 0",
+      "topic_1": "About order number 1",
+      "topic_2": "About refund number 2",
+      "topic_3": "About shipping number 3",
+      "topic_4": "About invoice number 4",
+      "topic_5": "About delay number 5",
+      "topic_6": "About password number 6",
+      "topic_7": "About warranty number 7",
+      "topic_8": "About discount number 8",
+      "topic_9": "About address number 9"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-11",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "topic": {
+     "type": "choice",
+     "instructions": "Which topic fits best?",
+     "criteria": {
+      "topic_0": "About account number 0",
+      "topic_1": "About order number 1",
+      "topic_2": "About refund number 2",
+      "topic_3": "About shipping number 3",
+      "topic_4": "About invoice number 4",
+      "topic_5": "About delay number 5",
+      "topic_6": "About password number 6",
+      "topic_7": "About warranty number 7",
+      "topic_8": "About discount number 8",
+      "topic_9": "About address number 9",
+      "topic_10": "About payment number 10"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-26",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "topic": {
+     "type": "choice",
+     "instructions": "Which topic fits best?",
+     "criteria": {
+      "topic_0": "About account number 0",
+      "topic_1": "About order number 1",
+      "topic_2": "About refund number 2",
+      "topic_3": "About shipping number 3",
+      "topic_4": "About invoice number 4",
+      "topic_5": "About delay number 5",
+      "topic_6": "About password number 6",
+      "topic_7": "About warranty number 7",
+      "topic_8": "About discount number 8",
+      "topic_9": "About address number 9",
+      "topic_10": "About payment number 10",
+      "topic_11": "About card number 11",
+      "topic_12": "About email number 12",
+      "topic_13": "About return number 13",
+      "topic_14": "About delivery number 14",
+      "topic_15": "About support number 15",
+      "topic_16": "About manager number 16",
+      "topic_17": "About receipt number 17",
+      "topic_18": "About subscription number 18",
+      "topic_19": "About cancel number 19",
+      "topic_20": "About upgrade number 20",
+      "topic_21": "About account number 21",
+      "topic_22": "About order number 22",
+      "topic_23": "About refund number 23",
+      "topic_24": "About shipping number 24",
+      "topic_25": "About invoice number 25"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-40",
+  "request": {
+   "state": "Order #48213 was charged twice on my card ending 4417: once on 3 October for $129.00 and again on 4 October for the same amount. I only placed one order. Your chat assistant told me a refund would arrive in five days, but nothing has come back after two weeks. I have been a customer since 2019 and this is the first problem I have had. Please reverse the second charge and confirm by email. If this is not fixed by Friday I will dispute it with my bank.",
+   "questions": {
+    "topic": {
+     "type": "choice",
+     "instructions": "Which topic fits best?",
+     "criteria": {
+      "topic_0": "About account number 0",
+      "topic_1": "About order number 1",
+      "topic_2": "About refund number 2",
+      "topic_3": "About shipping number 3",
+      "topic_4": "About invoice number 4",
+      "topic_5": "About delay number 5",
+      "topic_6": "About password number 6",
+      "topic_7": "About warranty number 7",
+      "topic_8": "About discount number 8",
+      "topic_9": "About address number 9",
+      "topic_10": "About payment number 10",
+      "topic_11": "About card number 11",
+      "topic_12": "About email number 12",
+      "topic_13": "About return number 13",
+      "topic_14": "About delivery number 14",
+      "topic_15": "About support number 15",
+      "topic_16": "About manager number 16",
+      "topic_17": "About receipt number 17",
+      "topic_18": "About subscription number 18",
+      "topic_19": "About cancel number 19",
+      "topic_20": "About upgrade number 20",
+      "topic_21": "About account number 21",
+      "topic_22": "About order number 22",
+      "topic_23": "About refund number 23",
+      "topic_24": "About shipping number 24",
+      "topic_25": "About invoice number 25",
+      "topic_26": "About delay number 26",
+      "topic_27": "About password number 27",
+      "topic_28": "About warranty number 28",
+      "topic_29": "About discount number 29",
+      "topic_30": "About address number 30",
+      "topic_31": "About payment number 31",
+      "topic_32": "About card number 32",
+      "topic_33": "About email number 33",
+      "topic_34": "About return number 34",
+      "topic_35": "About delivery number 35",
+      "topic_36": "About support number 36",
+      "topic_37": "About manager number 37",
+      "topic_38": "About receipt number 38",
+      "topic_39": "About subscription number 39"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "state-300",
+  "request": {
+   "state": "Order refund return return refund warranty refund receipt return order subscription. Warranty upgrade upgrade subscription order subscription subscription email order. Order receipt invoice address return invoice receipt shipping subscription address receipt. Shipping subscription subscription upgrade password card shipping receipt refund subscription. Cancel password support receipt return payment delivery subscription. Card address warranty delay warranty refund subscription address manager support payment delivery address cancel refund. Manager return delay payment invoice support return order refund. Subscription payment payment card cancel support subscription delivery refund refund discount support refund order address upgrade. Address email card account delivery card delay cancel shipping support order password address invoice warranty. Email support refund delay delivery email receipt discount invoice return receipt discount return card. Warranty invoice refund delay invoice warranty warranty account support subscription delay discount address account. Return receipt card cancel subscription payment invoice manager cancel upgrade. Delivery receipt email email email email shipping support. Order password refund password delivery delay shipping payment cancel order shipping account subscription invoice. Shipping card cancel account refund password cancel email invoice upgrade discount card cancel card support shipping. Support delivery support support address refund invoice shipping payment. Support delay manager account password manager card invoice receipt account manager address. Discount manager card delay card warranty receipt receipt manager.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund requested?"
+    },
+    "topic": {
+     "type": "choice",
+     "instructions": "Main topic?",
+     "criteria": {
+      "billing": "Charges and refunds",
+      "shipping": "Delivery and returns",
+      "account": "Login and profile",
+      "other": "Anything else"
+     }
+    },
+    "tone": {
+     "type": "score",
+     "instructions": "How negative is the text?",
+     "criteria": [
+      "neutral",
+      "somewhat negative",
+      "very negative"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "state-1000",
+  "request": {
+   "state": "Upgrade warranty cancel password warranty email warranty password manager support card account account. Support discount password cancel card delivery card card refund warranty shipping warranty. Password payment password support cancel cancel account support upgrade card upgrade refund shipping email password. Delay return upgrade payment refund email delivery email refund delay delay invoice account invoice subscription. Upgrade invoice cancel cancel support card invoice receipt receipt invoice account account upgrade shipping manager. Return password password account discount password address manager warranty subscription. Discount receipt return invoice order card delivery subscription manager return manager invoice receipt. Manager manager account delivery delay cancel account invoice delay invoice. Cancel shipping receipt order payment manager manager receipt support shipping receipt order warranty password discount. Shipping manager delivery receipt account refund delivery payment. Cancel manager password discount delivery manager receipt support manager warranty manager discount receipt password delivery invoice. Shipping email delivery payment refund warranty return refund password address shipping invoice upgrade card. Discount invoice delivery warranty shipping email support delay warranty delay. Manager email payment return password card payment refund card account payment receipt delivery delivery. Email payment manager cancel address manager refund shipping. Shipping refund discount discount order delay discount invoice return discount email. Receipt manager subscription support payment refund discount order delay return. Discount account upgrade refund discount refund cancel warranty refund. Shipping delivery account payment receipt return discount cancel invoice order manager warranty. Delay discount order delay password address upgrade address manager. Address delivery manager delay discount card account discount order account account. Receipt password manager support warranty delivery shipping upgrade return support receipt email manager address password warranty. Password upgrade invoice email card order invoice account refund upgrade discount return delay. Refund email manager address cancel warranty address order. Delay delay discount delivery account discount card payment receipt payment warranty order address password card. Account payment email refund support discount manager upgrade password warranty. Account refund discount refund invoice email subscription order email account address address upgrade warranty refund subscription. Invoice cancel email payment support invoice address cancel upgrade invoice order manager upgrade return manager invoice. Manager subscription account subscription upgrade warranty refund account order invoice upgrade card shipping email delivery receipt. Upgrade account upgrade receipt warranty support discount account. Refund manager receipt refund manager refund support discount refund discount warranty password warranty upgrade delivery. Email refund support address order cancel upgrade upgrade password refund cancel invoice payment discount upgrade. Cancel subscription invoice account support order support discount shipping password support address. Address delivery delivery delivery shipping receipt password address refund support account address delivery refund manager delivery. Email password password refund subscription refund invoice manager discount card invoice cancel. Discount shipping card warranty support support email account delay account support delivery email address invoice return. Email payment shipping payment account payment payment email shipping password account address discount. Refund email email subscription refund card return discount order discount shipping order address. Warranty discount return manager payment password card return account upgrade. Receipt receipt password refund order return delivery cancel invoice upgrade address support order receipt. Delay support return payment address address discount upgrade discount email. Address support receipt email shipping delay upgrade delay refund password manager. Receipt warranty delivery payment delivery return invoice receipt password warranty refund delay payment receipt refund. Warranty card discount subscription password account return email return manager password email discount. Order support discount subscription card invoice manager manager upgrade password refund discount warranty. Email upgrade delivery return address account invoice order return support subscription support account refund. Manager delivery delivery warranty shipping warranty invoice invoice manager shipping upgrade delivery refund receipt. Account invoice warranty subscription order upgrade address invoice. Manager upgrade return shipping shipping refund address manager subscription password email discount. Cancel account account receipt address delivery discount payment upgrade warranty support. Warranty receipt warranty account return upgrade address order account password support upgrade return refund discount warranty. Card warranty support order payment return card email password account address manager refund password. Password address password warranty delivery warranty discount address shipping cancel support cancel delay warranty support. Order cancel invoice email order password account cancel invoice return order order delay email. Payment shipping refund delay payment password delay upgrade manager delivery order address email card payment. Delay shipping account refund discount refund card return shipping receipt password email card address return. Order support password card receipt delivery password payment card. Account upgrade return warranty upgrade email order email order delivery refund order discount password refund. Card discount payment cancel order discount payment discount address account cancel upgrade refund. Warranty shipping support delivery email discount return support.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund requested?"
+    },
+    "topic": {
+     "type": "choice",
+     "instructions": "Main topic?",
+     "criteria": {
+      "billing": "Charges and refunds",
+      "shipping": "Delivery and returns",
+      "account": "Login and profile",
+      "other": "Anything else"
+     }
+    },
+    "tone": {
+     "type": "score",
+     "instructions": "How negative is the text?",
+     "criteria": [
+      "neutral",
+      "somewhat negative",
+      "very negative"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "state-3000",
+  "request": {
+   "state": "Support delay account address invoice cancel warranty payment payment delivery. Cancel refund manager password email delay warranty return refund upgrade order support receipt. Payment delay return shipping refund discount cancel refund password shipping return support delivery delay warranty invoice. Delivery cancel warranty receipt shipping address address discount subscription discount card discount discount password. Warranty delay warranty warranty invoice address subscription password payment refund email discount warranty manager manager. Upgrade shipping upgrade delivery order shipping account support warranty delivery card. Address warranty shipping order password cancel subscription password. Card manager delay delivery cancel discount account shipping upgrade. Password order card payment invoice order password discount order cancel upgrade password account. Return card delay cancel address refund password order support receipt support refund return. Email receipt invoice upgrade receipt refund upgrade delay email. Return address address return order address subscription card return return account card. Email email password account return delay return shipping refund email subscription. Delivery delay invoice account order receipt invoice upgrade email refund subscription cancel card. Delay invoice card address delay manager delay refund shipping email support password address invoice order support. Order cancel upgrade email refund cancel delay upgrade warranty cancel email cancel password. Delay subscription password order email manager delay email card shipping invoice warranty password order receipt. Payment shipping email cancel delivery receipt upgrade address. Address subscription warranty return email card delivery manager delivery delay account account cancel support. Warranty delivery cancel delivery delay support email shipping refund invoice card return card refund delivery. Manager order order upgrade invoice refund payment manager refund order manager email upgrade invoice account refund. Password invoice support address delay warranty refund card cancel. Delay payment cancel discount delivery invoice discount manager support password subscription discount. Warranty payment card order password delay email delay upgrade discount payment email delay discount shipping manager. Upgrade card delivery receipt manager subscription shipping discount. Upgrade email card discount email card subscription invoice card payment refund delivery warranty delay cancel order. Manager discount address upgrade subscription payment account order warranty invoice address cancel. Return manager card order invoice support warranty cancel upgrade order account order account subscription. Address shipping manager card receipt warranty return subscription address subscription invoice password card. Delay invoice account warranty invoice delivery shipping refund upgrade invoice discount email discount account order. Card cancel upgrade subscription delivery cancel manager support warranty delay account order order receipt account email. Warranty delay order shipping account cancel receipt password invoice return. Manager cancel upgrade manager upgrade upgrade return cancel delay manager address. Address upgrade order support receipt account email return delivery. Upgrade delivery delay warranty shipping discount warranty upgrade order. Payment discount order discount upgrade receipt return manager discount. Upgrade password refund manager account delay discount warranty password delay payment password. Payment cancel warranty email upgrade receipt support support manager account account return warranty subscription. Password email cancel subscription refund subscription delay invoice order account shipping shipping. Card invoice account account order invoice upgrade upgrade order refund. Refund subscription card password receipt refund email shipping. Password password shipping order order upgrade refund upgrade upgrade address support. Invoice shipping upgrade password address payment payment return discount. Card discount address order card payment cancel manager. Address cancel account return account return manager shipping card support order receipt subscription password refund. Delay return account manager password address order account card support shipping support. Support subscription card manager discount subscription delay address password warranty. Delay shipping upgrade refund support receipt shipping upgrade payment card shipping email email refund return. Card password address discount return receipt manager delay. Upgrade warranty delivery invoice receipt cancel cancel upgrade order card subscription payment manager invoice. Receipt payment delay delivery delivery discount subscription warranty invoice payment delivery upgrade warranty manager password. Address cancel invoice invoice warranty payment cancel manager card delay warranty payment. Discount shipping delay shipping password email invoice invoice address address return. Password shipping upgrade shipping discount password email delivery order account email return. Manager upgrade address delivery account invoice discount cancel email account warranty. Subscription subscription upgrade return warranty upgrade upgrade subscription warranty delay upgrade shipping delivery return. Discount upgrade shipping return warranty email upgrade delay discount return support delivery account. Manager delay upgrade payment account email support shipping order discount receipt password delay password. Card shipping subscription delivery receipt password support manager account upgrade card manager payment return delivery password. Email manager shipping cancel card upgrade order discount discount email. Order account refund return return upgrade card subscription discount shipping warranty address email manager. Email delivery password delay invoice refund upgrade password support upgrade receipt. Invoice card upgrade return delivery address receipt upgrade invoice support card. Discount email discount return delay support account discount card warranty upgrade. Payment support support return cancel upgrade refund card invoice address email order. Subscription payment invoice manager card upgrade subscription account account. Refund upgrade address discount cancel shipping subscription invoice warranty delay delivery. Invoice password email receipt delay cancel cancel refund receipt upgrade address password support. Manager refund delivery shipping receipt shipping discount return warranty invoice support. Receipt order support delivery invoice support warranty support delay receipt cancel account delay payment delivery. Address delivery card return return refund delay upgrade card upgrade upgrade account account cancel order. Shipping manager support support invoice order password return upgrade invoice payment shipping card. Support manager receipt password address return payment return discount receipt order address address. Support email payment manager discount manager card password upgrade support shipping payment password. Address invoice subscription upgrade refund order email receipt email receipt subscription order email. Shipping account order password support cancel order manager receipt cancel email cancel. Upgrade cancel refund password order upgrade delivery upgrade delay shipping. Order return shipping upgrade account card invoice address receipt discount. Delay return order payment account return subscription upgrade subscription order support subscription. Order shipping return subscription email delivery refund account email cancel subscription invoice support return receipt shipping. Upgrade support password invoice upgrade account return account account. Refund password shipping invoice support account discount subscription warranty. Delay order card invoice refund address upgrade receipt support delivery discount order order account order. Upgrade cancel refund email address address cancel delay. Cancel order payment card subscription delivery support delay invoice shipping card upgrade delay upgrade return. Email delivery discount subscription payment address discount order cancel upgrade cancel payment cancel account invoice. Subscription return warranty email email email cancel warranty delivery address account payment. Discount return delay subscription order address invoice subscription invoice discount receipt support. Receipt refund receipt receipt support email password warranty address cancel order email delivery. Discount subscription account email delivery receipt refund receipt card refund warranty. Subscription manager discount manager payment support manager subscription password password password password refund delay. Card subscription subscription card email manager invoice warranty order support card shipping. Upgrade delivery refund invoice payment cancel account card discount manager cancel account shipping. Password subscription support subscription subscription password discount discount. Shipping delivery subscription cancel invoice discount order payment password delay email refund account order. Receipt card delivery support refund cancel upgrade email. Refund discount payment subscription warranty upgrade refund manager email. Delivery delay card warranty warranty delay order discount card order. Account order discount manager upgrade support order shipping invoice payment account password address subscription subscription delivery. Support payment card discount email shipping card support email. Delivery warranty invoice account delivery password order delay warranty refund. Invoice delivery shipping email account upgrade refund delivery payment payment warranty support shipping. Invoice payment warranty order delay delivery receipt invoice delivery invoice discount return return. Invoice account discount subscription address payment delay discount support shipping payment. Support shipping invoice manager order upgrade password receipt support address shipping discount password card return. Warranty warranty shipping email address return delay order address invoice upgrade account. Manager payment manager invoice delivery account manager address delay card return order return password discount. Invoice delay manager warranty delay password cancel refund refund cancel. Discount delay password invoice cancel upgrade password subscription address password account refund manager return order. Card payment address upgrade support refund account return support invoice discount warranty delay subscription card order. Card subscription cancel account card manager delivery manager refund shipping. Warranty payment email subscription order address shipping support delivery manager account manager receipt. Account warranty refund warranty cancel delay delay shipping address discount. Account account shipping password discount account cancel upgrade subscription delivery manager warranty delivery shipping card shipping. Order discount shipping delivery support subscription manager discount shipping shipping. Email invoice receipt subscription warranty warranty invoice subscription delivery. Delay account upgrade email return cancel cancel manager order email order card payment email. Payment return subscription payment email receipt order payment manager invoice card. Return upgrade account card shipping manager delay refund payment return password. Account warranty invoice return email delivery upgrade order order order upgrade cancel discount cancel discount upgrade. Order cancel shipping discount shipping manager account return warranty order address shipping address card upgrade delay. Order cancel manager discount refund delivery subscription receipt invoice. Shipping manager invoice address return subscription address discount warranty refund receipt address delivery cancel subscription. Upgrade email password receipt card delivery receipt address cancel support support. Account warranty payment warranty password manager receipt email subscription email account card. Warranty payment receipt payment support discount address password address order. Delay receipt refund cancel card delivery order manager. Delivery card shipping manager warranty invoice return payment card invoice password cancel cancel discount. Shipping support discount upgrade upgrade invoice return shipping account return receipt subscription shipping support email subscription. Return discount cancel cancel shipping email delivery delivery address card. Card email manager receipt cancel email upgrade payment account support email delivery. Delay receipt address invoice return subscription email subscription warranty refund payment payment. Payment password return account account order discount subscription support address receipt. Receipt cancel return manager manager return email delivery card order cancel card. Account refund manager warranty shipping return card manager email upgrade receipt subscription invoice password return. Email delivery cancel subscription payment manager refund delay card payment card refund address manager delay. Upgrade address payment manager return upgrade delay manager address. Password manager password return delay order upgrade subscription cancel shipping card subscription upgrade upgrade order return. Account address receipt account address email shipping subscription. Account password delay support receipt subscription discount upgrade. Manager invoice subscription password return cancel shipping invoice delay manager manager shipping account shipping refund delay. Support delivery cancel return order upgrade account subscription payment invoice warranty card discount delay order discount. Subscription refund card password delivery cancel email account order. Email subscription order delivery order cancel warranty warranty warranty order delay. Payment account delivery address return cancel discount support refund warranty. Subscription warranty return address email support account warranty refund delay delay card email delay. Address email receipt card shipping payment receipt email. Email upgrade refund shipping return card receipt warranty email password delivery address card. Return order discount account payment invoice warranty invoice refund password discount. Invoice receipt delivery delivery warranty delay card card password email email upgrade subscription password address support. Password warranty delivery invoice discount cancel delivery subscription card receipt warranty email cancel manager password invoice. Manager refund receipt discount email account subscription invoice address. Email refund delay warranty payment password shipping refund. Card manager address password refund address refund warranty address invoice email address card email delivery upgrade. Discount delay account card card return account delivery warranty email. Upgrade shipping delay address shipping discount cancel warranty order email order cancel delay. Password address invoice email order receipt address upgrade upgrade delay subscription warranty subscription support. Discount return subscription card account shipping upgrade address order subscription cancel order warranty shipping order payment. Card refund return email cancel warranty discount manager refund card return. Payment manager upgrade upgrade delivery manager order password return manager invoice support password order receipt. Delay receipt delay upgrade warranty receipt discount warranty order delay card card. Refund password upgrade address invoice invoice support support warranty warranty account manager delivery invoice. Address invoice invoice subscription subscription warranty payment upgrade shipping receipt return delay invoice. Email password shipping address account card support password order order discount address password shipping address. Shipping delay payment delivery delivery subscription card address delay receipt refund order account delivery support. Payment subscription discount shipping upgrade support return support password. Payment account card refund upgrade address upgrade cancel upgrade discount upgrade warranty refund invoice account account. Invoice address card delay upgrade manager delay shipping address cancel payment email delay upgrade. Payment warranty card invoice receipt card discount warranty order order shipping subscription upgrade. Order password support return support delay address cancel subscription upgrade refund invoice warranty delay. Delivery upgrade email refund order delivery support password password card. Order cancel manager return invoice address refund order. Return payment refund delivery account delay delay email address account delivery subscription card subscription password support. Receipt payment manager delivery return receipt upgrade invoice email. Order payment cancel address subscription subscription return card support. Address payment manager upgrade account password warranty delivery refund invoice. Receipt subscription return card manager warranty subscription delivery email discount shipping warranty delay. Receipt shipping warranty discount upgrade shipping password manager discount support warranty. Delivery warranty receipt subscription shipping manager subscription subscription refund return refund delivery invoice manager receipt manager. Upgrade manager shipping delivery email receipt delay password subscription.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund requested?"
+    },
+    "topic": {
+     "type": "choice",
+     "instructions": "Main topic?",
+     "criteria": {
+      "billing": "Charges and refunds",
+      "shipping": "Delivery and returns",
+      "account": "Login and profile",
+      "other": "Anything else"
+     }
+    },
+    "tone": {
+     "type": "score",
+     "instructions": "How negative is the text?",
+     "criteria": [
+      "neutral",
+      "somewhat negative",
+      "very negative"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "state-6000",
+  "request": {
+   "state": "Refund invoice card cancel order email warranty order card order account cancel password delivery address. Invoice return refund cancel password subscription shipping card delay. Payment account discount shipping warranty card manager manager card support order cancel card. Card receipt payment cancel shipping order warranty discount card. Delivery account subscription delivery shipping account support shipping refund discount delay. Receipt address email invoice subscription discount receipt discount delivery account. Payment invoice support manager support order order refund. Cancel upgrade cancel email support delay delivery email warranty cancel. Refund card payment manager password address invoice subscription cancel order password delay card delivery payment subscription. Email card payment account payment subscription support payment warranty account warranty delivery cancel order upgrade. Invoice discount email discount refund manager discount card subscription subscription. Subscription invoice order receipt shipping password return upgrade subscription upgrade shipping card address warranty invoice refund. Payment card manager upgrade warranty card receipt email payment order payment payment. Manager card warranty warranty card invoice invoice password account delivery email delivery email subscription address. Subscription refund invoice address address discount subscription receipt payment refund. Subscription refund subscription delay address subscription card delivery card return refund. Payment delay discount discount receipt account delay upgrade discount warranty account password order email delivery. Cancel address manager upgrade shipping password warranty order invoice cancel order. Refund subscription payment invoice account password discount receipt upgrade. Upgrade payment account password payment payment account upgrade. Email cancel payment delay order return order refund upgrade cancel payment support cancel email discount. Account account payment subscription upgrade payment order return cancel payment delay refund account invoice password. Manager refund card card return card receipt subscription receipt invoice. Warranty cancel discount support order upgrade address upgrade receipt delivery receipt discount card. Manager discount invoice discount account receipt support shipping upgrade card invoice upgrade warranty email refund account. Shipping order receipt manager password receipt delay discount cancel card. Delay delay manager account card warranty delivery support password upgrade. Email delivery password payment account shipping account refund upgrade email card order warranty. Return email upgrade warranty account discount account discount return warranty warranty card password payment. Upgrade discount address support password subscription delay support discount invoice address address refund payment. Support warranty delay payment cancel cancel delivery password. Password card order delivery delay return invoice address. Shipping invoice account invoice address invoice manager card. Delay delivery email refund return payment upgrade email payment. Subscription warranty password upgrade account order invoice manager. Subscription return shipping account order payment refund shipping shipping support invoice. Return account delay warranty receipt invoice upgrade receipt manager shipping manager card support refund card password. Refund discount delay account discount discount refund order password manager order. Receipt card discount account payment order upgrade delivery receipt address receipt payment return discount. Return payment receipt return email invoice email email return invoice upgrade account warranty cancel. Discount cancel email warranty password shipping refund cancel order order email receipt payment upgrade delivery receipt. Delivery subscription account support upgrade support manager payment subscription receipt email warranty upgrade. Card refund email manager discount cancel payment refund upgrade receipt warranty cancel discount discount. Card manager subscription support subscription warranty invoice refund manager card manager password manager delay card. Delay invoice delivery delay upgrade upgrade order payment email card return. Return invoice discount email shipping card card manager manager. Delivery refund discount email address delivery shipping delivery upgrade support delay manager. Account invoice card support manager warranty cancel card manager payment. Discount account receipt password account subscription discount order subscription delay address receipt discount payment. Warranty discount delivery refund manager upgrade support refund password invoice return address. Order delivery email card order address return return upgrade cancel discount card warranty. Subscription invoice cancel password subscription card refund password payment refund refund delivery email email. Return support upgrade account shipping subscription subscription delivery delivery return return support delay refund delivery email. Invoice manager account warranty password email receipt order address receipt payment email delivery shipping refund. Refund subscription account shipping support refund password subscription delivery order password. Support order receipt return subscription invoice return order upgrade invoice payment payment password. Account delay receipt discount manager discount refund payment email discount address receipt email manager return order. Address warranty email return receipt discount address password invoice order password receipt. Delivery support subscription invoice card payment password delivery receipt order payment account receipt. Return subscription payment order discount warranty delivery address password. Subscription cancel delivery email delivery password password order delay return upgrade. Order invoice refund cancel support delay account receipt delay. Warranty address password receipt delay invoice password manager shipping delivery shipping password refund order return. Discount delivery return invoice order invoice order delay delivery address warranty. Receipt invoice address discount payment receipt password invoice warranty email order payment email. Upgrade address warranty upgrade receipt refund password delivery invoice delay. Payment email shipping order card shipping password upgrade manager manager refund address support card. Support refund password support discount address cancel subscription. Refund password invoice support discount warranty subscription address order subscription cancel shipping account card password invoice. Order delay payment card delivery support warranty payment card delay shipping address. Receipt delivery shipping receipt shipping delay cancel email delivery. Order order manager subscription shipping return upgrade invoice. Subscription card refund card delay card delay refund payment account upgrade support address invoice. Shipping shipping warranty shipping invoice support discount receipt receipt shipping payment delivery. Delay subscription receipt order manager discount card password address email receipt. Invoice warranty receipt manager warranty shipping account shipping order support subscription. Warranty refund delay invoice discount account return email cancel manager shipping. Subscription shipping refund subscription password warranty warranty cancel manager order warranty refund. Shipping order password cancel delay address payment refund delivery subscription delay account payment. Return order refund warranty invoice manager delay invoice card invoice password password warranty payment. Account support order support manager payment refund cancel upgrade. Password upgrade order card return refund upgrade card subscription. Support support invoice discount address order delivery subscription delay return. Upgrade manager address subscription receipt upgrade upgrade shipping refund discount warranty warranty password subscription. Receipt warranty support subscription order email email upgrade payment email email refund warranty upgrade payment. Address account address support cancel account shipping support return return cancel address delivery invoice. Receipt password refund card email delivery cancel order address payment refund discount delay. Return receipt warranty shipping password upgrade order email delay email discount payment invoice card delay. Card cancel email address support payment manager cancel password delay email. Account account delay shipping warranty delivery subscription discount card shipping receipt manager email invoice discount return. Manager cancel payment delivery discount address card address upgrade. Manager order upgrade support support card account order shipping receipt email delivery address manager. Cancel delivery order payment support invoice account discount invoice password. Order email delay subscription upgrade discount upgrade warranty address receipt account return receipt return upgrade refund. Support card discount payment delay subscription support order receipt card invoice password manager order. Address manager delay address order subscription address email card delay. Address support password cancel payment delivery email shipping discount card email payment. Support discount shipping password cancel delivery manager return upgrade delay payment order invoice discount. Support receipt return refund discount email card email manager address upgrade shipping discount delivery account order. Subscription address card cancel card discount warranty refund receipt shipping cancel return shipping address delay upgrade. Upgrade shipping email email payment email email support payment card. Invoice receipt manager return address invoice password payment refund return. Manager account subscription warranty subscription return email password subscription. Invoice invoice warranty warranty manager shipping address order upgrade email address invoice. Cancel discount refund cancel cancel manager discount cancel password warranty address shipping card subscription. Card account manager refund shipping payment password account delivery. Delivery discount manager order delivery subscription receipt cancel order order. Delivery shipping support warranty address upgrade payment payment manager subscription warranty password receipt password address subscription. Account warranty delay account manager discount return card refund upgrade discount refund subscription shipping email email. Subscription return warranty order card receipt payment discount refund upgrade support subscription invoice return delivery cancel. Password payment cancel password shipping email delay address password refund manager account delivery password password. Password receipt address account cancel account refund card password return account upgrade. Discount receipt card upgrade delay subscription upgrade payment card address shipping order delay card return account. Shipping payment shipping invoice card support support refund payment payment support invoice shipping manager subscription. Manager email password card discount account password discount manager return email delay. Invoice invoice account shipping password subscription receipt email account account refund delivery order password. Refund payment payment cancel receipt delivery support upgrade password account warranty password card email shipping shipping. Password delivery delivery subscription subscription upgrade delivery refund subscription order. Delay email upgrade warranty upgrade support support cancel invoice shipping support cancel email refund warranty. Account email subscription warranty upgrade upgrade order warranty shipping password account. Delivery order email warranty warranty order receipt upgrade. Discount order invoice delivery account support shipping shipping delay invoice manager delay cancel manager. Shipping manager email account refund account receipt upgrade refund manager receipt cancel cancel. Refund order receipt cancel address delivery email account receipt password account delay manager delivery password shipping. Return shipping cancel refund receipt manager card shipping refund warranty shipping. Card discount address address address invoice support cancel subscription. Password account refund refund order shipping cancel password manager email delivery return cancel. Refund account order account invoice return order delay cancel address delivery. Invoice discount address card account payment email shipping delay delivery delay upgrade. Cancel payment discount warranty account return receipt account payment warranty receipt card payment account warranty. Refund receipt delay shipping order payment return upgrade payment card refund receipt shipping. Delay password manager order upgrade receipt warranty return manager upgrade refund upgrade password password address. Discount return shipping delay cancel delivery cancel delay. Email warranty payment discount account refund password upgrade discount cancel upgrade upgrade. Upgrade refund cancel refund email address refund refund refund receipt. Refund card refund invoice receipt shipping support upgrade. Discount delivery delay shipping discount address email return delay delivery shipping delivery payment payment password account. Warranty shipping password card payment discount cancel account password refund refund delay subscription address. Delay order invoice support shipping order email discount upgrade refund subscription subscription. Order refund address account discount invoice card card receipt delay invoice. Discount card card delay manager shipping warranty delay address email account warranty upgrade. Warranty email card warranty upgrade support discount account order shipping email. Warranty address account support delivery support shipping shipping delivery receipt support refund email. Support support delay warranty return delivery order shipping password. Discount card delivery support warranty payment receipt order refund. Warranty support password subscription cancel email shipping order return manager order warranty manager delay manager payment. Shipping refund support discount delivery delivery invoice refund delivery upgrade payment. Password discount card refund shipping support support discount delay. Account upgrade upgrade manager account upgrade support order receipt upgrade warranty support cancel invoice upgrade card. Email payment order card upgrade delay warranty account cancel delivery. Delivery password order address delivery invoice password address payment. Refund email account delay account card support warranty refund support card. Support password cancel password password support password address delivery discount warranty payment order return delay payment. Account subscription card delay warranty account invoice cancel discount cancel delivery support receipt receipt. Invoice discount warranty receipt shipping discount return invoice invoice manager invoice subscription payment order. Warranty return delay refund subscription delivery return discount subscription warranty. Discount return shipping order return shipping account address refund address. Invoice return refund manager email address upgrade manager subscription shipping. Warranty support manager subscription card manager receipt password return refund subscription discount subscription email delay. Upgrade warranty return card manager discount refund order cancel support password payment. Delivery support payment upgrade delay delivery payment warranty. Refund password receipt return email invoice warranty card card email support card invoice warranty. Discount shipping order manager invoice email cancel return upgrade refund support. Payment subscription receipt card card return payment delay support account delay email card shipping upgrade. Receipt upgrade password upgrade warranty subscription password card address upgrade discount delay. Cancel delivery subscription order password account cancel receipt return. Discount account refund account delay refund warranty account delay warranty delay discount warranty account account shipping. Refund password invoice support payment refund manager card payment. Return support discount payment order refund discount delay discount refund refund cancel. Discount invoice payment payment manager support invoice password. Order invoice return email address account warranty address refund support shipping refund subscription invoice password delivery. Warranty cancel refund support subscription return invoice account password subscription password shipping upgrade delivery warranty. Manager return manager receipt payment order account warranty account warranty manager address. Upgrade delivery cancel password delay password address discount invoice delay order. Delivery payment address email payment manager address order cancel payment refund. Order payment manager warranty invoice delay upgrade warranty delivery account password payment. Manager manager card support manager address refund shipping refund. Return support refund discount manager warranty delivery payment support return card receipt delivery payment. Shipping delivery refund upgrade discount invoice order receipt. Refund delivery cancel order address refund payment return manager refund. Email shipping order order address invoice manager shipping refund payment. Receipt cancel return delay warranty delay email return payment card. Warranty delivery receipt shipping refund discount email support warranty. Cancel address delivery email password invoice password support shipping manager. Warranty account discount manager support invoice cancel payment payment delay payment password return. Account warranty subscription card account discount cancel order. Payment warranty payment discount card address card cancel. Email email address shipping warranty account return upgrade subscription warranty upgrade order delay. Address discount manager upgrade payment email return address invoice warranty. Payment order card delay payment invoice receipt upgrade order receipt delivery payment support delivery password payment. Warranty refund shipping shipping payment account account warranty card refund cancel refund support. Password delivery upgrade email address support email address. Payment card address card subscription shipping cancel subscription manager refund support delivery return account warranty. Password card receipt card shipping upgrade subscription order delivery subscription subscription. Account invoice return refund delay manager address manager card shipping warranty cancel order warranty. Return delay email upgrade refund return password payment address payment manager delay support. Manager account invoice cancel email receipt delay delay account upgrade receipt shipping subscription card order order. Manager account manager password manager delivery invoice receipt password invoice invoice. Account return invoice cancel discount cancel discount warranty return password manager upgrade delivery order refund. Payment delay warranty receipt discount warranty manager delay. Cancel delay password subscription shipping delivery cancel password discount return manager. Support account delivery refund refund receipt return invoice. Delivery delay upgrade password receipt payment return warranty password warranty delay return card. Address address delay upgrade password delivery refund invoice password subscription payment shipping manager address. Return support delivery subscription support support discount support manager password. Subscription manager invoice manager delay warranty refund card email refund email shipping card return payment. Email upgrade invoice delivery subscription receipt account order support card manager upgrade email. Cancel address delay receipt upgrade account invoice upgrade card email payment subscription subscription warranty. Delay receipt receipt email upgrade delay address shipping invoice account cancel payment support. Support discount card manager account card receipt receipt payment upgrade support shipping payment discount email. Account card email refund card upgrade receipt account discount payment address support. Email account refund password password order invoice invoice address warranty. Order return discount shipping shipping invoice receipt receipt refund invoice return. Order support email return refund upgrade delay cancel invoice address order. Order delay shipping order account payment upgrade delay shipping. Delay shipping delay password cancel card password card shipping return payment email return discount delivery. Support account delay delay delay invoice card upgrade upgrade order delivery. Cancel order delivery receipt subscription account delivery delivery account cancel upgrade payment email manager invoice order. Manager invoice support delay email delay upgrade account manager manager account card return password subscription email. Payment support subscription cancel delay payment email password discount password cancel account subscription payment. Upgrade receipt discount cancel payment delay subscription receipt support discount refund support order. Return refund subscription return address subscription manager return account refund. Shipping email discount shipping cancel return delivery discount refund delivery. Shipping order support address password refund upgrade discount discount card password manager manager. Return subscription upgrade discount delivery upgrade payment email support shipping order invoice address order cancel receipt. Card upgrade email warranty discount manager order delivery support account. Refund order password delivery cancel support refund address payment. Invoice upgrade shipping upgrade delay manager discount payment delay delay. Support warranty discount discount order warranty delay cancel address refund upgrade. Receipt cancel delivery password shipping return support payment order email warranty upgrade delivery support. Password discount delay manager shipping receipt payment email delay invoice support support support discount subscription card. Receipt support subscription payment delay payment shipping card email. Invoice support subscription address payment email subscription receipt delay. Account payment password delivery shipping address delivery upgrade card subscription card support upgrade. Receipt delay card password cancel password address address warranty subscription refund. Account password receipt refund password manager manager shipping warranty shipping address shipping password subscription. Discount order return refund discount payment subscription account. Return card subscription receipt delay account subscription password delay warranty shipping password shipping discount subscription manager. Email email account refund cancel return shipping discount manager invoice return card account. Order return cancel receipt upgrade email delay card. Receipt invoice card card discount receipt invoice delay delay invoice invoice shipping subscription. Delay address manager subscription subscription shipping receipt support return. Receipt account order warranty return invoice warranty account warranty card warranty refund support subscription email. Payment support order warranty order delivery manager warranty order cancel delay password refund discount. Payment refund payment upgrade refund return address refund manager. Warranty invoice delay address return payment shipping manager return delay subscription order support shipping upgrade. Upgrade order address manager order payment order shipping manager password. Email delay warranty password return discount delivery refund warranty delivery account warranty email shipping password return. Receipt address card payment warranty discount payment warranty order. Return return refund invoice refund refund order receipt password discount upgrade shipping email manager. Discount password shipping support subscription delivery address refund subscription support invoice invoice refund support return. Account delay subscription order refund shipping payment warranty order warranty. Card delay card return discount delay delivery delivery delay account invoice refund. Return warranty upgrade invoice discount shipping shipping email refund warranty account invoice order card refund address. Receipt subscription delivery upgrade subscription receipt password address manager password support payment invoice. Card manager receipt subscription warranty cancel discount manager invoice manager account return return. Order receipt address discount shipping upgrade delivery card manager support. Manager receipt email receipt address address email order discount support payment. Delivery card address delivery card refund card upgrade password warranty return. Upgrade card account discount receipt order payment card return order return cancel. Address warranty payment payment support shipping delay support shipping card password discount support order invoice payment. Delivery address return invoice payment invoice upgrade delay delay card discount order warranty payment. Delay order return return password invoice card manager. Shipping discount delivery manager email cancel discount account email. Delay email account card shipping payment payment invoice order cancel password password account subscription. Address shipping password warranty warranty support subscription subscription payment shipping order. Manager upgrade cancel refund manager delivery shipping warranty password delivery address return card. Warranty shipping payment email warranty upgrade return warranty. Subscription warranty email upgrade order manager receipt address discount support support delivery account. Email delivery warranty cancel cancel delay cancel support. Email delay shipping discount delivery refund address delivery password account refund refund refund delay card account. Return manager delivery address card manager card delay shipping manager manager support shipping card. Receipt password warranty email card payment cancel cancel receipt subscription discount address. Cancel card shipping card receipt upgrade payment invoice payment. Payment delay return account card warranty email account delay. Receipt delivery card email discount warranty delay delivery delay card order. Email warranty payment email order support receipt support. Receipt delay refund upgrade delay delay discount upgrade manager invoice cancel. Manager payment address receipt receipt invoice support cancel shipping invoice. Address address password receipt cancel subscription warranty delivery payment subscription invoice card. Delivery receipt delay order upgrade shipping refund cancel cancel order subscription manager invoice discount refund. Manager account account cancel warranty delivery refund delivery receipt warranty. Password payment upgrade payment cancel account invoice payment card refund. Account cancel shipping order delay address discount address refund. Delivery cancel discount receipt account order address warranty address refund receipt. Cancel cancel invoice email receipt delivery email delivery password warranty discount discount manager warranty invoice. Email order warranty shipping password delivery card delivery manager card manager support. Cancel card email password delay card support email. Manager invoice return delay support manager password password upgrade warranty. Subscription shipping discount discount card upgrade shipping support address email subscription subscription password. Return account address discount invoice receipt receipt cancel subscription upgrade invoice delay address. Return delivery return return password shipping invoice return delay. Invoice payment warranty upgrade return email discount invoice shipping delay subscription password delay support subscription receipt. Delivery upgrade manager support shipping account password delivery order upgrade subscription. Receipt return password address upgrade cancel warranty subscription delay. Card shipping support refund upgrade delay address invoice discount receipt shipping order subscription. Password warranty password refund discount discount refund discount. Delay discount account address delivery warranty card warranty return shipping warranty account shipping payment shipping. Support account warranty password card order payment email return upgrade receipt email warranty address return. Cancel manager delivery return subscription manager support discount delay. Return password order receipt password delivery subscription warranty receipt manager shipping refund card return. Account discount upgrade support upgrade delay password support. Address return upgrade password invoice upgrade email account address account. Delivery payment manager cancel warranty payment refund invoice order refund address order address address. Delay shipping refund upgrade refund address account card delay cancel email upgrade manager return shipping shipping. Delivery address support delivery email shipping return warranty email password payment support upgrade email email manager. Discount shipping subscription order upgrade delivery discount password invoice delivery email cancel discount card invoice cancel. Delay return invoice discount warranty shipping receipt account return refund order cancel delivery address subscription delivery. Shipping shipping email address manager account email card invoice. Refund account account invoice manager warranty upgrade refund refund receipt password cancel manager refund invoice. Return delivery discount subscription warranty payment order subscription shipping receipt return address. Shipping shipping return refund subscription password subscription discount. Address delay subscription return account address delivery subscription payment address receipt discount upgrade upgrade manager. Shipping manager support payment warranty card shipping payment manager. Address address card warranty return manager discount cancel cancel warranty return delivery discount cancel password invoice. Upgrade invoice receipt account refund discount delay card discount cancel password email delivery delay upgrade shipping. Shipping delay support upgrade upgrade manager return order password email email return. Card receipt upgrade address email subscription email manager email password email. Manager payment receipt delivery order refund warranty refund receipt delay. Discount delivery support payment address cancel card delay receipt delay delay refund invoice. Password support payment shipping manager invoice invoice receipt warranty payment address address refund discount password email. Return warranty email delivery account delivery upgrade email. Shipping warranty email discount warranty account subscription shipping. Return subscription manager refund warranty delivery address password order card subscription order shipping subscription account. Receipt invoice email invoice receipt delivery discount card email delay password refund subscription upgrade payment. Password address subscription payment order manager card manager shipping order payment discount upgrade discount. Return manager delivery delivery delivery delivery subscription payment shipping cancel delay shipping. Invoice password invoice password support payment password payment delivery support order. Order delay delivery refund refund delivery account account support return. Refund return warranty invoice order subscription return warranty payment address upgrade support return email order upgrade. Account payment order cancel return password warranty payment account account shipping order return support support card. Subscription email subscription payment account email upgrade discount return. Support receipt manager email shipping support shipping email shipping. Return manager cancel account shipping cancel support address order cancel return cancel discount account support. Card subscription delivery email shipping address upgrade cancel cancel order payment. Receipt warranty subscription email subscription account return delivery receipt upgrade subscription invoice. Address upgrade receipt order address account invoice payment order warranty account upgrade delay discount warranty. Warranty manager cancel payment cancel subscription invoice shipping warranty delivery manager email card invoice. Delay receipt address card account manager discount support order shipping delay account email receipt refund. Payment refund invoice email invoice address receipt order subscription shipping delivery manager invoice. Shipping password invoice address warranty account order discount shipping delay delivery upgrade manager payment invoice. Payment email invoice subscription delivery discount discount cancel receipt delay. Cancel card invoice warranty account shipping password address account address. Shipping address delivery receipt delay delivery shipping refund card email delay delay password. Account refund email refund invoice warranty delivery order return. Shipping account email payment password warranty subscription return card delivery receipt card invoice email refund. Return address address shipping password return payment delivery address password upgrade support. Email cancel refund shipping delivery refund subscription delivery return discount support discount. Shipping warranty manager upgrade delay manager return password account support email payment email upgrade. Receipt upgrade refund email invoice address return manager invoice. Payment delivery delivery address subscription support cancel cancel invoice delay discount upgrade. Account return account discount receipt support card password return account delivery return password refund refund upgrade. Address email password return card subscription delivery upgrade return card email. Warranty refund address manager shipping subscription delivery return card. Upgrade delay warranty upgrade subscription manager receipt return payment discount email payment support delivery. Support subscription manager password order delay order card. Refund password warranty support address delivery receipt return receipt refund order refund. Password refund email invoice manager address card refund invoice receipt. Upgrade return warranty shipping order refund support payment order email upgrade discount card. Warranty discount delay delivery delay delay delivery card invoice cancel upgrade email receipt refund password.",
+   "questions": {
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund requested?"
+    },
+    "topic": {
+     "type": "choice",
+     "instructions": "Main topic?",
+     "criteria": {
+      "billing": "Charges and refunds",
+      "shipping": "Delivery and returns",
+      "account": "Login and profile",
+      "other": "Anything else"
+     }
+    },
+    "tone": {
+     "type": "score",
+     "instructions": "How negative is the text?",
+     "criteria": [
+      "neutral",
+      "somewhat negative",
+      "very negative"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "special-token-text",
+  "request": {
+   "state": "The note says <|im_end|> and <think>, then </state>.",
+   "questions": {
+    "odd": {
+     "type": "noul",
+     "instructions": "Does the note contain markup?"
+    }
+   }
+  }
+ },
+ {
+  "name": "no-state",
+  "request": {
+   "questions": {
+    "weekday": {
+     "type": "choice",
+     "instructions": "Which day starts the week here?",
+     "criteria": {
+      "monday": null,
+      "sunday": null
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "object-instructions",
+  "request": {
+   "state": {
+    "order": 17,
+    "status": "late",
+    "note": "client écrit en français",
+    "price": 1.0
+   },
+   "questions": {
+    "late": {
+     "type": "noul",
+     "instructions": {
+      "ask": "Is the order late?",
+      "language": "français"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "noul-empty-description",
+  "request": {
+   "state": "The package arrived broken.",
+   "questions": {
+    "broken": {
+     "type": "noul",
+     "instructions": "Is the item damaged?",
+     "criteria": {
+      "true": "",
+      "false": "it arrived intact"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice-30-labels",
+  "request": {
+   "state": "The customer wants to know the status of order 30.",
+   "questions": {
+    "topic": {
+     "type": "choice",
+     "instructions": "Which topic fits best?",
+     "criteria": {
+      "topic_00": "category number 0",
+      "topic_01": "category number 1",
+      "topic_02": "category number 2",
+      "topic_03": "category number 3",
+      "topic_04": "category number 4",
+      "topic_05": "category number 5",
+      "topic_06": "category number 6",
+      "topic_07": "category number 7",
+      "topic_08": "category number 8",
+      "topic_09": "category number 9",
+      "topic_10": "category number 10",
+      "topic_11": "category number 11",
+      "topic_12": "category number 12",
+      "topic_13": "category number 13",
+      "topic_14": "category number 14",
+      "topic_15": "category number 15",
+      "topic_16": "category number 16",
+      "topic_17": "category number 17",
+      "topic_18": "category number 18",
+      "topic_19": "category number 19",
+      "topic_20": "category number 20",
+      "topic_21": "category number 21",
+      "topic_22": "category number 22",
+      "topic_23": "category number 23",
+      "topic_24": "category number 24",
+      "topic_25": "category number 25",
+      "topic_26": "category number 26",
+      "topic_27": "category number 27",
+      "topic_28": "category number 28",
+      "topic_29": "category number 29"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "combining-marks",
+  "request": {
+   "state": "नमस्ते, मेरा ऑर्डर नहीं आया। สวัสดีครับ พัสดุหาย مَرْحَبًا، لَمْ يَصِلْ طَلَبِي. café",
+   "questions": {
+    "lost": {
+     "type": "noul",
+     "instructions": "क्या ग्राहक का पार्सल खो गया है?"
+    },
+    "language": {
+     "type": "choice",
+     "instructions": "Which script comes first?",
+     "criteria": {
+      "हिन्दी": "देवनागरी",
+      "ไทย": "อักษรไทย",
+      "عربي": "الأبجدية"
+     }
+    }
+   }
+  }
+ }
+]

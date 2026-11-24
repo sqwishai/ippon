@@ -1,0 +1,2582 @@
+{
+ "engine": "d1-omni-2B-tf",
+ "campaign": {
+  "library_commit": "d27c0ad9523d0c5f025ec05c2d65a7a84c78aa9e",
+  "generator_sha256": "18a4d4e6fb92aeff2e0be9262fbf34b1b966d73d925d18ad6efda22adc74fdf9",
+  "date": "2026-10-29",
+  "machine": {
+   "chip": "Apple M5 Pro",
+   "architecture": "applegpu_g17s",
+   "memory_gib": 48,
+   "macos": "27.0.1",
+   "mlx": "0.32.4",
+   "ippon": "0.1.0.dev0",
+   "revision": "d27c0ad",
+   "power": {
+    "mode": "2",
+    "ac": true
+   },
+   "kernel_rule": "m5-4"
+  },
+  "workloads": [
+   {
+    "name": "text",
+    "options": [
+     "--sizes",
+     "1000",
+     "--questions",
+     "1,50"
+    ],
+    "pairs": [
+     [
+      "clef-flash-llama-Q8_0",
+      "clef-flash-gguf-q8-ippon-serve"
+     ],
+     [
+      "clef-flash-mxfp8-ollama",
+      "clef-flash-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-mxfp8-ollama",
+      "d3-mini-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-nvfp4-ollama",
+      "d3-mini-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-tf",
+      "d3-mini-ippon-serve"
+     ],
+     [
+      "d1-2B-llama-Q8_0",
+      "d1-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-llama-Q8_0",
+      "d1-omni-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "h2o-4b-llama-Q8_0",
+      "h2o-4b-gguf-q8-ippon-serve"
+     ],
+     [
+      "d1-2B-mxfp8-ollama",
+      "d1-2B-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d1-2B-nvfp4-ollama",
+      "d1-2B-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-mxfp8-ollama",
+      "d1-omni-2B-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-nvfp4-ollama",
+      "d1-omni-2B-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-mxfp8-ollama",
+      "d3-flash-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-nvfp4-ollama",
+      "d3-flash-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-omlx",
+      "d3-flash-ippon-serve"
+     ],
+     [
+      "d1-2B-tf",
+      "d1-2B-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-tf",
+      "d1-omni-2B-ippon-serve"
+     ],
+     [
+      "d3-flash-tf",
+      "d3-flash-ippon-serve"
+     ],
+     [
+      "torchcast-4b-maker-mps",
+      "torchcast-4b-ippon-serve"
+     ],
+     [
+      "elephant-1-maker-mps",
+      "elephant-1-ippon-serve"
+     ]
+    ],
+    "alone": [
+     "kettei-core-ippon-serve",
+     "kettei-dot-ippon-serve"
+    ]
+   },
+   {
+    "name": "concurrent",
+    "options": [
+     "--sizes",
+     "1000",
+     "--questions",
+     "1",
+     "--clients",
+     "8"
+    ],
+    "pairs": [
+     [
+      "clef-flash-llama-Q8_0",
+      "clef-flash-gguf-q8-ippon-serve"
+     ],
+     [
+      "clef-flash-mxfp8-ollama",
+      "clef-flash-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-mxfp8-ollama",
+      "d3-mini-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-nvfp4-ollama",
+      "d3-mini-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-mini-tf",
+      "d3-mini-ippon-serve"
+     ],
+     [
+      "d1-2B-llama-Q8_0",
+      "d1-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-llama-Q8_0",
+      "d1-omni-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "h2o-4b-llama-Q8_0",
+      "h2o-4b-gguf-q8-ippon-serve"
+     ],
+     [
+      "d1-2B-mxfp8-ollama",
+      "d1-2B-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d1-2B-nvfp4-ollama",
+      "d1-2B-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-mxfp8-ollama",
+      "d1-omni-2B-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-nvfp4-ollama",
+      "d1-omni-2B-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-mxfp8-ollama",
+      "d3-flash-mxfp8-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-nvfp4-ollama",
+      "d3-flash-nvfp4-ollama-ippon-serve"
+     ],
+     [
+      "d3-flash-omlx",
+      "d3-flash-ippon-serve"
+     ],
+     [
+      "d3-flash-tf",
+      "d3-flash-ippon-serve"
+     ],
+     [
+      "torchcast-4b-maker-mps",
+      "torchcast-4b-ippon-serve"
+     ],
+     [
+      "elephant-1-maker-mps",
+      "elephant-1-ippon-serve"
+     ]
+    ],
+    "alone": []
+   },
+   {
+    "name": "image",
+    "options": [
+     "--sizes",
+     "100",
+     "--questions",
+     "1",
+     "--media",
+     "image"
+    ],
+    "pairs": [
+     [
+      "d3-mini-tf",
+      "d3-mini-ippon-serve"
+     ],
+     [
+      "d1-2B-tf",
+      "d1-2B-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-tf",
+      "d1-omni-2B-ippon-serve"
+     ],
+     [
+      "d3-flash-tf",
+      "d3-flash-ippon-serve"
+     ],
+     [
+      "torchcast-4b-maker-mps",
+      "torchcast-4b-ippon-serve"
+     ]
+    ],
+    "alone": []
+   },
+   {
+    "name": "audio",
+    "options": [
+     "--sizes",
+     "100",
+     "--questions",
+     "1",
+     "--media",
+     "audio"
+    ],
+    "pairs": [
+     [
+      "d1-omni-2B-tf",
+      "d1-omni-2B-ippon-serve"
+     ]
+    ],
+    "alone": []
+   }
+  ],
+  "samples": 10,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+   "file": "MODEL_BUILDS.json",
+   "sha256": "d9fc5524f27046be6dae5ce39d97c0c6b4cab57378a160b57e468d80c2b9e967"
+  }
+ },
+ "meta": {
+  "runtime": "transformers 5.19.0 + torch 2.14.1 (mps:0)",
+  "family": "d1",
+  "repo": "LiquidAI/d1-Omni-2B",
+  "model_dir": "~/models/d1-Omni-2B",
+  "revision": "c8d48c08dada0191c6b362820f055cfb49c99426",
+  "device": "mps:0",
+  "placed_by_loader": "cpu",
+  "dtype": "bfloat16",
+  "device_map": "none",
+  "torch": "2.14.1",
+  "transformers": "5.19.0",
+  "mps_high_watermark_ratio": "1.0",
+  "question_method": "one system_one call containing all questions",
+  "transport": "benchmark HTTP wrapper"
+ },
+ "device": {
+  "chip": "Apple M5 Pro",
+  "memory_bytes": 51539607552,
+  "gpu_cores": "20",
+  "macos": "27.0.1",
+  "macos_build": "26A434",
+  "python": "3.12.14",
+  "python_executable": "<kit>/venvs/d1/bin/python",
+  "platform": "macOS-27.0.1-arm64-arm-64bit"
+ },
+ "start": {
+  "time": "2026-10-29T18:20:11+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 9216.00M  used = 7838.69M  free = 1377.31M  (encrypted)",
+  "memory_free_pct": "76%",
+  "load_avg": [
+   2.53564453125,
+   2.1015625,
+   1.76708984375
+  ]
+ },
+ "config": {
+  "n": 10,
+  "warmup": 2,
+  "sizes": [
+   1000
+  ],
+  "questions": [
+   1,
+   50
+  ],
+  "seed": 0,
+  "max_input": 32768,
+  "gap_s": 0.0,
+  "chars_per_token": 3.7,
+  "clients": 1,
+  "media": null,
+  "scenario": "fresh",
+  "min_n": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0
+ },
+ "skipped_sizes": {},
+ "after_load": {
+  "self": {
+   "phys_footprint": 4744119352,
+   "lifetime_max_phys_footprint": 4745907920
+  },
+  "server": null,
+  "engine": {
+   "mps_driver_allocated": 4362551296,
+   "mps_current_allocated": 4341260288
+  }
+ },
+ "requests": [
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "ms": 717.43,
+   "tokens": 1104,
+   "state_chars": 3704,
+   "request_sha256": "fdec963f69ee1bd0c99ea6507f9c344a59a1abf926b778c4148faf72764ae91e",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "ms": 213.55,
+   "tokens": 1101,
+   "state_chars": 3704,
+   "request_sha256": "6db269afd727ee0ab2d90ef928beba6a3a2399ce7f2ae4bd556e66f531c79556",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5092363583157186,
+     "no": 0.49076364168428144
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 50,
+   "rep": 0,
+   "ms": 1359.0,
+   "tokens": 6044,
+   "state_chars": 3704,
+   "request_sha256": "ae89518fa4af654372f65e85e40752081e6b4a5d3678540cee526834a6d3cc76",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    },
+    "team": {
+     "billing": 0.135597673262315,
+     "technical": 0.3609926454236336,
+     "shipping": 0.5034096813140514
+    },
+    "urgency": {
+     "0": 0.29713971237571984,
+     "1": 0.3708880479738298,
+     "2": 0.33197223965045025
+    },
+    "churn": {
+     "yes": 0.06620396268144475,
+     "no": 0.9337960373185552
+    },
+    "tone": {
+     "positive": 0.04185861900161555,
+     "neutral": 0.6445618804938462,
+     "negative": 0.31357950050453826
+    },
+    "promised": {
+     "yes": 0.805739587666447,
+     "no": 0.19426041233355296
+    },
+    "topic": {
+     "billing": 0.09594473002028334,
+     "access": 0.039163438105260545,
+     "delivery": 0.5250300916757338,
+     "defect": 0.2507516099220832,
+     "other": 0.08911013027663918
+    },
+    "satisfaction": {
+     "0": 0.09304270224557634,
+     "1": 0.3931119288281038,
+     "2": 0.45572653411635117,
+     "3": 0.05345360082575493,
+     "4": 0.004665233984213808
+    },
+    "reference": {
+     "yes": 0.8368563619961248,
+     "no": 0.1631436380038752
+    },
+    "channel": {
+     "email": 0.47089269780031245,
+     "phone": 0.33149366618704823,
+     "chat": 0.19761363601263934
+    },
+    "credited": {
+     "yes": 0.8478914358349857,
+     "no": 0.15210856416501428
+    },
+    "complexity": {
+     "0": 0.08012404971098248,
+     "1": 0.5274254453824027,
+     "2": 0.39245050490661487
+    },
+    "area": {
+     "payments": 0.013476768561426999,
+     "app": 0.7493756038342383,
+     "shipping": 0.1741173831361147,
+     "account": 0.06303024446822005
+    },
+    "deadline": {
+     "yes": 0.8525958793746765,
+     "no": 0.1474041206253235
+    },
+    "error": {
+     "yes": 0.8291474305214315,
+     "no": 0.17085256947856853
+    },
+    "next_step": {
+     "reply": 0.3533892386495068,
+     "escalate": 0.4928066160450278,
+     "refund": 0.1279264005886414,
+     "close": 0.025877744716824035
+    },
+    "duplicate_charge": {
+     "yes": 0.32727894517799455,
+     "no": 0.6727210548220055
+    },
+    "late_delivery": {
+     "yes": 0.7378047607696733,
+     "no": 0.2621952392303267
+    },
+    "damaged_item": {
+     "yes": 0.6767755550232369,
+     "no": 0.32322444497676306
+    },
+    "login_failure": {
+     "yes": 0.6002353914612737,
+     "no": 0.3997646085387263
+    },
+    "workaround": {
+     "yes": 0.5184664151286758,
+     "no": 0.48153358487132425
+    },
+    "escalated": {
+     "yes": 0.7413629601666504,
+     "no": 0.2586370398333496
+    },
+    "replacement": {
+     "yes": 0.3606095822606693,
+     "no": 0.6393904177393307
+    },
+    "cancel_order": {
+     "yes": 0.1350859100682721,
+     "no": 0.8649140899317279
+    },
+    "cancel_plan": {
+     "yes": 0.16954795582639454,
+     "no": 0.8304520441736054
+    },
+    "invoice_correction": {
+     "yes": 0.9256568939312543,
+     "no": 0.07434310606874572
+    },
+    "multiple_users": {
+     "yes": 0.11305162177744114,
+     "no": 0.8869483782225589
+    },
+    "data_export": {
+     "yes": 0.07692617221340349,
+     "no": 0.9230738277865965
+    },
+    "account_security": {
+     "yes": 0.47231611387882083,
+     "no": 0.5276838861211792
+    },
+    "price_change": {
+     "yes": 0.911155595487675,
+     "no": 0.088844404512325
+    },
+    "repeat_contact": {
+     "yes": 0.8992814412911091,
+     "no": 0.1007185587088909
+    },
+    "follow_up": {
+     "yes": 0.635119796847518,
+     "no": 0.36488020315248204
+    },
+    "resolved": {
+     "yes": 0.06381787527734092,
+     "no": 0.936182124722659
+    },
+    "outage": {
+     "yes": 0.5092363583157186,
+     "no": 0.49076364168428144
+    },
+    "owner": {
+     "customer": 0.29234407155500075,
+     "support": 0.3147663787641004,
+     "specialist": 0.3928895496808988
+    },
+    "evidence": {
+     "logs": 0.05317753029033199,
+     "payment": 0.06516085760922476,
+     "tracking": 0.8816616121004432
+    },
+    "scope": {
+     "single": 0.5163943101483784,
+     "team": 0.2966716857653915,
+     "service": 0.18693400408622998
+    },
+    "remedy": {
+     "refund": 0.149878396382108,
+     "fix": 0.21687488926598963,
+     "information": 0.6332467143519023
+    },
+    "stage": {
+     "new": 0.35240008612293766,
+     "investigating": 0.529118884280866,
+     "resolved": 0.11848102959619637
+    },
+    "payment_state": {
+     "pending": 0.16855789586826153,
+     "captured": 0.09246661794963815,
+     "refunded": 0.7389754861821003
+    },
+    "contact_reason": {
+     "failure": 0.5224126180795904,
+     "change": 0.059052635584853894,
+     "question": 0.4185347463355557
+    },
+    "reply_style": {
+     "apology": 0.30614614427129266,
+     "instructions": 0.140909834734315,
+     "confirmation": 0.5529440209943922
+    },
+    "business_impact": {
+     "0": 0.16158235249626662,
+     "1": 0.15572089943706854,
+     "2": 0.6826967480666648
+    },
+    "frustration": {
+     "0": 0.1655881079804933,
+     "1": 0.603496781352824,
+     "2": 0.23091511066668258
+    },
+    "resolution_progress": {
+     "0": 0.06269753122321013,
+     "1": 0.7879007866923186,
+     "2": 0.1494016820844711
+    },
+    "clarity": {
+     "0": 0.13777773893391956,
+     "1": 0.502140057053404,
+     "2": 0.3600822040126763
+    },
+    "financial_impact": {
+     "0": 0.3460103652798907,
+     "1": 0.1714729687295931,
+     "2": 0.4825166659905163
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.34856218420360235
+    },
+    "retention_risk": {
+     "0": 0.452607448066559,
+     "1": 0.524698459895408,
+     "2": 0.022694092038032878
+    },
+    "evidence_quality": {
+     "0": 0.14222620432219277,
+     "1": 0.4995493646475902,
+     "2": 0.3582244310302171
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 1000,
+   "nq": 50,
+   "rep": 1,
+   "ms": 1339.53,
+   "tokens": 6048,
+   "state_chars": 3704,
+   "request_sha256": "dd7a678f2b73c14916fad649f64ed12ffcb93c4c3ede76ce44bddbd72d206c83",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5046185732034129,
+     "no": 0.49538142679658714
+    },
+    "team": {
+     "billing": 0.13435816088814787,
+     "technical": 0.3384072292992561,
+     "shipping": 0.527234609812596
+    },
+    "urgency": {
+     "0": 0.3049139473095398,
+     "1": 0.3667857094723327,
+     "2": 0.32830034321812746
+    },
+    "churn": {
+     "yes": 0.06649006833318417,
+     "no": 0.9335099316668158
+    },
+    "tone": {
+     "positive": 0.040157332978102894,
+     "neutral": 0.6298949043067005,
+     "negative": 0.3299477627151967
+    },
+    "promised": {
+     "yes": 0.7954180413340788,
+     "no": 0.20458195866592122
+    },
+    "topic": {
+     "billing": 0.09973261705800976,
+     "access": 0.036776262210395386,
+     "delivery": 0.5259606608342011,
+     "defect": 0.24659784977190063,
+     "other": 0.09093261012549311
+    },
+    "satisfaction": {
+     "0": 0.09598570088963966,
+     "1": 0.3908349783127552,
+     "2": 0.4530869124447126,
+     "3": 0.055144371525162224,
+     "4": 0.004948036827730106
+    },
+    "reference": {
+     "yes": 0.8393630170182406,
+     "no": 0.16063698298175944
+    },
+    "channel": {
+     "email": 0.4650894632593601,
+     "phone": 0.33973227142631207,
+     "chat": 0.1951782653143279
+    },
+    "credited": {
+     "yes": 0.8454933651605432,
+     "no": 0.1545066348394568
+    },
+    "complexity": {
+     "0": 0.07895767622615271,
+     "1": 0.5197476625327143,
+     "2": 0.40129466124113294
+    },
+    "area": {
+     "payments": 0.013333569276168066,
+     "app": 0.7622465533677538,
+     "shipping": 0.16148065120870997,
+     "account": 0.06293922614736822
+    },
+    "deadline": {
+     "yes": 0.8537530242202145,
+     "no": 0.14624697577978552
+    },
+    "error": {
+     "yes": 0.825185779515122,
+     "no": 0.17481422048487805
+    },
+    "next_step": {
+     "reply": 0.3583703867191655,
+     "escalate": 0.49060482275501943,
+     "refund": 0.12502358623924575,
+     "close": 0.02600120428656941
+    },
+    "duplicate_charge": {
+     "yes": 0.31519505688693067,
+     "no": 0.6848049431130694
+    },
+    "late_delivery": {
+     "yes": 0.7448895683358385,
+     "no": 0.2551104316641615
+    },
+    "damaged_item": {
+     "yes": 0.6887789982679365,
+     "no": 0.31122100173206346
+    },
+    "login_failure": {
+     "yes": 0.604660157290854,
+     "no": 0.395339842709146
+    },
+    "workaround": {
+     "yes": 0.5230771154827493,
+     "no": 0.47692288451725073
+    },
+    "escalated": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "replacement": {
+     "yes": 0.35636089976261454,
+     "no": 0.6436391002373855
+    },
+    "cancel_order": {
+     "yes": 0.1350859100682721,
+     "no": 0.8649140899317279
+    },
+    "cancel_plan": {
+     "yes": 0.17348568553671218,
+     "no": 0.8265143144632878
+    },
+    "invoice_correction": {
+     "yes": 0.9259741114602937,
+     "no": 0.07402588853970626
+    },
+    "multiple_users": {
+     "yes": 0.11305162177744109,
+     "no": 0.8869483782225589
+    },
+    "data_export": {
+     "yes": 0.07562451347399947,
+     "no": 0.9243754865260005
+    },
+    "account_security": {
+     "yes": 0.4815335848713242,
+     "no": 0.5184664151286758
+    },
+    "price_change": {
+     "yes": 0.9119005390974976,
+     "no": 0.08809946090250242
+    },
+    "repeat_contact": {
+     "yes": 0.897595709885071,
+     "no": 0.10240429011492902
+    },
+    "follow_up": {
+     "yes": 0.635119796847518,
+     "no": 0.36488020315248204
+    },
+    "resolved": {
+     "yes": 0.06191328355064045,
+     "no": 0.9380867164493596
+    },
+    "outage": {
+     "yes": 0.49538142679658714,
+     "no": 0.5046185732034129
+    },
+    "owner": {
+     "customer": 0.2944618184955395,
+     "support": 0.3170465533955422,
+     "specialist": 0.3884916281089184
+    },
+    "evidence": {
+     "logs": 0.05206145437837948,
+     "payment": 0.06868611786923812,
+     "tracking": 0.8792524277523823
+    },
+    "scope": {
+     "single": 0.5071622899951211,
+     "team": 0.30233514059928157,
+     "service": 0.1905025694055972
+    },
+    "remedy": {
+     "refund": 0.14573347381086862,
+     "fix": 0.22705109273348614,
+     "information": 0.6272154334556452
+    },
+    "stage": {
+     "new": 0.36356031963466673,
+     "investigating": 0.5164439541035217,
+     "resolved": 0.1199957262618115
+    },
+    "payment_state": {
+     "pending": 0.1617461826541743,
+     "captured": 0.08872988357653122,
+     "refunded": 0.7495239337692945
+    },
+    "contact_reason": {
+     "failure": 0.5137532590966675,
+     "change": 0.05915667133746221,
+     "question": 0.4270900695658702
+    },
+    "reply_style": {
+     "apology": 0.29676228781138564,
+     "instructions": 0.1470670118707038,
+     "confirmation": 0.5561707003179106
+    },
+    "business_impact": {
+     "0": 0.15073972575552685,
+     "1": 0.15073972575552685,
+     "2": 0.6985205484889463
+    },
+    "frustration": {
+     "0": 0.16270644545957694,
+     "1": 0.5929943722273876,
+     "2": 0.2442991823130354
+    },
+    "resolution_progress": {
+     "0": 0.06379204409994452,
+     "1": 0.7869807341102004,
+     "2": 0.149227221789855
+    },
+    "clarity": {
+     "0": 0.14222620432219277,
+     "1": 0.4995493646475902,
+     "2": 0.3582244310302171
+    },
+    "financial_impact": {
+     "0": 0.36513000951486047,
+     "1": 0.16196195732328608,
+     "2": 0.47290803316185354
+    },
+    "effort": {
+     "0": 0.22854004966493585,
+     "1": 0.4283134505069711,
+     "2": 0.343146499828093
+    },
+    "retention_risk": {
+     "0": 0.43455731802532865,
+     "1": 0.5424118981826367,
+     "2": 0.023030783792034545
+    },
+    "evidence_quality": {
+     "0": 0.15912935644460044,
+     "1": 0.48212650145582253,
+     "2": 0.35874414209957695
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 0,
+   "ms": 224.95,
+   "tokens": 1103,
+   "state_chars": 3704,
+   "request_sha256": "6d247b8bd755026c018693b12cc148583c49e5c7e43882e1c90a16e3e7608136",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 1,
+   "ms": 216.68,
+   "tokens": 1102,
+   "state_chars": 3704,
+   "request_sha256": "249319ff3899d1ea4fd4e3ce8d17db329019e8cf332720983591cb2df9892939",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 2,
+   "ms": 204.89,
+   "tokens": 1102,
+   "state_chars": 3704,
+   "request_sha256": "28fc41c1ff9247d1f20db8faaad4890436f8dedb8fdae97fc1ba8672cc0b08ac",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 3,
+   "ms": 202.79,
+   "tokens": 1101,
+   "state_chars": 3704,
+   "request_sha256": "28a479e7822318239663c96fa3b016351d967db0da9cd1af7338736e01139c00",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.49538142679658714,
+     "no": 0.5046185732034129
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 4,
+   "ms": 202.58,
+   "tokens": 1102,
+   "state_chars": 3704,
+   "request_sha256": "8026e6c1ef5ccb05401bed632f6e44ab6137f178dcc0407ba0af00dea09e1e4e",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5092363583157186,
+     "no": 0.49076364168428144
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 5,
+   "ms": 208.47,
+   "tokens": 1103,
+   "state_chars": 3704,
+   "request_sha256": "fc674e3f94ef48b76f89fa8bcc60472d884fd3ed00cd1b77006c031955c18ebf",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 6,
+   "ms": 202.25,
+   "tokens": 1104,
+   "state_chars": 3704,
+   "request_sha256": "b2dd9da9c7d4bb754e180403f572922d495ee6013785106a53b09ba1e98f19b9",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 7,
+   "ms": 203.64,
+   "tokens": 1103,
+   "state_chars": 3704,
+   "request_sha256": "3c1c47c57f84d1a428d1d9ede53710616c1106d6b39b92f5df851851cc2e6429",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 8,
+   "ms": 218.48,
+   "tokens": 1100,
+   "state_chars": 3704,
+   "request_sha256": "25e93f66357413a6f55f594e3d4c31288bead4f9a9f445a4002af2dd8c701c8c",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.49538142679658714,
+     "no": 0.5046185732034129
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 1,
+   "rep": 9,
+   "ms": 201.6,
+   "tokens": 1103,
+   "state_chars": 3704,
+   "request_sha256": "8dc02262fcef62b2c2dbd5d66faf014a9fc010d468e60be763db91bfeb109ca6",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 0,
+   "ms": 1325.42,
+   "tokens": 6048,
+   "state_chars": 3704,
+   "request_sha256": "8347a5e822123ef600c81d0d1ad68dfdabefbb5e640c836138d6c0ae7b5b8865",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    },
+    "team": {
+     "billing": 0.13307605199141795,
+     "technical": 0.3542795012270021,
+     "shipping": 0.5126444467815799
+    },
+    "urgency": {
+     "0": 0.30491394730953986,
+     "1": 0.3667857094723327,
+     "2": 0.32830034321812746
+    },
+    "churn": {
+     "yes": 0.06591900120391736,
+     "no": 0.9340809987960826
+    },
+    "tone": {
+     "positive": 0.03945124491250345,
+     "neutral": 0.630358273241833,
+     "negative": 0.33019048184566335
+    },
+    "promised": {
+     "yes": 0.798408011218773,
+     "no": 0.20159198878122697
+    },
+    "topic": {
+     "billing": 0.09713633412768354,
+     "access": 0.03821152512922399,
+     "delivery": 0.5218206578981295,
+     "defect": 0.24921880123276785,
+     "other": 0.0936126816121952
+    },
+    "satisfaction": {
+     "0": 0.09780203089707676,
+     "1": 0.3982307184332726,
+     "2": 0.44491374928955446,
+     "3": 0.05414963092863525,
+     "4": 0.004903870451461061
+    },
+    "reference": {
+     "yes": 0.8355912713667298,
+     "no": 0.16440872863327016
+    },
+    "channel": {
+     "email": 0.4575728323933451,
+     "phone": 0.346822733289181,
+     "chat": 0.19560443431747385
+    },
+    "credited": {
+     "yes": 0.8466962404710787,
+     "no": 0.15330375952892128
+    },
+    "complexity": {
+     "0": 0.07895767622615271,
+     "1": 0.5197476625327143,
+     "2": 0.40129466124113294
+    },
+    "area": {
+     "payments": 0.013190847045308105,
+     "app": 0.7681486006778349,
+     "shipping": 0.1597521658868975,
+     "account": 0.05890838638995966
+    },
+    "deadline": {
+     "yes": 0.8537530242202145,
+     "no": 0.14624697577978552
+    },
+    "error": {
+     "yes": 0.8278348594555742,
+     "no": 0.17216514054442578
+    },
+    "next_step": {
+     "reply": 0.350559986655915,
+     "escalate": 0.49797674796024505,
+     "refund": 0.124579244338221,
+     "close": 0.02688402104561906
+    },
+    "duplicate_charge": {
+     "yes": 0.3191963409715533,
+     "no": 0.6808036590284468
+    },
+    "late_delivery": {
+     "yes": 0.7448895683358385,
+     "no": 0.2551104316641615
+    },
+    "damaged_item": {
+     "yes": 0.6848049431130693,
+     "no": 0.3151950568869307
+    },
+    "login_failure": {
+     "yes": 0.609067845373022,
+     "no": 0.39093215462697795
+    },
+    "workaround": {
+     "yes": 0.5230771154827493,
+     "no": 0.47692288451725073
+    },
+    "escalated": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "replacement": {
+     "yes": 0.3479315396890235,
+     "no": 0.6520684603109765
+    },
+    "cancel_order": {
+     "yes": 0.13082671247784325,
+     "no": 0.8691732875221567
+    },
+    "cancel_plan": {
+     "yes": 0.17216514054442567,
+     "no": 0.8278348594555743
+    },
+    "invoice_correction": {
+     "yes": 0.9272305636378643,
+     "no": 0.07276943636213573
+    },
+    "multiple_users": {
+     "yes": 0.10939928175372553,
+     "no": 0.8906007182462745
+    },
+    "data_export": {
+     "yes": 0.0756245134739995,
+     "no": 0.9243754865260005
+    },
+    "account_security": {
+     "yes": 0.4815335848713242,
+     "no": 0.5184664151286758
+    },
+    "price_change": {
+     "yes": 0.9133735171029751,
+     "no": 0.0866264828970249
+    },
+    "repeat_contact": {
+     "yes": 0.897595709885071,
+     "no": 0.10240429011492902
+    },
+    "follow_up": {
+     "yes": 0.6265150089762718,
+     "no": 0.37348499102372823
+    },
+    "resolved": {
+     "yes": 0.06071707320269448,
+     "no": 0.9392829267973055
+    },
+    "outage": {
+     "yes": 0.5046185732034129,
+     "no": 0.49538142679658714
+    },
+    "owner": {
+     "customer": 0.29657085809386513,
+     "support": 0.3193173528460115,
+     "specialist": 0.3841117890601234
+    },
+    "evidence": {
+     "logs": 0.05583154500526205,
+     "payment": 0.06841294310451121,
+     "tracking": 0.8757555118902267
+    },
+    "scope": {
+     "single": 0.5238240887406891,
+     "team": 0.2900234362892438,
+     "service": 0.18615247497006707
+    },
+    "remedy": {
+     "refund": 0.1401312777319099,
+     "fix": 0.22239390097270345,
+     "information": 0.6374748212953866
+    },
+    "stage": {
+     "new": 0.3686500859112861,
+     "investigating": 0.5140880974104424,
+     "resolved": 0.11726181667827155
+    },
+    "payment_state": {
+     "pending": 0.15679878718695628,
+     "captured": 0.08925356961855041,
+     "refunded": 0.7539476431944933
+    },
+    "contact_reason": {
+     "failure": 0.5304664169118299,
+     "change": 0.05996302333402867,
+     "question": 0.4095705597541414
+    },
+    "reply_style": {
+     "apology": 0.30927656547151905,
+     "instructions": 0.14235067317774094,
+     "confirmation": 0.54837276135074
+    },
+    "business_impact": {
+     "0": 0.14838985952151254,
+     "1": 0.15115681601915965,
+     "2": 0.7004533244593278
+    },
+    "frustration": {
+     "0": 0.15773520500138805,
+     "1": 0.5965151417337446,
+     "2": 0.24574965326486736
+    },
+    "resolution_progress": {
+     "0": 0.06234691753957793,
+     "1": 0.783494731274037,
+     "2": 0.15415835118638493
+    },
+    "clarity": {
+     "0": 0.1403339636152175,
+     "1": 0.4929031376218837,
+     "2": 0.36676289876289875
+    },
+    "financial_impact": {
+     "0": 0.35874414209957695,
+     "1": 0.15912935644460038,
+     "2": 0.48212650145582253
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.34856218420360235
+    },
+    "retention_risk": {
+     "0": 0.4436574508615093,
+     "1": 0.5336824186390179,
+     "2": 0.022660130499472776
+    },
+    "evidence_quality": {
+     "0": 0.15912935644460044,
+     "1": 0.48212650145582253,
+     "2": 0.35874414209957695
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 1,
+   "ms": 1331.52,
+   "tokens": 6048,
+   "state_chars": 3704,
+   "request_sha256": "4a870e3ab60b7c45c328b7d4bdf5e7e90df750ca1936d648c7789613476a3e37",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5,
+     "no": 0.5
+    },
+    "team": {
+     "billing": 0.13394470468261796,
+     "technical": 0.3500645666792117,
+     "shipping": 0.5159907286381703
+    },
+    "urgency": {
+     "0": 0.29713971237571984,
+     "1": 0.3708880479738298,
+     "2": 0.33197223965045025
+    },
+    "churn": {
+     "yes": 0.06649006833318417,
+     "no": 0.9335099316668158
+    },
+    "tone": {
+     "positive": 0.039867373911093754,
+     "neutral": 0.6138996008801463,
+     "negative": 0.34623302520875987
+    },
+    "promised": {
+     "yes": 0.798408011218773,
+     "no": 0.20159198878122697
+    },
+    "topic": {
+     "billing": 0.09651350006027766,
+     "access": 0.039761202215682606,
+     "delivery": 0.518474765902783,
+     "defect": 0.2522380907655216,
+     "other": 0.0930124410557351
+    },
+    "satisfaction": {
+     "0": 0.0978108110169331,
+     "1": 0.3982664693620238,
+     "2": 0.44495369115997035,
+     "3": 0.054154492179934115,
+     "4": 0.00481453628113865
+    },
+    "reference": {
+     "yes": 0.8330374676562268,
+     "no": 0.16696253234377323
+    },
+    "channel": {
+     "email": 0.46084279557695024,
+     "phone": 0.3493012405099026,
+     "chat": 0.18985596391314719
+    },
+    "credited": {
+     "yes": 0.8454933651605432,
+     "no": 0.1545066348394568
+    },
+    "complexity": {
+     "0": 0.08168692744435743,
+     "1": 0.5182075357605653,
+     "2": 0.40010553679507727
+    },
+    "area": {
+     "payments": 0.012973867344264776,
+     "app": 0.7625244401482251,
+     "shipping": 0.16153952105610325,
+     "account": 0.06296217145140688
+    },
+    "deadline": {
+     "yes": 0.8525958793746765,
+     "no": 0.1474041206253235
+    },
+    "error": {
+     "yes": 0.8225046780980902,
+     "no": 0.17749532190190975
+    },
+    "next_step": {
+     "reply": 0.35090219585291044,
+     "escalate": 0.4984628622617302,
+     "refund": 0.12470085594476503,
+     "close": 0.025934085940594275
+    },
+    "duplicate_charge": {
+     "yes": 0.3272789451779945,
+     "no": 0.6727210548220055
+    },
+    "late_delivery": {
+     "yes": 0.7518473250823531,
+     "no": 0.24815267491764692
+    },
+    "damaged_item": {
+     "yes": 0.6887789982679365,
+     "no": 0.31122100173206346
+    },
+    "login_failure": {
+     "yes": 0.6134578066201318,
+     "no": 0.38654219337986817
+    },
+    "workaround": {
+     "yes": 0.5322859469928101,
+     "no": 0.46771405300718993
+    },
+    "escalated": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "replacement": {
+     "yes": 0.3521347064559981,
+     "no": 0.6478652935440019
+    },
+    "cancel_order": {
+     "yes": 0.13188069508421987,
+     "no": 0.8681193049157802
+    },
+    "cancel_plan": {
+     "yes": 0.16696253234377328,
+     "no": 0.8330374676562267
+    },
+    "invoice_correction": {
+     "yes": 0.9269183053464756,
+     "no": 0.07308169465352443
+    },
+    "multiple_users": {
+     "yes": 0.11121233515856108,
+     "no": 0.8887876648414389
+    },
+    "data_export": {
+     "yes": 0.07692617221340349,
+     "no": 0.9230738277865965
+    },
+    "account_security": {
+     "yes": 0.4815335848713242,
+     "no": 0.5184664151286758
+    },
+    "price_change": {
+     "yes": 0.9119005390974976,
+     "no": 0.08809946090250242
+    },
+    "repeat_contact": {
+     "yes": 0.8967435050521195,
+     "no": 0.10325649494788047
+    },
+    "follow_up": {
+     "yes": 0.6436391002373855,
+     "no": 0.35636089976261454
+    },
+    "resolved": {
+     "yes": 0.06045419994012006,
+     "no": 0.93954580005988
+    },
+    "outage": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    },
+    "owner": {
+     "customer": 0.2880836992748479,
+     "support": 0.3101792429700422,
+     "specialist": 0.40173705775510987
+    },
+    "evidence": {
+     "logs": 0.053983173684010205,
+     "payment": 0.0673814810918919,
+     "tracking": 0.8786353452240978
+    },
+    "scope": {
+     "single": 0.5078087514083988,
+     "team": 0.3083652045294095,
+     "service": 0.18382604406219177
+    },
+    "remedy": {
+     "refund": 0.1467974013706442,
+     "fix": 0.23297330383250398,
+     "information": 0.6202292947968518
+    },
+    "stage": {
+     "new": 0.37050135671976026,
+     "investigating": 0.5072119772732082,
+     "resolved": 0.12228666600703154
+    },
+    "payment_state": {
+     "pending": 0.1571822265797754,
+     "captured": 0.08702640916314917,
+     "refunded": 0.7557913642570754
+    },
+    "contact_reason": {
+     "failure": 0.5229779418579015,
+     "change": 0.05803439846569984,
+     "question": 0.41898765967639856
+    },
+    "reply_style": {
+     "apology": 0.3084578115261762,
+     "instructions": 0.14462114513860813,
+     "confirmation": 0.5469210433352157
+    },
+    "business_impact": {
+     "0": 0.1464767231685745,
+     "1": 0.14920800630498443,
+     "2": 0.704315270526441
+    },
+    "frustration": {
+     "0": 0.15773520500138805,
+     "1": 0.5965151417337446,
+     "2": 0.24574965326486736
+    },
+    "resolution_progress": {
+     "0": 0.061956727637976716,
+     "1": 0.7931093630155749,
+     "2": 0.1449339093464483
+    },
+    "clarity": {
+     "0": 0.13777773893391956,
+     "1": 0.5021400570534041,
+     "2": 0.3600822040126764
+    },
+    "financial_impact": {
+     "0": 0.3566081484521476,
+     "1": 0.16413597297757673,
+     "2": 0.4792558785702756
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.3485621842036023
+    },
+    "retention_risk": {
+     "0": 0.43474059736518655,
+     "1": 0.5426406663807692,
+     "2": 0.022618736254044206
+    },
+    "evidence_quality": {
+     "0": 0.15424727436113253,
+     "1": 0.4849257205423282,
+     "2": 0.36082700509653926
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 2,
+   "ms": 1342.25,
+   "tokens": 6052,
+   "state_chars": 3704,
+   "request_sha256": "f2cb8dc550cf7e3fec701a4cb1cf26ba51479647be6f3c18fd9ab2c2208358ff",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.504618573203413,
+     "no": 0.49538142679658703
+    },
+    "team": {
+     "billing": 0.13566750666173605,
+     "technical": 0.3417050719647533,
+     "shipping": 0.5226274213735106
+    },
+    "urgency": {
+     "0": 0.29713971237571984,
+     "1": 0.3708880479738298,
+     "2": 0.33197223965045025
+    },
+    "churn": {
+     "yes": 0.06563518007200525,
+     "no": 0.9343648199279948
+    },
+    "tone": {
+     "positive": 0.04209058277308592,
+     "neutral": 0.6246225188085386,
+     "negative": 0.33328689841837544
+    },
+    "promised": {
+     "yes": 0.798408011218773,
+     "no": 0.20159198878122697
+    },
+    "topic": {
+     "billing": 0.09844558311943115,
+     "access": 0.038370472083092536,
+     "delivery": 0.5191732201671512,
+     "defect": 0.25257788892295846,
+     "other": 0.0914328357073667
+    },
+    "satisfaction": {
+     "0": 0.0944824968100468,
+     "1": 0.3847142256547858,
+     "2": 0.4627787001741881,
+     "3": 0.05328715094930671,
+     "4": 0.004737426411672821
+    },
+    "reference": {
+     "yes": 0.8330374676562268,
+     "no": 0.16696253234377323
+    },
+    "channel": {
+     "email": 0.46216174752352507,
+     "phone": 0.3438886249271249,
+     "chat": 0.19394962754934997
+    },
+    "credited": {
+     "yes": 0.8454933651605432,
+     "no": 0.1545066348394568
+    },
+    "complexity": {
+     "0": 0.07744261240554724,
+     "1": 0.5289628899309201,
+     "2": 0.3935944976635326
+    },
+    "area": {
+     "payments": 0.013253014083736211,
+     "app": 0.7576414160249114,
+     "shipping": 0.16654659312573653,
+     "account": 0.06255897676561598
+    },
+    "deadline": {
+     "yes": 0.8583064750110349,
+     "no": 0.14169352498896515
+    },
+    "error": {
+     "yes": 0.825185779515122,
+     "no": 0.17481422048487805
+    },
+    "next_step": {
+     "reply": 0.3594484593503939,
+     "escalate": 0.4920806914421699,
+     "refund": 0.1231042231276807,
+     "close": 0.025366626079755587
+    },
+    "duplicate_charge": {
+     "yes": 0.32727894517799455,
+     "no": 0.6727210548220055
+    },
+    "late_delivery": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "damaged_item": {
+     "yes": 0.6848049431130693,
+     "no": 0.3151950568869307
+    },
+    "login_failure": {
+     "yes": 0.6002353914612737,
+     "no": 0.3997646085387263
+    },
+    "workaround": {
+     "yes": 0.5276838861211791,
+     "no": 0.4723161138788209
+    },
+    "escalated": {
+     "yes": 0.7448895683358385,
+     "no": 0.2551104316641615
+    },
+    "replacement": {
+     "yes": 0.3479315396890236,
+     "no": 0.6520684603109764
+    },
+    "cancel_order": {
+     "yes": 0.1318806950842199,
+     "no": 0.86811930491578
+    },
+    "cancel_plan": {
+     "yes": 0.1708525694785686,
+     "no": 0.8291474305214314
+    },
+    "invoice_correction": {
+     "yes": 0.9266048131965984,
+     "no": 0.07339518680340162
+    },
+    "multiple_users": {
+     "yes": 0.11030254516921037,
+     "no": 0.8896974548307897
+    },
+    "data_export": {
+     "yes": 0.0749812943405996,
+     "no": 0.9250187056594004
+    },
+    "account_security": {
+     "yes": 0.4769228845172507,
+     "no": 0.5230771154827494
+    },
+    "price_change": {
+     "yes": 0.9119005390974976,
+     "no": 0.08809946090250242
+    },
+    "repeat_contact": {
+     "yes": 0.8967435050521197,
+     "no": 0.10325649494788025
+    },
+    "follow_up": {
+     "yes": 0.6393904177393307,
+     "no": 0.3606095822606693
+    },
+    "resolved": {
+     "yes": 0.0613789407318862,
+     "no": 0.9386210592681138
+    },
+    "outage": {
+     "yes": 0.49538142679658714,
+     "no": 0.5046185732034129
+    },
+    "owner": {
+     "customer": 0.2880836992748479,
+     "support": 0.3101792429700422,
+     "specialist": 0.40173705775510987
+    },
+    "evidence": {
+     "logs": 0.05298078810579716,
+     "payment": 0.06861950441095621,
+     "tracking": 0.8783997074832467
+    },
+    "scope": {
+     "single": 0.5153069952332427,
+     "team": 0.3015672673409185,
+     "service": 0.18312573742583874
+    },
+    "remedy": {
+     "refund": 0.1440487667802728,
+     "fix": 0.2244263383635396,
+     "information": 0.6315248948561876
+    },
+    "stage": {
+     "new": 0.36356031963466673,
+     "investigating": 0.5164439541035217,
+     "resolved": 0.1199957262618115
+    },
+    "payment_state": {
+     "pending": 0.15692757379367145,
+     "captured": 0.08850552848601947,
+     "refunded": 0.754566897720309
+    },
+    "contact_reason": {
+     "failure": 0.5045191970758918,
+     "change": 0.060280085287873375,
+     "question": 0.4352007176362348
+    },
+    "reply_style": {
+     "apology": 0.29756335567954906,
+     "instructions": 0.14476463977509155,
+     "confirmation": 0.5576720045453594
+    },
+    "business_impact": {
+     "0": 0.14920800630498443,
+     "1": 0.14647672316857446,
+     "2": 0.704315270526441
+    },
+    "frustration": {
+     "0": 0.15773520500138805,
+     "1": 0.5965151417337446,
+     "2": 0.24574965326486736
+    },
+    "resolution_progress": {
+     "0": 0.060560895728851434,
+     "1": 0.7896968523626429,
+     "2": 0.14974225190850582
+    },
+    "clarity": {
+     "0": 0.1334467640397603,
+     "1": 0.5046623254738007,
+     "2": 0.36189091048643895
+    },
+    "financial_impact": {
+     "0": 0.348176103657083,
+     "1": 0.16628707556505726,
+     "2": 0.4855368207778598
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.34856218420360235
+    },
+    "retention_risk": {
+     "0": 0.43474059736518655,
+     "1": 0.5426406663807692,
+     "2": 0.022618736254044206
+    },
+    "evidence_quality": {
+     "0": 0.15912935644460038,
+     "1": 0.48212650145582253,
+     "2": 0.35874414209957695
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 3,
+   "ms": 1325.16,
+   "tokens": 6048,
+   "state_chars": 3704,
+   "request_sha256": "cecb47aee62d20c527fc9ed51373baeb53e3946d8c8f5ad275dbc33fde25f19a",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5046185732034129,
+     "no": 0.49538142679658714
+    },
+    "team": {
+     "billing": 0.12887078230272866,
+     "technical": 0.3559980381889307,
+     "shipping": 0.5151311795083405
+    },
+    "urgency": {
+     "0": 0.30858899633721565,
+     "1": 0.37120648286382757,
+     "2": 0.32020452079895695
+    },
+    "churn": {
+     "yes": 0.06591900120391736,
+     "no": 0.9340809987960826
+    },
+    "tone": {
+     "positive": 0.04112371221379598,
+     "neutral": 0.6332453843350411,
+     "negative": 0.325630903451163
+    },
+    "promised": {
+     "yes": 0.798408011218773,
+     "no": 0.20159198878122697
+    },
+    "topic": {
+     "billing": 0.09231679170920375,
+     "access": 0.0391009592645779,
+     "delivery": 0.5241924922963525,
+     "defect": 0.2503515768645888,
+     "other": 0.09403817986527709
+    },
+    "satisfaction": {
+     "0": 0.09128124625630085,
+     "1": 0.3856696539932409,
+     "2": 0.46392799971939536,
+     "3": 0.05441557656276425,
+     "4": 0.004705523468298481
+    },
+    "reference": {
+     "yes": 0.8381136039892615,
+     "no": 0.1618863960107385
+    },
+    "channel": {
+     "email": 0.46169752926799495,
+     "phone": 0.33725457728261143,
+     "chat": 0.20104789344939364
+    },
+    "credited": {
+     "yes": 0.8430644852887734,
+     "no": 0.15693551471122658
+    },
+    "complexity": {
+     "0": 0.0774426124055472,
+     "1": 0.5289628899309201,
+     "2": 0.3935944976635326
+    },
+    "area": {
+     "payments": 0.013546408886512571,
+     "app": 0.7532479535317452,
+     "shipping": 0.1686683195912846,
+     "account": 0.0645373179904576
+    },
+    "deadline": {
+     "yes": 0.8537530242202145,
+     "no": 0.14624697577978552
+    },
+    "error": {
+     "yes": 0.825185779515122,
+     "no": 0.17481422048487805
+    },
+    "next_step": {
+     "reply": 0.35982784762577324,
+     "escalate": 0.49260006950602675,
+     "refund": 0.12097832986684366,
+     "close": 0.02659375300135634
+    },
+    "duplicate_charge": {
+     "yes": 0.3272789451779945,
+     "no": 0.6727210548220055
+    },
+    "late_delivery": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "damaged_item": {
+     "yes": 0.7005339219742415,
+     "no": 0.29946607802575853
+    },
+    "login_failure": {
+     "yes": 0.609067845373022,
+     "no": 0.39093215462697795
+    },
+    "workaround": {
+     "yes": 0.5276838861211791,
+     "no": 0.4723161138788209
+    },
+    "escalated": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "replacement": {
+     "yes": 0.3606095822606693,
+     "no": 0.6393904177393307
+    },
+    "cancel_order": {
+     "yes": 0.13508591006827209,
+     "no": 0.8649140899317279
+    },
+    "cancel_plan": {
+     "yes": 0.17481422048487802,
+     "no": 0.825185779515122
+    },
+    "invoice_correction": {
+     "yes": 0.9250187056594005,
+     "no": 0.07498129434059952
+    },
+    "multiple_users": {
+     "yes": 0.11212868347746624,
+     "no": 0.8878713165225338
+    },
+    "data_export": {
+     "yes": 0.07824833874429496,
+     "no": 0.9217516612557051
+    },
+    "account_security": {
+     "yes": 0.4769228845172507,
+     "no": 0.5230771154827494
+    },
+    "price_change": {
+     "yes": 0.9104049717347711,
+     "no": 0.08959502826522892
+    },
+    "repeat_contact": {
+     "yes": 0.897595709885071,
+     "no": 0.10240429011492902
+    },
+    "follow_up": {
+     "yes": 0.6308278015877136,
+     "no": 0.36917219841228643
+    },
+    "resolved": {
+     "yes": 0.06204754657178834,
+     "no": 0.9379524534282117
+    },
+    "outage": {
+     "yes": 0.5092363583157186,
+     "no": 0.49076364168428144
+    },
+    "owner": {
+     "customer": 0.29021792684485553,
+     "support": 0.31247716226800004,
+     "specialist": 0.3973049108871444
+    },
+    "evidence": {
+     "logs": 0.05568814162546328,
+     "payment": 0.07080572540209974,
+     "tracking": 0.8735061329724371
+    },
+    "scope": {
+     "single": 0.5089370494606738,
+     "team": 0.3033931296555123,
+     "service": 0.18766982088381395
+    },
+    "remedy": {
+     "refund": 0.1401312777319099,
+     "fix": 0.22239390097270345,
+     "information": 0.6374748212953866
+    },
+    "stage": {
+     "new": 0.3558466853193607,
+     "investigating": 0.5245134981332525,
+     "resolved": 0.11963981654738672
+    },
+    "payment_state": {
+     "pending": 0.15692757379367148,
+     "captured": 0.08850552848601947,
+     "refunded": 0.754566897720309
+    },
+    "contact_reason": {
+     "failure": 0.5218380081841584,
+     "change": 0.060087598462782,
+     "question": 0.4180743933530596
+    },
+    "reply_style": {
+     "apology": 0.307719065868054,
+     "instructions": 0.13649599023619788,
+     "confirmation": 0.5557849438957482
+    },
+    "business_impact": {
+     "0": 0.15708945587084408,
+     "1": 0.15421390118478492,
+     "2": 0.688696642944371
+    },
+    "frustration": {
+     "0": 0.1655881079804933,
+     "1": 0.603496781352824,
+     "2": 0.23091511066668258
+    },
+    "resolution_progress": {
+     "0": 0.06269753122321013,
+     "1": 0.7879007866923186,
+     "2": 0.1494016820844711
+    },
+    "clarity": {
+     "0": 0.14033396361521747,
+     "1": 0.4929031376218837,
+     "2": 0.36676289876289875
+    },
+    "financial_impact": {
+     "0": 0.3566081484521476,
+     "1": 0.16413597297757673,
+     "2": 0.4792558785702756
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.34856218420360235
+    },
+    "retention_risk": {
+     "0": 0.461776880055151,
+     "1": 0.515909179103157,
+     "2": 0.02231394084169198
+    },
+    "evidence_quality": {
+     "0": 0.15345485583159996,
+     "1": 0.5005937004102073,
+     "2": 0.3459514437581927
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 4,
+   "ms": 1346.35,
+   "tokens": 6056,
+   "state_chars": 3704,
+   "request_sha256": "be47b6b0cc224f46e8be6b8a16ec0f7487e1177918d8d2e09fa63cd755421caa",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5092363583157187,
+     "no": 0.4907636416842813
+    },
+    "team": {
+     "billing": 0.1297160924025006,
+     "technical": 0.3517737962555418,
+     "shipping": 0.5185101113419577
+    },
+    "urgency": {
+     "0": 0.30491394730953986,
+     "1": 0.3667857094723327,
+     "2": 0.32830034321812746
+    },
+    "churn": {
+     "yes": 0.0650709435624493,
+     "no": 0.9349290564375508
+    },
+    "tone": {
+     "positive": 0.04062576245450117,
+     "neutral": 0.6255776819383104,
+     "negative": 0.3337965556071884
+    },
+    "promised": {
+     "yes": 0.8013651951759724,
+     "no": 0.19863480482402762
+    },
+    "topic": {
+     "billing": 0.09833955322275599,
+     "access": 0.039406186192897805,
+     "delivery": 0.5186140494949225,
+     "defect": 0.25230585226456986,
+     "other": 0.09133435882485377
+    },
+    "satisfaction": {
+     "0": 0.09780644103620607,
+     "1": 0.39824867565622335,
+     "2": 0.44493381156757583,
+     "3": 0.05415207267144987,
+     "4": 0.004858999068544788
+    },
+    "reference": {
+     "yes": 0.8381136039892615,
+     "no": 0.1618863960107385
+    },
+    "channel": {
+     "email": 0.4691639182318251,
+     "phone": 0.33027665968033415,
+     "chat": 0.2005594220878407
+    },
+    "credited": {
+     "yes": 0.8454933651605432,
+     "no": 0.1545066348394568
+    },
+    "complexity": {
+     "0": 0.07631203464244028,
+     "1": 0.5212406080722849,
+     "2": 0.4024473572852748
+    },
+    "area": {
+     "payments": 0.01357881809176797,
+     "app": 0.7620570870409513,
+     "shipping": 0.16144051308581653,
+     "account": 0.0629235817814642
+    },
+    "deadline": {
+     "yes": 0.8525958793746765,
+     "no": 0.1474041206253235
+    },
+    "error": {
+     "yes": 0.8265143144632878,
+     "no": 0.17348568553671218
+    },
+    "next_step": {
+     "reply": 0.35655280890952595,
+     "escalate": 0.49721826242231604,
+     "refund": 0.11987722355515845,
+     "close": 0.02635170511299962
+    },
+    "duplicate_charge": {
+     "yes": 0.32322444497676306,
+     "no": 0.6767755550232369
+    },
+    "late_delivery": {
+     "yes": 0.7483844103298748,
+     "no": 0.2516155896701252
+    },
+    "damaged_item": {
+     "yes": 0.6727210548220054,
+     "no": 0.3272789451779946
+    },
+    "login_failure": {
+     "yes": 0.604660157290854,
+     "no": 0.395339842709146
+    },
+    "workaround": {
+     "yes": 0.5230771154827493,
+     "no": 0.47692288451725073
+    },
+    "escalated": {
+     "yes": 0.7518473250823531,
+     "no": 0.24815267491764692
+    },
+    "replacement": {
+     "yes": 0.3479315396890235,
+     "no": 0.6520684603109765
+    },
+    "cancel_order": {
+     "yes": 0.13401026586157738,
+     "no": 0.8659897341384226
+    },
+    "cancel_plan": {
+     "yes": 0.17216514054442567,
+     "no": 0.8278348594555743
+    },
+    "invoice_correction": {
+     "yes": 0.9266048131965984,
+     "no": 0.07339518680340162
+    },
+    "multiple_users": {
+     "yes": 0.1121286834774663,
+     "no": 0.8878713165225337
+    },
+    "data_export": {
+     "yes": 0.07758467593496929,
+     "no": 0.9224153240650307
+    },
+    "account_security": {
+     "yes": 0.47231611387882083,
+     "no": 0.5276838861211792
+    },
+    "price_change": {
+     "yes": 0.9119005390974976,
+     "no": 0.08809946090250242
+    },
+    "repeat_contact": {
+     "yes": 0.8992814412911091,
+     "no": 0.1007185587088909
+    },
+    "follow_up": {
+     "yes": 0.6265150089762718,
+     "no": 0.37348499102372823
+    },
+    "resolved": {
+     "yes": 0.06258732191001089,
+     "no": 0.9374126780899891
+    },
+    "outage": {
+     "yes": 0.4907636416842813,
+     "no": 0.5092363583157187
+    },
+    "owner": {
+     "customer": 0.29063822806543094,
+     "support": 0.3187647540531977,
+     "specialist": 0.39059701788137124
+    },
+    "evidence": {
+     "logs": 0.05391543266037049,
+     "payment": 0.06855178155451393,
+     "tracking": 0.8775327857851156
+    },
+    "scope": {
+     "single": 0.5163943101483784,
+     "team": 0.2966716857653915,
+     "service": 0.18693400408622995
+    },
+    "remedy": {
+     "refund": 0.14523111351279022,
+     "fix": 0.21806045960484677,
+     "information": 0.636708426882363
+    },
+    "stage": {
+     "new": 0.35425137318479677,
+     "investigating": 0.5221620282929095,
+     "resolved": 0.12358659852229376
+    },
+    "payment_state": {
+     "pending": 0.15925691302409753,
+     "captured": 0.08899337489610154,
+     "refunded": 0.7517497120798009
+    },
+    "contact_reason": {
+     "failure": 0.5229779418579015,
+     "change": 0.05803439846569984,
+     "question": 0.41898765967639856
+    },
+    "reply_style": {
+     "apology": 0.311577166891074,
+     "instructions": 0.14608366198243103,
+     "confirmation": 0.542339171126495
+    },
+    "business_impact": {
+     "0": 0.1522586255938993,
+     "1": 0.15509772116800616,
+     "2": 0.6926436532380946
+    },
+    "frustration": {
+     "0": 0.15915400721094453,
+     "1": 0.6018806972615566,
+     "2": 0.23896529552749893
+    },
+    "resolution_progress": {
+     "0": 0.06269753122321013,
+     "1": 0.7879007866923186,
+     "2": 0.1494016820844711
+    },
+    "clarity": {
+     "0": 0.13593530337546106,
+     "1": 0.4954251791377104,
+     "2": 0.3686395174868285
+    },
+    "financial_impact": {
+     "0": 0.3566081484521476,
+     "1": 0.16413597297757673,
+     "2": 0.4792558785702756
+    },
+    "effort": {
+     "0": 0.23214696617659658,
+     "1": 0.419290849619801,
+     "2": 0.34856218420360235
+    },
+    "retention_risk": {
+     "0": 0.43455731802532865,
+     "1": 0.5424118981826367,
+     "2": 0.02303078379203455
+    },
+    "evidence_quality": {
+     "0": 0.15424727436113253,
+     "1": 0.4849257205423282,
+     "2": 0.36082700509653926
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 1000,
+   "nq": 50,
+   "rep": 5,
+   "ms": 1324.45,
+   "tokens": 6048,
+   "state_chars": 3704,
+   "request_sha256": "ed073808de07a5df33aa2f3061a19f4924161665d04cf1cc4062d61ae5f45eec",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.5092363583157187,
+     "no": 0.4907636416842813
+    },
+    "team": {
+     "billing": 0.13433667563984542,
+     "technical": 0.35763557552223785,
+     "shipping": 0.5080277488379167
+    },
+    "urgency": {
+     "0": 0.31280106202770014,
+     "1": 0.36262380612757034,
+     "2": 0.3245751318447296
+    },
+    "churn": {
+     "yes": 0.0650709435624493,
+     "no": 0.9349290564375508
+    },
+    "tone": {
+     "positive": 0.04183062030349654,
+     "neutral": 0.6207646864419495,
+     "negative": 0.337404693254554
+    },
+    "promised": {
+     "yes": 0.8028315045143476,
+     "no": 0.1971684954856524
+    },
+    "topic": {
+     "billing": 0.09467966626360262,
+     "access": 0.040473912019625746,
+     "delivery": 0.5181073921172973,
+     "defect": 0.25205936333587164,
+     "other": 0.09467966626360262
+    },
+    "satisfaction": {
+     "0": 0.09589146309465196,
+     "1": 0.39045126046500406,
+     "2": 0.4526420762746287,
+     "3": 0.056117473184480515,
+     "4": 0.0048977269812346316
+    },
+    "reference": {
+     "yes": 0.8368563619961248,
+     "no": 0.1631436380038752
+    },
+    "channel": {
+     "email": 0.4559099715967511,
+     "phone": 0.34556234830623167,
+     "chat": 0.19852768009701707
+    },
+    "credited": {
+     "yes": 0.8454933651605432,
+     "no": 0.1545066348394568
+    },
+    "complexity": {
+     "0": 0.07895767622615271,
+     "1": 0.5197476625327143,
+     "2": 0.40129466124113294
+    },
+    "area": {
+     "payments": 0.013068391866122298,
+     "app": 0.7610176124847159,
+     "shipping": 0.16422650192499982,
+     "account": 0.061687493724162115
+    },
+    "deadline": {
+     "yes": 0.8537530242202145,
+     "no": 0.14624697577978552
+    },
+    "error": {
+     "yes": 0.8278348594555742,
+     "no": 0.17216514054442578
+    },
+    "next_step": {
+     "reply": 0.3591924281778664,
+     "escalate": 0.49173018779378663,
+     "refund": 0.12301653734750675,
+     "close": 0.0260608466808403
+    },
+    "duplicate_charge": {
+     "yes": 0.3151950568869307,
+     "no": 0.6848049431130693
+    },
+    "late_delivery": {
+     "yes": 0.7448895683358385,
+     "no": 0.2551104316641615
+    },
+    "damaged_item": {
+     "yes": 0.6887789982679365,
+     "no": 0.31122100173206346
+    },
+    "login_failure": {
+     "yes": 0.604660157290854,
+     "no": 0.395339842709146
+    },
+    "workaround": {
+     "yes": 0.5276838861211791,
+     "no": 0.4723161138788209
+    },
+    "escalated": {
+     "yes": 0.7518473250823531,
+     "no": 0.24815267491764692
+    },
+    "replacement": {
+     "yes": 0.3521347064559981,
+     "no": 0.6478652935440019
+    },
+    "cancel_order": {
+     "yes": 0.13188069508421987,
+     "no": 0.8681193049157802
+    },
+    "cancel_plan": {
+     "yes": 0.17348568553671218,
+     "no": 0.8265143144632878
+    },
+    "invoice_correction": {
+     "yes": 0.9240519804031583,
+     "no": 0.07594801959684172
+    },
+    "multiple_users": {
+     "yes": 0.11030254516921037,
+     "no": 0.8896974548307897
+    },
+    "data_export": {
+     "yes": 0.07627279542353625,
+     "no": 0.9237272045764637
+    },
+    "account_security": {
+     "yes": 0.4815335848713242,
+     "no": 0.5184664151286758
+    },
+    "price_change": {
+     "yes": 0.9119005390974976,
+     "no": 0.08809946090250242
+    },
+    "repeat_contact": {
+     "yes": 0.8992814412911091,
+     "no": 0.1007185587088909
+    },
+    "follow_up": {
+     "yes": 0.6308278015877136,
+     "no": 0.36917219841228643
+    },
+    "resolved": {
+     "yes": 0.06151212097746327,
+     "no": 0.9384878790225367
+    },
+    "outage": {
+     "yes": 0.5092363583157187,
+     "no": 0.4907636416842813
+    },
+    "owner": {
+     "customer": 0.2927312443042918,
+     "support": 0.32106032202115153,
+     "specialist": 0.3862084336745566
+    },
+    "evidence": {
+     "logs": 0.05486561021662991,
+     "payment": 0.06848293320149844,
+     "tracking": 0.8766514565818717
+    },
+    "scope": {
+     "single": 0.5256151534964799,
+     "team": 0.29101508742987736,
+     "service": 0.18336975907364272
+    },
+    "remedy": {
+     "refund": 0.14344846747038406,
+     "fix": 0.22765841278010485,
+     "information": 0.6288931197495111
+    },
+    "stage": {
+     "new": 0.36944309610365467,
+     "investigating": 0.5151939620680188,
+     "resolved": 0.11536294182832656
+    },
+    "payment_state": {
+     "pending": 0.15718222657977537,
+     "captured": 0.08702640916314922,
+     "refunded": 0.7557913642570754
+    },
+    "contact_reason": {
+     "failure": 0.5246194825409857,
+     "change": 0.055077725280801924,
+     "question": 0.4203027921782124
+    },
+    "reply_style": {
+     "apology": 0.3100845708997397,
+     "instructions": 0.1401100077379732,
+     "confirmation": 0.5498054213622872
+    },
+    "business_impact": {
+     "0": 0.1460703245443058,
+     "1": 0.1515685226266017,
+     "2": 0.7023611528290925
+    },
+    "frustration": {
+     "0": 0.15773520500138805,
+     "1": 0.5965151417337446,
+     "2": 0.24574965326486736
+    },
+    "resolution_progress": {
+     "0": 0.06269753122321013,
+     "1": 0.7879007866923186,
+     "2": 0.1494016820844711
+    },
+    "clarity": {
+     "0": 0.13777773893391956,
+     "1": 0.502140057053404,
+     "2": 0.3600822040126763
+    },
+    "financial_impact": {
+     "0": 0.35028908892910265,
+     "1": 0.16122750050542461,
+     "2": 0.48848341056547284
+    },
+    "effort": {
+     "0": 0.22854004966493585,
+     "1": 0.4283134505069711,
+     "2": 0.343146499828093
+    },
+    "retention_risk": {
+     "0": 0.44384155559893695,
+     "1": 0.5339038810789307,
+     "2": 0.022254563322132336
+    },
+    "evidence_quality": {
+     "0": 0.15148227255434812,
+     "1": 0.4941588257574925,
+     "2": 0.3543589016881594
+    }
+   },
+   "problems": []
+  }
+ ],
+ "set_aside": [],
+ "errors": [],
+ "complete": true,
+ "busy": [],
+ "activity_errors": [],
+ "end": {
+  "time": "2026-10-29T18:20:25+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 9216.00M  used = 7838.69M  free = 1377.31M  (encrypted)",
+  "memory_free_pct": "70%",
+  "load_avg": [
+   2.373046875,
+   2.0810546875,
+   1.76318359375
+  ]
+ },
+ "memory": {
+  "self": {
+   "phys_footprint": 8102872864,
+   "lifetime_max_phys_footprint": 8102905632
+  },
+  "server": null,
+  "engine_peak_sampled": 7585988608,
+  "engine_now": {
+   "mps_driver_allocated": 7585988608,
+   "mps_current_allocated": 4344209408
+  }
+ },
+ "summary": {
+  "1000x1": {
+   "median_ms": 204.26,
+   "median_ci_ms": [
+    202.25,
+    218.48
+   ],
+   "n": 10,
+   "min_ms": 201.6,
+   "max_ms": 224.95,
+   "tokens": 1103
+  },
+  "1000x50": {
+   "median_ms": 1328.47,
+   "median_ci_ms": [
+    1324.45,
+    1346.35
+   ],
+   "n": 6,
+   "min_ms": 1324.45,
+   "max_ms": 1346.35,
+   "tokens": 6048
+  }
+ },
+ "stopped": {
+  "1000x1": "n",
+  "1000x50": "settled"
+ }
+}

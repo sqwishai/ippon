@@ -1,0 +1,1723 @@
+{
+ "engine": "d1-omni-2B-llama-Q8_0",
+ "campaign": {
+  "kit_commit": "136fefa920f9cc591a5fe5c52dcd3a36f522fd2e",
+  "library_commit": "136fefa920f9cc591a5fe5c52dcd3a36f522fd2e",
+  "generator_sha256": "28d704c69251dea8c62508ab9ee5ffa35224e4b4abdd15563ed462a1d1ea5725",
+  "date": "2026-11-19",
+  "machine": {
+   "chip": "Apple M5 Pro",
+   "architecture": "applegpu_g17s",
+   "memory_gib": 48,
+   "macos": "27.0.1",
+   "mlx": "0.32.4",
+   "ippon": "0.1.0.dev0",
+   "revision": "136fefa9",
+   "power": {
+    "mode": "2",
+    "ac": true
+   },
+   "kernel_rule": "m5-7"
+  },
+  "workloads": [
+   {
+    "name": "video",
+    "options": [
+     "--sizes",
+     "100",
+     "--questions",
+     "3",
+     "--media",
+     "video"
+    ],
+    "pairs": [
+     [
+      "d3-mini-omlx",
+      "d3-mini-ippon-serve"
+     ],
+     [
+      "d1-2B-llama-Q8_0",
+      "d1-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "d1-omni-2B-llama-Q8_0",
+      "d1-omni-2B-gguf-q8-ippon-serve"
+     ],
+     [
+      "d3-flash-omlx",
+      "d3-flash-ippon-serve"
+     ]
+    ],
+    "alone": []
+   }
+  ],
+  "samples": 32,
+  "min_samples": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0,
+  "close": 0.1,
+  "warmup": 2,
+  "rounds": 1,
+  "model_builds": {
+   "file": "MODEL_BUILDS.json",
+   "sha256": "fe1a4960b27e4a85c304cc312a39da952d3a371e2cb7bf0945575c7a5391086d"
+  }
+ },
+ "meta": {
+  "runtime": "llama.cpp llama-server (Metal)",
+  "llama_server_version": "version: 0.8.0-dev (build 11960, commit 8642541b2)\nbuilt with AppleClang 21.0.0.21000101 for Darwin arm64",
+  "server_cmd": [
+   "llama-server",
+   "-m",
+   "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "57458",
+   "-ngl",
+   "all",
+   "-c",
+   "32768",
+   "-b",
+   "32768",
+   "-ub",
+   "32768",
+   "-np",
+   "16",
+   "-kvu",
+   "--cache-ram",
+   "8192",
+   "--mmproj",
+   "~/models/d1-Omni-2B-GGUF/mmproj-d1-Omni-2B-Q8_0.gguf"
+  ],
+  "gguf": "~/models/d1-Omni-2B-GGUF/d1-Omni-2B-Q8_0.gguf",
+  "gguf_bytes": 1846241184,
+  "n_ctx": 32768,
+  "total_slots": 16,
+  "build_info": "b11960-8642541b2",
+  "model_architecture": {
+   "input_modalities": [
+    "text",
+    "image",
+    "audio",
+    "video"
+   ],
+   "output_modalities": [
+    "decisions"
+   ]
+  },
+  "prompt_cache": "on (default); every state starts with a unique ID",
+  "transport": "native HTTP"
+ },
+ "device": {
+  "chip": "Apple M5 Pro",
+  "memory_bytes": 51539607552,
+  "gpu_cores": "20",
+  "macos": "27.0.1",
+  "macos_build": "26A434",
+  "python": "3.12.14",
+  "python_executable": "benchmarks/envs/harness/bin/python",
+  "platform": "macOS-27.0.1-arm64-arm-64bit"
+ },
+ "start": {
+  "time": "2026-11-19T12:58:55+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by Safari, coreaudiod, caffeinate, powerd, caffeinate, caffeinate, runningboardd, runningboardd, runningboardd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 13312.00M  used = 12232.44M  free = 1079.56M  (encrypted)",
+  "memory_free_pct": "50%",
+  "load_avg": [
+   2.9619140625,
+   2.3671875,
+   2.392578125
+  ]
+ },
+ "config": {
+  "http_transport_retries": 2,
+  "http_retry_backoff_s": 0.05,
+  "n": 32,
+  "warmup": 2,
+  "sizes": [
+   100
+  ],
+  "questions": [
+   3
+  ],
+  "seed": 0,
+  "max_input": 32768,
+  "gap_s": 0.0,
+  "chars_per_token": 3.7,
+  "clients": 1,
+  "media": {
+   "kind": "video",
+   "size": [
+    1280,
+    720,
+    4
+   ]
+  },
+  "scenario": "fresh",
+  "min_n": 6,
+  "precision": 0.03,
+  "cell_seconds": 90.0
+ },
+ "skipped_sizes": {},
+ "after_load": {
+  "self": {
+   "phys_footprint": 19628560,
+   "lifetime_max_phys_footprint": 19628560
+  },
+  "server": {
+   "phys_footprint": 582798216,
+   "lifetime_max_phys_footprint": 582798216
+  },
+  "engine": {
+   "server_phys_footprint": 582798216
+  }
+ },
+ "requests": [
+  {
+   "phase": "warmup",
+   "size": 100,
+   "nq": 3,
+   "rep": 0,
+   "ms": 5328.39,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "3814e5b1bd25c4a7b0f232c0bd2b6b622e8d6faca418f2a1f5b7afa2977486db",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39057618821481777,
+     "no": 0.6094238117851822
+    },
+    "team": {
+     "billing": 0.07482755338885526,
+     "technical": 0.9206990088621052,
+     "shipping": 0.004473437749039554
+    },
+    "urgency": {
+     "0": 0.46309248887531174,
+     "1": 0.3430673947222132,
+     "2": 0.19384011640247506
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "warmup",
+   "size": 100,
+   "nq": 3,
+   "rep": 1,
+   "ms": 4318.38,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "c10c23a2c730120de4f8d9055e853477de3e0d9163c085daa1516181ceb39e40",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3948439681411221,
+     "no": 0.6051560318588779
+    },
+    "team": {
+     "billing": 0.0776342908651853,
+     "technical": 0.9179932909123982,
+     "shipping": 0.004372418222416358
+    },
+    "urgency": {
+     "0": 0.4474290938313418,
+     "1": 0.35858322464206027,
+     "2": 0.19398768152659807
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 9,
+   "ms": 4294.19,
+   "tokens": 11091,
+   "state_chars": 381,
+   "request_sha256": "cbdbae14bbfcb0b2bead1982f659be87e5e9fca26c5da74d8627849bf20a4933",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.4097650124859756,
+     "no": 0.5902349875140245
+    },
+    "team": {
+     "billing": 0.07250171366840272,
+     "technical": 0.9229244806791224,
+     "shipping": 0.004573805652475053
+    },
+    "urgency": {
+     "0": 0.4447296800737201,
+     "1": 0.35225948095388193,
+     "2": 0.203010838972398
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 13,
+   "ms": 4230.42,
+   "tokens": 11091,
+   "state_chars": 381,
+   "request_sha256": "cc69538e5991a1c93c35b169a83f0db20d438fde5eba22fa6390524e98c292e5",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.42199096993531837,
+     "no": 0.5780090300646816
+    },
+    "team": {
+     "billing": 0.07544214882533852,
+     "technical": 0.9199019794058182,
+     "shipping": 0.004655871768843137
+    },
+    "urgency": {
+     "0": 0.4520990900403784,
+     "1": 0.348875424346815,
+     "2": 0.1990254856128065
+    }
+   },
+   "problems": []
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 34,
+   "ms": 4107.07,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "9978903c4462076929489953c3ccaf03ada13df21892998a4dc3396822a0fac0",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.41349584740821105,
+     "no": 0.5865041525917889
+    },
+    "team": {
+     "billing": 0.07200238871440232,
+     "technical": 0.9235266843771559,
+     "shipping": 0.004470926908441885
+    },
+    "urgency": {
+     "0": 0.46268736208605077,
+     "1": 0.3450093655540371,
+     "2": 0.19230327235991204
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (53%)",
+    "process (70%)",
+    "process (64%)",
+    "process (74%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 35,
+   "ms": 4107.89,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "579ecf890f7bc3ae962080e9cf4a366471ecb1195ac875d429b146210358dd26",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3959466900937731,
+     "no": 0.6040533099062269
+    },
+    "team": {
+     "billing": 0.07470863106491622,
+     "technical": 0.9208178429785925,
+     "shipping": 0.004473525956491097
+    },
+    "urgency": {
+     "0": 0.44708666995810137,
+     "1": 0.3486924736294415,
+     "2": 0.20422085641245705
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (76%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 36,
+   "ms": 4134.21,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "f5e125c8713411ff7f94674adfbc41526964c88a822e3abd2ad0f47280c61382",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3866643222601476,
+     "no": 0.6133356777398524
+    },
+    "team": {
+     "billing": 0.07855449604126313,
+     "technical": 0.9169164320795422,
+     "shipping": 0.004529071879194797
+    },
+    "urgency": {
+     "0": 0.44642630882291795,
+     "1": 0.3569301269963584,
+     "2": 0.1966435641807237
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (92%)",
+    "process (64%)",
+    "process (69%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 37,
+   "ms": 4124.61,
+   "tokens": 11091,
+   "state_chars": 381,
+   "request_sha256": "331fddc8f2845e65cdf9aedd0682d7609a6318a1482b61becfc869431ddcac75",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.40121853024417065,
+     "no": 0.5987814697558294
+    },
+    "team": {
+     "billing": 0.07519054326220814,
+     "technical": 0.9202870649434348,
+     "shipping": 0.004522391794357027
+    },
+    "urgency": {
+     "0": 0.4485821716738814,
+     "1": 0.35287912559423007,
+     "2": 0.19853870273188848
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (69%)",
+    "process (95%)"
+   ]
+  }
+ ],
+ "set_aside": [
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 0,
+   "ms": 4401.04,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "0b64c44e19216111f778e90456dd1e420a383dd65d8c8dc543e4d724af3d60cb",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39100054704084997,
+     "no": 0.60899945295915
+    },
+    "team": {
+     "billing": 0.07247773190186997,
+     "technical": 0.922972729478916,
+     "shipping": 0.004549538619214105
+    },
+    "urgency": {
+     "0": 0.4461378378702294,
+     "1": 0.3516901599414233,
+     "2": 0.20217200218834733
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (108%)",
+    "process (115%)",
+    "process (127%)",
+    "process (140%)",
+    "process (162%)",
+    "process (191%)",
+    "process (60%)",
+    "process (78%)",
+    "process (84%)",
+    "process (96%)",
+    "process (63%)",
+    "process (59%)",
+    "process (70%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 1,
+   "ms": 4174.45,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "0de1c3ddc41b0404aba853dd11ea32a13630f6cb0e670e89cf922d3fb7d442a0",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39940614475316966,
+     "no": 0.6005938552468304
+    },
+    "team": {
+     "billing": 0.07498469648758015,
+     "technical": 0.9205863193800575,
+     "shipping": 0.004428984132362481
+    },
+    "urgency": {
+     "0": 0.4499643028886793,
+     "1": 0.35727080458365584,
+     "2": 0.19276489252766493
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (56%)",
+    "process (59%)",
+    "process (131%)",
+    "process (51%)",
+    "process (60%)",
+    "process (96%)",
+    "process (55%)",
+    "process (62%)",
+    "process (71%)",
+    "process (60%)",
+    "process (54%)",
+    "process (57%)",
+    "process (68%)",
+    "process (98%)",
+    "process (99%)",
+    "process (97%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 2,
+   "ms": 4826.01,
+   "tokens": 11088,
+   "state_chars": 381,
+   "request_sha256": "eca2017992ce9ab8ecca36983e732cacd99f963f326fd9bcece296abb78d8297",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.4172397916113329,
+     "no": 0.5827602083886672
+    },
+    "team": {
+     "billing": 0.07413481846923937,
+     "technical": 0.921088642593312,
+     "shipping": 0.004776538937448594
+    },
+    "urgency": {
+     "0": 0.4461923863527199,
+     "1": 0.3514613831607209,
+     "2": 0.2023462304865593
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (59%)",
+    "process (104%)",
+    "process (116%)",
+    "process (131%)",
+    "process (132%)",
+    "process (158%)",
+    "process (51%)",
+    "process (75%)",
+    "process (85%)",
+    "process (93%)",
+    "process (96%)",
+    "process (67%)",
+    "process (56%)",
+    "process (86%)",
+    "process (99%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 3,
+   "ms": 4692.44,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "78cd872801e35630053ec30543d4122fdd815a25558e38dd9d1f6b6881553ff9",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39318533542105466,
+     "no": 0.6068146645789454
+    },
+    "team": {
+     "billing": 0.0727789450867113,
+     "technical": 0.9226919972646392,
+     "shipping": 0.004529057648649418
+    },
+    "urgency": {
+     "0": 0.44682243030806845,
+     "1": 0.3517900240550643,
+     "2": 0.2013875456368671
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (109%)",
+    "process (113%)",
+    "process (116%)",
+    "process (118%)",
+    "process (126%)",
+    "process (131%)",
+    "process (148%)",
+    "process (75%)",
+    "process (77%)",
+    "process (94%)",
+    "process (53%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 4,
+   "ms": 4358.75,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "f4c91bf81325edf367d769621d2f9daed8ef7f2b6609018461315e7a92715a60",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.41672654784831825,
+     "no": 0.5832734521516818
+    },
+    "team": {
+     "billing": 0.07419122750680505,
+     "technical": 0.9213901856326234,
+     "shipping": 0.004418586860571594
+    },
+    "urgency": {
+     "0": 0.4499478798757756,
+     "1": 0.3573905280445278,
+     "2": 0.1926615920796964
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (123%)",
+    "process (129%)",
+    "process (132%)",
+    "process (155%)",
+    "process (57%)",
+    "process (63%)",
+    "process (66%)",
+    "process (82%)",
+    "process (51%)",
+    "process (73%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 5,
+   "ms": 4562.66,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "5670936b6705b44484add41995e39576728634744c6a911046aba2f66e44a8fc",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3963785521566782,
+     "no": 0.6036214478433217
+    },
+    "team": {
+     "billing": 0.07346193933499567,
+     "technical": 0.9217744094734538,
+     "shipping": 0.004763651191550511
+    },
+    "urgency": {
+     "0": 0.4518997332313947,
+     "1": 0.3538934837764075,
+     "2": 0.1942067829921978
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (103%)",
+    "process (108%)",
+    "process (126%)",
+    "process (132%)",
+    "process (66%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 6,
+   "ms": 4346.12,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "94d84587e41bcdd6361d9b156b2a3452848814054f6a45f59f26a440c357321b",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3979557697452005,
+     "no": 0.6020442302547995
+    },
+    "team": {
+     "billing": 0.07258791866664385,
+     "technical": 0.9229284546816164,
+     "shipping": 0.004483626651739753
+    },
+    "urgency": {
+     "0": 0.4478768480671374,
+     "1": 0.35006030311932423,
+     "2": 0.20206284881353834
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (117%)",
+    "process (126%)",
+    "process (168%)",
+    "process (69%)",
+    "process (90%)",
+    "process (64%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 7,
+   "ms": 4535.06,
+   "tokens": 11103,
+   "state_chars": 381,
+   "request_sha256": "f2bd42ec4bb99ae2989a435c4f82d168794d146bd2d4b990e18471bc917aea2d",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39819076621569843,
+     "no": 0.6018092337843015
+    },
+    "team": {
+     "billing": 0.07407975731306181,
+     "technical": 0.9214538906671028,
+     "shipping": 0.004466352019835305
+    },
+    "urgency": {
+     "0": 0.43883569492719565,
+     "1": 0.3595507981237028,
+     "2": 0.2016135069491016
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (100%)",
+    "process (102%)",
+    "process (104%)",
+    "process (109%)",
+    "process (115%)",
+    "process (125%)",
+    "process (130%)",
+    "process (168%)",
+    "process (54%)",
+    "process (59%)",
+    "process (79%)",
+    "process (80%)",
+    "process (90%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 8,
+   "ms": 4475.89,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "dc58b5a18c26756489fb439c814a66ed35c6c4034578cf1801d99657987d9def",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39483224780254694,
+     "no": 0.605167752197453
+    },
+    "team": {
+     "billing": 0.07428767581092963,
+     "technical": 0.9211521620145471,
+     "shipping": 0.004560162174523236
+    },
+    "urgency": {
+     "0": 0.45358768502553504,
+     "1": 0.3545320855050068,
+     "2": 0.1918802294694582
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (115%)",
+    "process (119%)",
+    "process (121%)",
+    "process (130%)",
+    "process (134%)",
+    "process (142%)",
+    "process (187%)",
+    "process (61%)",
+    "process (73%)",
+    "process (87%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 10,
+   "ms": 4462.85,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "4bdb73057e7fabf82677440f241b9c47e4a13144ae31dacb0d292acdca982371",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.38802114687960115,
+     "no": 0.6119788531203989
+    },
+    "team": {
+     "billing": 0.07462706479502387,
+     "technical": 0.9209471120695825,
+     "shipping": 0.004425823135393678
+    },
+    "urgency": {
+     "0": 0.4355812001087064,
+     "1": 0.35706201223168615,
+     "2": 0.20735678765960747
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (105%)",
+    "process (107%)",
+    "process (123%)",
+    "process (124%)",
+    "process (141%)",
+    "process (151%)",
+    "process (52%)",
+    "process (61%)",
+    "process (73%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 11,
+   "ms": 4330.11,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "df5b72b7a0267905e7085e3a08681f3ae8d078b4326828665e7c07b5dca5d94d",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3951707717272493,
+     "no": 0.6048292282727508
+    },
+    "team": {
+     "billing": 0.07621895349199354,
+     "technical": 0.9193932876163964,
+     "shipping": 0.004387758891610171
+    },
+    "urgency": {
+     "0": 0.4405900978310095,
+     "1": 0.35751717434624175,
+     "2": 0.20189272782274878
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (102%)",
+    "process (114%)",
+    "process (124%)",
+    "process (125%)",
+    "process (127%)",
+    "process (148%)",
+    "process (187%)",
+    "process (56%)",
+    "process (60%)",
+    "process (88%)",
+    "process (73%)",
+    "process (98%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 12,
+   "ms": 4325.15,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "4d3b5a26ab0bfdc2c33fb64e88460c4aa4e5e5888ef14cffcb1877eef3239ad7",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3966777943613921,
+     "no": 0.6033222056386078
+    },
+    "team": {
+     "billing": 0.07645370890407704,
+     "technical": 0.919003300798042,
+     "shipping": 0.004542990297880923
+    },
+    "urgency": {
+     "0": 0.45878434875088253,
+     "1": 0.34968584087296445,
+     "2": 0.19152981037615302
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (103%)",
+    "process (111%)",
+    "process (115%)",
+    "process (117%)",
+    "process (121%)",
+    "process (123%)",
+    "process (140%)",
+    "process (174%)",
+    "process (51%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 14,
+   "ms": 4385.25,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "65fe88a6cbf3fa12e6625af1e396e716ec0e26aaf79f7f6922ec729a636a9a83",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39947059143131336,
+     "no": 0.6005294085686866
+    },
+    "team": {
+     "billing": 0.0787574947491289,
+     "technical": 0.9167688674956558,
+     "shipping": 0.004473637755215366
+    },
+    "urgency": {
+     "0": 0.454682174754833,
+     "1": 0.3551173616275106,
+     "2": 0.19020046361765644
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (114%)",
+    "process (123%)",
+    "process (138%)",
+    "process (200%)",
+    "process (51%)",
+    "process (53%)",
+    "process (86%)",
+    "process (50%)",
+    "process (74%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 15,
+   "ms": 4492.62,
+   "tokens": 11103,
+   "state_chars": 381,
+   "request_sha256": "186ee17963bffb37f0d1bbc328d25bf6ac88e17a957cfd132701592d37d8be4d",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39411834405740215,
+     "no": 0.6058816559425979
+    },
+    "team": {
+     "billing": 0.0725108571099594,
+     "technical": 0.9229992414783843,
+     "shipping": 0.004489901411656284
+    },
+    "urgency": {
+     "0": 0.4452162212687353,
+     "1": 0.36002358439667326,
+     "2": 0.1947601943345914
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (112%)",
+    "process (115%)",
+    "process (116%)",
+    "process (121%)",
+    "process (140%)",
+    "process (168%)",
+    "process (55%)",
+    "process (56%)",
+    "process (71%)",
+    "process (72%)",
+    "process (87%)",
+    "process (100%)",
+    "process (53%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 16,
+   "ms": 4568.85,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "bf4075f40febd0f6a9a0b119c548e9b4227bbe59c861e60962a67c3dd741193a",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39880681580963184,
+     "no": 0.6011931841903682
+    },
+    "team": {
+     "billing": 0.07474793119797025,
+     "technical": 0.9205491004595716,
+     "shipping": 0.004702968342457965
+    },
+    "urgency": {
+     "0": 0.4484472885672213,
+     "1": 0.3539019643427051,
+     "2": 0.19765074709007358
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (102%)",
+    "process (110%)",
+    "process (114%)",
+    "process (117%)",
+    "process (136%)",
+    "process (185%)",
+    "process (53%)",
+    "process (60%)",
+    "process (80%)",
+    "process (60%)",
+    "process (65%)",
+    "process (68%)",
+    "process (108%)",
+    "process (77%)",
+    "process (96%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 17,
+   "ms": 4943.55,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "8b7c51f530126b1dfe5229d62177c88bb3f7c77f1c77dcae3877d356087fcee7",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.40931598298553634,
+     "no": 0.5906840170144636
+    },
+    "team": {
+     "billing": 0.07754480805345365,
+     "technical": 0.9180874773347071,
+     "shipping": 0.004367714611839178
+    },
+    "urgency": {
+     "0": 0.44486995863193374,
+     "1": 0.35303915049764273,
+     "2": 0.20209089087042356
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (104%)",
+    "process (109%)",
+    "process (58%)",
+    "process (64%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 18,
+   "ms": 4247.34,
+   "tokens": 11103,
+   "state_chars": 381,
+   "request_sha256": "0d197863de6f103509d6e3ace36c2e03581ee7bbeb055065fca2f6b87e1ab5ef",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3976149430036224,
+     "no": 0.6023850569963776
+    },
+    "team": {
+     "billing": 0.07470752898101114,
+     "technical": 0.9206132298299151,
+     "shipping": 0.004679241189073834
+    },
+    "urgency": {
+     "0": 0.44922232177132737,
+     "1": 0.35346499798209874,
+     "2": 0.19731268024657392
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (117%)",
+    "process (123%)",
+    "process (129%)",
+    "process (142%)",
+    "process (64%)",
+    "process (66%)",
+    "process (73%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 19,
+   "ms": 5078.41,
+   "tokens": 11103,
+   "state_chars": 381,
+   "request_sha256": "f405d206a1e870f3c42728dfd5ce22a01025b5f215222845182904018a4a8c7f",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.38965810598722755,
+     "no": 0.6103418940127725
+    },
+    "team": {
+     "billing": 0.07523751340432787,
+     "technical": 0.920273380030119,
+     "shipping": 0.0044891065655531465
+    },
+    "urgency": {
+     "0": 0.446030042736798,
+     "1": 0.35491317396993205,
+     "2": 0.19905678329326995
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (104%)",
+    "process (115%)",
+    "process (129%)",
+    "process (64%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 20,
+   "ms": 4281.29,
+   "tokens": 11094,
+   "state_chars": 381,
+   "request_sha256": "3b14339e5c893f2d79eec8775c090be023ed3608d65d2022379efdca6e9aafea",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39558245790812885,
+     "no": 0.6044175420918712
+    },
+    "team": {
+     "billing": 0.0756448184881026,
+     "technical": 0.9198096174503877,
+     "shipping": 0.004545564061509743
+    },
+    "urgency": {
+     "0": 0.4409300902900085,
+     "1": 0.358359553035149,
+     "2": 0.20071035667484247
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (108%)",
+    "process (113%)",
+    "process (114%)",
+    "process (119%)",
+    "process (139%)",
+    "process (187%)",
+    "process (50%)",
+    "process (60%)",
+    "process (64%)",
+    "process (89%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 21,
+   "ms": 4213.13,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "eefa5f770768161188f273720a9a6d682a6c4b2c47fcfefeaccd7c6a64868d68",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3923203107246313,
+     "no": 0.6076796892753686
+    },
+    "team": {
+     "billing": 0.07678986558598583,
+     "technical": 0.9185818585527694,
+     "shipping": 0.00462827586124467
+    },
+    "urgency": {
+     "0": 0.4535219659858471,
+     "1": 0.35316151411066016,
+     "2": 0.19331651990349275
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (60%)",
+    "process (69%)",
+    "process (59%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 22,
+   "ms": 4534.57,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "04758d19c79bc19d4ffc07119bafd52e0cc7470d22212a5034917f86ef31fe57",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39891550412427496,
+     "no": 0.6010844958757251
+    },
+    "team": {
+     "billing": 0.07671025553734633,
+     "technical": 0.9188378673460994,
+     "shipping": 0.004451877116554267
+    },
+    "urgency": {
+     "0": 0.44579444601534546,
+     "1": 0.36214041694202953,
+     "2": 0.19206513704262507
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (106%)",
+    "process (112%)",
+    "process (121%)",
+    "process (129%)",
+    "process (77%)",
+    "process (86%)",
+    "process (53%)",
+    "process (121%)",
+    "process (174%)",
+    "process (176%)",
+    "process (61%)",
+    "process (74%)",
+    "process (84%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 23,
+   "ms": 4492.97,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "353d2593ed34df74d9efb88680adaad266a83a38f086971ad877d232437efbe3",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39581933387844537,
+     "no": 0.6041806661215546
+    },
+    "team": {
+     "billing": 0.07159037509273251,
+     "technical": 0.9240030256292577,
+     "shipping": 0.004406599278009821
+    },
+    "urgency": {
+     "0": 0.4486747049075189,
+     "1": 0.3512587488786073,
+     "2": 0.2000665462138738
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (100%)",
+    "process (112%)",
+    "process (117%)",
+    "process (131%)",
+    "process (135%)",
+    "process (142%)",
+    "process (158%)",
+    "process (51%)",
+    "process (64%)",
+    "process (66%)",
+    "process (85%)",
+    "process (103%)",
+    "process (111%)",
+    "process (81%)",
+    "process (85%)",
+    "process (89%)",
+    "process (92%)",
+    "process (98%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 24,
+   "ms": 4240.0,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "d158380986ba9c954cdd8f64aa1e9c62d79f875e2e1ef6929a8159bae0040417",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.40282297363195146,
+     "no": 0.5971770263680485
+    },
+    "team": {
+     "billing": 0.07243268272193379,
+     "technical": 0.9230683407707981,
+     "shipping": 0.004498976507268093
+    },
+    "urgency": {
+     "0": 0.4518676852018375,
+     "1": 0.3507603298814887,
+     "2": 0.1973719849166738
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (107%)",
+    "process (65%)",
+    "process (94%)",
+    "process (92%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 25,
+   "ms": 4192.13,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "4b0ca2f6d2df04ccbfbfa8103cba025f69bdf4a0d1975fcd22a50517248504fd",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.40123796750118534,
+     "no": 0.5987620324988147
+    },
+    "team": {
+     "billing": 0.07395863610225041,
+     "technical": 0.9214838559030434,
+     "shipping": 0.004557507994706161
+    },
+    "urgency": {
+     "0": 0.44920528747429794,
+     "1": 0.35250211512091667,
+     "2": 0.19829259740478544
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (70%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 26,
+   "ms": 4477.74,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "0001c6fbd9fa367648b9997623c076cc65485882a033ce2172e6b5b8e876a231",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3990905889531929,
+     "no": 0.6009094110468072
+    },
+    "team": {
+     "billing": 0.07828775853023975,
+     "technical": 0.9170312925623978,
+     "shipping": 0.004680948907362368
+    },
+    "urgency": {
+     "0": 0.4535257740674506,
+     "1": 0.3527109843678619,
+     "2": 0.19376324156468758
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (101%)",
+    "process (104%)",
+    "process (107%)",
+    "process (110%)",
+    "process (144%)",
+    "process (167%)",
+    "process (171%)",
+    "process (53%)",
+    "process (72%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 27,
+   "ms": 4258.22,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "0f27c0bf220c697b16052a42832cb972ddbbcf9b5b051289f0da9960b3c2d7e9",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39080348118174146,
+     "no": 0.6091965188182585
+    },
+    "team": {
+     "billing": 0.0747378510429169,
+     "technical": 0.9207218421117339,
+     "shipping": 0.004540306845349174
+    },
+    "urgency": {
+     "0": 0.4455986201247426,
+     "1": 0.3555279401445216,
+     "2": 0.1988734397307358
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (104%)",
+    "process (75%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 28,
+   "ms": 4341.81,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "bb0f077d022905628d620b8728228e2d0389b233230e771bf64cf1b2acf23b89",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3981823220108181,
+     "no": 0.601817677989182
+    },
+    "team": {
+     "billing": 0.07617945245898214,
+     "technical": 0.9192899068872764,
+     "shipping": 0.004530640653741481
+    },
+    "urgency": {
+     "0": 0.44635356317573593,
+     "1": 0.35829632599187644,
+     "2": 0.19535011083238765
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (100%)",
+    "process (106%)",
+    "process (114%)",
+    "process (118%)",
+    "process (149%)",
+    "process (176%)",
+    "process (53%)",
+    "process (68%)",
+    "process (87%)",
+    "process (98%)",
+    "process (67%)",
+    "process (77%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 29,
+   "ms": 4130.88,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "c198af973cd064d0ffc9578ce5c250eaeaadc0c5220bb81046870372b232323b",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.40391186081862396,
+     "no": 0.596088139181376
+    },
+    "team": {
+     "billing": 0.0773570227643718,
+     "technical": 0.9179718674181006,
+     "shipping": 0.004671109817527738
+    },
+    "urgency": {
+     "0": 0.45343027358718996,
+     "1": 0.3493741694727574,
+     "2": 0.19719555694005275
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (53%)",
+    "process (56%)",
+    "process (60%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 30,
+   "ms": 4157.41,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "f4b09de2b1807ce66f2e74aa026cc53c70126b855c9c0658e9d71c30a449773b",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.39162567400393944,
+     "no": 0.6083743259960606
+    },
+    "team": {
+     "billing": 0.07029307373137686,
+     "technical": 0.9252713746165783,
+     "shipping": 0.004435551652044843
+    },
+    "urgency": {
+     "0": 0.4531073897805334,
+     "1": 0.3544441285706299,
+     "2": 0.19244848164883663
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (54%)",
+    "process (63%)",
+    "process (85%)",
+    "process (86%)",
+    "process (59%)",
+    "process (55%)",
+    "process (60%)",
+    "process (80%)",
+    "process (55%)",
+    "process (80%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 31,
+   "ms": 4344.81,
+   "tokens": 11100,
+   "state_chars": 381,
+   "request_sha256": "a6c58e51d0baba121496913702612497ac400d7cd1b229802ddd3f1eac6b5376",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.43044929274715493,
+     "no": 0.5695507072528451
+    },
+    "team": {
+     "billing": 0.08455445615758235,
+     "technical": 0.9106258891723896,
+     "shipping": 0.004819654670028046
+    },
+    "urgency": {
+     "0": 0.4389377090657887,
+     "1": 0.3494475562478442,
+     "2": 0.21161473468636705
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (101%)",
+    "process (106%)",
+    "process (112%)",
+    "process (118%)",
+    "process (58%)",
+    "process (63%)",
+    "process (85%)",
+    "process (93%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 32,
+   "ms": 4113.73,
+   "tokens": 11097,
+   "state_chars": 381,
+   "request_sha256": "a8ac153bfe726591ad5e480ecfcfc1595498568e2d32b590f57b1d645c3e9ed7",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.3954841896540974,
+     "no": 0.6045158103459026
+    },
+    "team": {
+     "billing": 0.07186763898648471,
+     "technical": 0.9236433565830983,
+     "shipping": 0.004489004430416932
+    },
+    "urgency": {
+     "0": 0.4500857901436698,
+     "1": 0.3443888919377597,
+     "2": 0.20552531791857054
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (89%)"
+   ]
+  },
+  {
+   "phase": "timed",
+   "size": 100,
+   "nq": 3,
+   "rep": 33,
+   "ms": 4094.56,
+   "tokens": 11103,
+   "state_chars": 381,
+   "request_sha256": "c7664a04517672b8abfda68fe0adcffe67ea2caf36d7bae1fbad754a34872989",
+   "power": "2/AC",
+   "answers": {
+    "refund": {
+     "yes": 0.4015224506702687,
+     "no": 0.5984775493297313
+    },
+    "team": {
+     "billing": 0.07580503407983072,
+     "technical": 0.9195807539952583,
+     "shipping": 0.004614211924910884
+    },
+    "urgency": {
+     "0": 0.45096714365395724,
+     "1": 0.35055940183292433,
+     "2": 0.19847345451311835
+    }
+   },
+   "problems": [],
+   "busy": [
+    "process (58%)"
+   ]
+  }
+ ],
+ "errors": [],
+ "complete": true,
+ "busy": [
+  "process (53%)",
+  "process (70%)",
+  "process (92%)",
+  "process (64%)",
+  "process (64%)",
+  "process (69%)",
+  "process (74%)",
+  "process (76%)",
+  "process (95%)"
+ ],
+ "activity_errors": [],
+ "end": {
+  "time": "2026-11-19T13:02:01+00:00",
+  "powermode": "2",
+  "pmset_g": "System-wide power settings:\n SleepDisabled\t\t1\nCurrently in use:\n standby              1\n Sleep On Power Button 1\n hibernatefile        /var/vm/sleepimage\n powernap             1\n networkoversleep     0\n disksleep            10\n sleep                0 (sleep prevented by coreaudiod, runningboardd, runningboardd, runningboardd, Safari, caffeinate, caffeinate, powerd)\n hibernatemode        3\n ttyskeepawake        1\n displaysleep         120\n tcpkeepalive         1\n powermode            2\n womp                 1",
+  "power_source": [
+   "Now drawing from 'AC Power'"
+  ],
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "swapusage": "total = 13312.00M  used = 12192.44M  free = 1119.56M  (encrypted)",
+  "memory_free_pct": "50%",
+  "load_avg": [
+   3.46630859375,
+   3.58349609375,
+   2.95361328125
+  ]
+ },
+ "memory": {
+  "self": {
+   "phys_footprint": 34849320,
+   "lifetime_max_phys_footprint": 34898496
+  },
+  "server": {
+   "phys_footprint": 2884801240,
+   "lifetime_max_phys_footprint": 2885112536
+  },
+  "engine_peak_sampled": 2884801240,
+  "engine_now": {
+   "server_phys_footprint": 2884801240
+  }
+ },
+ "summary": {
+  "100x3": {
+   "median_ms": 4129.41,
+   "median_ci_ms": [
+    4107.07,
+    4294.19
+   ],
+   "n": 6,
+   "min_ms": 4107.07,
+   "max_ms": 4294.19,
+   "tokens": 11091
+  }
+ },
+ "stopped": {
+  "100x3": "settled"
+ }
+}
