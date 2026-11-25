@@ -511,8 +511,9 @@ def remember(cache: HybridCache | None, r: Rows, snapshots: Sequence[Snapshots])
 # everything else the layer's graph depends on (its kind, the pass's shape and positions). Every layer of a kind then
 # replays one trace: Python builds a layer once per kind and pass shape, not once per layer, and the replay creates
 # the same kernels' arrays without running the layer's Python or rebuilding each kernel's source. The arithmetic is
-# the eager layer's, kernel for kernel (MLX fuses only elementwise ops, each rounded to its dtype as the eager layer
-# rounds it), so the outputs are the same bits; a test holds them equal. d1-omni-600M (M5 Pro), 143 tokens: the
+# the eager layer's, kernel for kernel, except that MLX fuses the GLU's chain of elementwise ops, whose last bits can
+# move: a test holds the outputs equal to fp32 rounding (4e-7 on Gemma 3's outputs of about 3). d1-omni-600M
+# (M5 Pro), 143 tokens: the
 # pass's graph built in 0.06 ms of CPU replayed against 0.40 ms eagerly (0.79 against 1.18 ms with its hand-overs'
 # encoding); a length seen for the first time costs about what building it eagerly does.
 

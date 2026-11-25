@@ -2,11 +2,10 @@
 
 ## Unreleased
 
-- **Fewer of ippon's own kernels** - The switches `glu`, `norm_rope`, `conv` and `delta_inputs` are gone. Remove them
-  from `IPPON_SWITCHES`, `--switch` and `switches=`, where ippon now refuses them as unknown. MLX's own operations do
-  that work, with the same fp32 arithmetic rounded once. The kernels saved little. On a 48 GB M4 Pro the GLU kernel
-  took 1 to 4% longer than MLX, and the others made no difference. On an M5 Pro the convolution kernel saved 1 to 3%
-  on d1-2B and d3-mini and the DeltaNet-input kernel 2 to 3% on d3-mini. `norm_rope` was off by default.
+- **Fewer of ippon's own kernels** - The switches `glu` and `norm_rope` are gone. Remove them from `IPPON_SWITCHES`,
+  `--switch` and `switches=`, where ippon now refuses them as unknown. MLX's own operations do that work, with the
+  same fp32 arithmetic rounded once. On a 48 GB M4 Pro the GLU kernel took 1 to 4% longer than MLX's, and
+  `norm_rope` was off by default and no faster.
 - **Q8_0 on M4** - The M4 unpacks Q8_0 matrices from 1,024 rows, as it does MXFP8 ones. On a 48 GB M4 Pro, d1-2B's and
   H2O-Lightning-4B's Q8_0 builds answer in 4 to 8% less time from 2,000 words, with the same answers to the last
   digit.

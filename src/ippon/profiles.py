@@ -68,7 +68,7 @@ class Switches:
     pipeline: Literal["off", "layers", "early"] = "layers"
     # each layer one replayed mx.compile trace per kind and pass shape (arch/common.py). Main-thread CPU per request
     # against "off" (M5 Pro, 100 words, 1 and 3 questions): d1-omni-600M 31% and 19% less, a ModernBERT-large encoder
-    # 20% and 16%, a Qwen3.5-0.8B 33% and 32%, d1-3B 32% and 29%; the same answers, bit for bit
+    # 20% and 16%, a Qwen3.5-0.8B 33% and 32%, d1-3B 32% and 29%; the same answers to fp32 rounding
     compile: Literal["off", "layers"] = "layers"
 
     def as_dict(self) -> dict[str, str]:

@@ -275,7 +275,8 @@ def test_the_measuring_ops_change_no_number(tmp_path: Path, family: str) -> None
 def test_compiled_layers_give_the_eager_layers_bits(tmp_path: Path, family: str, gpu: None) -> None:
     """With the compile switch, on the GPU: every pass the runtime makes (a prompt in chunks keeping its marks, the
     same state grown and resumed from what was kept, question branches off it, a padded batch) gives the eager
-    layers' outputs bit for bit."""
+    layers' outputs to fp32 rounding. MLX fuses the GLU's elementwise composition when it compiles, which moves the
+    last bits (4e-7 on Gemma 3's outputs of about 3); a wrong weight, position or cache block moves them by 1e-1."""
     m = EVERY[family](tmp_path)
 
     def answers(compiled: bool) -> list[np.ndarray]:
@@ -292,7 +293,7 @@ def test_compiled_layers_give_the_eager_layers_bits(tmp_path: Path, family: str,
 
     eager = answers(False)
     for want, got in zip(eager, answers(True), strict=True):
-        np.testing.assert_array_equal(got, want)
+        np.testing.assert_allclose(got, want, rtol=0, atol=1e-5 * max(1.0, float(np.abs(want).max())))
 
 
 # Cases name only construction and inputs; the numerical driver below owns every assertion.
