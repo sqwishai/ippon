@@ -113,7 +113,6 @@ class Ops:
     delta_kernel: bool = False  # Gated DeltaNet's q, k, v prepared in one kernel (kernels/delta.py)
     pipeline: int = 0  # hand the GPU the pass so far every this many layers, while Python builds the rest (0: off)
     pipeline_first: int = 0  # and once after this many layers too (0: no earlier hand-over)
-    norm_rope_kernel: bool = False  # attention's q/k norm and RoPE in one kernel (kernels/norm.py, `Ops.norm_rope`)
     attention_min_scores: int = 0  # attention_bounded from this many bytes of the scores MLX would hold (0: always)
     attention_bounded: bool = False  # evaluated MLX query blocks against every key; Passes runs layers eagerly
     # MLX runs its kernels as a chip with neural accelerators (`Profile.mlx_neural_accelerators`): which
@@ -188,20 +187,8 @@ class Ops:
     ) -> mx.array:
         """Attention's queries or keys [sequences, heads, n, width]: each head's `width` channels at `offset + head *
         stride` of proj's rows, through the per-head RMSNorm `w` (None: none) and `rope` at positions start.. (or
-        each row's `positions`). With the norm_rope switch, one kernel does all of it (kernels/norm.py); MLX's
-        composition otherwise, and for scaled frequencies."""
+        each row's `positions`), as MLX's composition."""
         b, n = proj.shape[0], proj.shape[1]
-        if (
-            self.norm_rope_kernel
-            and w is not None
-            and rope.freqs is None
-            and width % 64 == 0
-            and self._kernels_apply(proj)
-        ):
-            at = positions.astype(mx.int32) if positions is not None else None
-            return norm_kernels.norm_rope(
-                proj, offset, stride, heads, width, w, eps, start, at, rope.dims, rope.theta, rope.scale
-            )
         x = proj[..., offset : offset + heads * stride].reshape(b, n, heads, stride)[..., :width]
         if w is not None:
             x = self.norm(x, w, eps)
@@ -486,7 +473,6 @@ def for_switches(
         delta_kernel=switches.delta_inputs == "kernel",
         pipeline=PIPELINE_LAYERS if switches.pipeline in ("layers", "early") else 0,
         pipeline_first=1 if switches.pipeline == "early" else 0,
-        norm_rope_kernel=switches.norm_rope == "kernel",
         attention_min_scores=attention_kernels.LARGE_SCORES if switches.attention == "bounded" else 0,
         attention_bounded=switches.attention == "bounded",
         mlx_nax=mlx_nax,

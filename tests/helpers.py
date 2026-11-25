@@ -17,7 +17,6 @@ MLX_SWITCHES = Switches(
     gemm="mlx",
     gated_delta="mlx",
     delta_inputs="mlx",
-    norm_rope="mlx",
     attention="mlx",
     pipeline="off",
     compile="off",

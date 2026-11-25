@@ -12,7 +12,6 @@ channels.
 
 from __future__ import annotations
 
-import math
 from functools import cache
 from typing import Any
 
@@ -126,92 +125,3 @@ def gated_norm(o: mx.array, proj: mx.array, offset: int, w: mx.array, eps: float
     )
     result: mx.array = out[0]
     return result
-
-
-# Attention's queries or keys: each head's WIDTH channels at OFFSET + head * STRIDE of a projection's ROW-wide rows,
-# RMSNorm'd (fp32, times w, rounded once to T, as `ops.norm`) then rotate_half RoPE on the first DIMS channels at the
-# row's position, as MLX's mx.fast.rope computes it (inv_freq = exp2(-i / (DIMS / 2) * log2(base)), theta = scale *
-# position * inv_freq, metal::fast cos and sin, rounded once), written as [sequences, heads, n, WIDTH]: one kernel in
-# place of the norm, the transpose's copy and RoPE. meta = (n, the first row's position); with POSITIONS each row's
-# own position instead (a branch's rows).
-NORM_ROPE_SOURCE = metal_source("norm_rope.metal")
-
-
-@cache
-def _norm_rope(eps: float, log2base: float, scale: float) -> object:
-    source = (
-        NORM_ROPE_SOURCE.replace("EPS", f"{eps!r}f")
-        .replace("LOG2BASE", f"{log2base!r}f")
-        .replace("SCALE", f"{scale!r}f")
-    )
-    tag = f"{eps!r}_{log2base!r}_{scale!r}".replace(".", "_").replace("-", "m")
-    return mx.fast.metal_kernel(
-        name=f"ippon_norm_rope_{tag}",
-        input_names=["proj", "w", "meta", "positions"],
-        output_names=["y"],
-        source=source,
-    )
-
-
-def norm_rope(
-    proj: mx.array,
-    offset: int,
-    stride: int,
-    heads: int,
-    width: int,
-    w: mx.array,
-    eps: float,
-    start: int,
-    positions: mx.array | None,
-    dims: int,
-    theta: float,
-    scale: float = 1.0,
-) -> mx.array:
-    """[sequences, heads, n, width] queries or keys from proj [sequences, n, row] (see NORM_ROPE_SOURCE)."""
-    batch, n, row = proj.shape
-    key = (
-        "rope",
-        eps,
-        theta,
-        scale,
-        proj.dtype,
-        proj.shape,
-        offset,
-        stride,
-        heads,
-        width,
-        dims,
-        start,
-        positions is None,
-    )
-    found = _LAUNCHES.get(key)
-    if found is None:
-        count = width // 2
-        found = _LAUNCHES[key] = (
-            _norm_rope(float(eps), math.log2(theta), float(scale)),
-            {
-                "template": [
-                    ("T", proj.dtype),
-                    ("ROW", row),
-                    ("OFFSET", offset),
-                    ("STRIDE", stride),
-                    ("HEADS", heads),
-                    ("WIDTH", width),
-                    ("DIMS", dims),
-                    ("THREADS", count),
-                    ("POSITIONS", positions is not None),
-                ],
-                "grid": (count * batch * n, heads, 1),
-                "threadgroup": (count, 1, 1),
-                "output_shapes": [(batch, heads, n, width)],
-                "output_dtypes": [proj.dtype],
-            },
-            mx.array([n, start], dtype=mx.int32),
-        )
-    kernel, args, meta = found
-    out = kernel(inputs=[proj, w, meta, _NO_POSITIONS if positions is None else positions], **args)  # type: ignore[operator]
-    result: mx.array = out[0]
-    return result
-
-
-_NO_POSITIONS = mx.array([0], mx.int32)  # the positions input of a pass whose rows run on from `start`

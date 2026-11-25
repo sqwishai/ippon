@@ -187,30 +187,3 @@ def test_delta_inputs_equal_the_mlx_composition(dtype: mx.Dtype, hk: int, dk: in
         assert g.dtype == mx.float32, name
         assert g.shape == w.shape, name
         np.testing.assert_allclose(np.array(g), np.array(w), atol=1e-6, rtol=1e-5, err_msg=name)
-
-
-@pytest.mark.parametrize("dtype", [mx.float16, mx.bfloat16])
-@pytest.mark.parametrize(
-    ("width", "stride", "dims", "branch"),
-    [(128, 128, 128, False), (64, 64, 64, True), (256, 512, 64, True)],
-)
-def test_norm_rope_equals_the_norm_then_mlx_rope(
-    dtype: mx.Dtype, width: int, stride: int, dims: int, branch: bool
-) -> None:
-    """kernels/norm.norm_rope against the composition it replaces (Ops.norm_rope with the switch off): a dense
-    model's queries (stride = width), Qwen3.5's (each head's query then its gate: stride 2 x width, partial rotary),
-    a prefill from an offset and a branch's rows at their own positions."""
-    from ippon.arch.ops import Ops
-    from ippon.arch.rope import RoPE
-
-    mx.random.seed(5)
-    heads, n, offset = 3, 9, 32
-    proj = (mx.random.normal((1 if branch else 2, n, offset + heads * stride + 16)) * 3).astype(dtype)
-    w = mx.random.normal((width,)) * 0.5 + 1
-    positions = mx.array([4, 5, 9, 9, 10, 20, 21, 22, 23]) if branch else None
-    rope = RoPE(dims, 1e6)
-    plain = Ops(norm_kernel=False).norm_rope(proj, offset, stride, heads, width, w, 1e-6, 7, positions, rope)
-    fused = Ops(norm_rope_kernel=True).norm_rope(proj, offset, stride, heads, width, w, 1e-6, 7, positions, rope)
-    assert fused.shape == plain.shape
-    assert fused.dtype == plain.dtype == dtype
-    close(fused, plain, dtype)

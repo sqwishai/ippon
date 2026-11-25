@@ -201,7 +201,6 @@ Each source below has a production caller. The
 | `norm.metal`, `norm_add_store.metal`, `norm_add_sum.metal`, `norm_weight_at.metal` | every Mac | `norm.add_norm` → `Ops.norm`, `Ops.add_norm`, for decoders, encoders, vision towers and grouped norms |
 | `norm_gated.metal`, `conv_causal.metal`, `delta.metal` | every Mac | `norm.gated_norm`, `conv.causal_conv`, `delta.delta_inputs` → Qwen3.5's DeltaNet layers |
 | `conv_gated.metal` | every Mac | `conv.gated_conv` → LFM2 and LFM3 mixers |
-| `norm_rope.metal` | `--switch norm_rope=kernel` | `norm.norm_rope` → `Ops.norm_rope` |
 
 ippon's fused attention kernels were removed on 2 November 2026. End to end, they were never faster than MLX's
 attention. On the M5 Pro, pplx-decider flash at 4,096 tokens measured 0.89%, and an M1 at 1,000 and 4,000 words

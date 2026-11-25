@@ -61,7 +61,6 @@ class Switches:
     # Gated DeltaNet's q, k, v (normalized, fp32) in one kernel. A/B on a 2B Qwen3.5 hybrid (M5 Pro): 2-8% faster at
     # 20 to 2,000 words; exact on the M4's kernels
     delta_inputs: Literal["mlx", "kernel"] = "kernel"
-    norm_rope: Literal["mlx", "kernel"] = "mlx"  # attention's q/k norm and RoPE in one kernel
     attention: Literal["mlx", "bounded"] = "mlx"  # MLX's attention, or MLX's in evaluated query blocks (a memory mode)
     # evaluation started every few layers while the rest of the pass is built. A/B (M5 Pro): a 2B Qwen3.5 hybrid 3-8%
     # faster at 20-1,000 words, Qwen3 0.6B 3-15%, Gemma 3 270M 6-21%; d1-omni no difference. Models of fewer than
