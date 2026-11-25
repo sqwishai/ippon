@@ -13,7 +13,7 @@ newer and MLX 0.32, which installs with it.
 ### Measured
 
 Averaged over every model and workload, Ollama 0.40.13 takes 34% longer than ippon, oMLX 0.7.2 55% longer, llama.cpp
-b11960 3.4x as long and the creators' own code 4.1x as long. These numbers come from an Apple M5 Pro with 48 GB,
+b11960 3.4x as long and the creators' own code 4x as long. These numbers come from an Apple M5 Pro with 48 GB,
 macOS 27.0.1 and MLX 0.32.4, from 28 October to 24 November 2026. Each runtime ran in its own server over local HTTP,
 on the same requests and the same model builds. Each number is a median of up to 32 timed requests after 2 warm-ups, as each round stops once its median settles
 ([benchmarks](docs/benchmarks.md)).
