@@ -24,7 +24,7 @@ SIMD group and a split of K as parameters. So they fill the GPU where MLX's fixe
 | any M5 (base, Pro, Max, Ultra) | ippon's quantized kernel from 16 rows, with MXFP8 unpacked to full precision from 4,096 | on an M5 with 20 GPU cores (the M5 Pro), the thin kernel to 160 rows, a 64 × 32 tile to 384, then MLX's matmul or, for a down projection, a 32 × 64 tile. Other M5s use MLX's matmul |
 | M1 and M2 | MLX's quantized matmul, with MXFP8 unpacked to full precision from 224 | MLX's matmul |
 | M3 | MLX's quantized matmul | MLX's matmul |
-| M4, and an M5 before macOS 26.2 | MLX's quantized matmul, with MXFP8 unpacked to full precision from 1,024 | MLX's matmul |
+| M4, and an M5 before macOS 26.2 | MLX's quantized matmul, with MXFP8 and Q8_0 unpacked to full precision from 1,024 | MLX's matmul |
 
 Every Mac runs ippon's other kernels and its planning either way. These are the fused norm, GLU and convolution
 kernels and one reading of a state for all of a request's questions. They also include the last layer for the answer
@@ -122,7 +122,7 @@ every M5, and d1-2B's Q8_0 was up to 28% faster on the base M5.
 
 M1 to M4 run MLX's matmuls. ippon's quantized kernel and its fastest tiles use the M5's neural accelerators, which
 earlier chips do not have. No measurement on those chips shows another of its tiles helping there yet. The one
-exception is MXFP8 on M1, M2 and M4.
+exceptions are MXFP8 on M1, M2 and M4, and Q8_0 on M4.
 
 On M1 and M2, MLX's MXFP8 matmul took 34% (M1) and 28% (M2 Pro) longer on d1-2B's 1,100-token prompts than the same
 model in fp16. It took 44% and 16% longer than the model's Q8_0, which reads as many bytes. So from 224 rows, an
@@ -135,7 +135,10 @@ and 7% less time at 235 rows, hence the threshold of 224. They took 17 to 19% le
 less at 500, with answers identical to every digit.
 
 On a 48 GB M4 Pro, the same sweep on d1-2B's and d3-mini's MXFP8 builds took 18 to 28% longer at 256 rows. It took 2
-to 6% less from 1,024 rows and 10 to 14% less at 4,096, so the M4 unpacks from 1,024. The M3 keeps MLX's quantized
+to 6% less from 1,024 rows and 10 to 14% less at 4,096, so the M4 unpacks from 1,024. Q8_0 matrices on the same Mac
+(d1-2B and H2O-Lightning-4B, 12 shapes) took 1% longer unpacked at 512 rows and were faster on all 12 from 1,024, so
+the M4 unpacks Q8_0 from 1,024 rows too. Whole requests on both Q8_0 builds then took 4 to 8% less time from 2,000
+words and up to 4% less at 1,000, with the same answers to the last digit. The M3 keeps MLX's quantized
 matmul until an M3 is measured. `ippon suite` measures the choices on any Mac it runs on (its `ab-kernels` step), and
 `--switch gemm=mlx` turns them off.
 

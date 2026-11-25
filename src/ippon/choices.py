@@ -83,6 +83,13 @@ UNPACK_ROWS = 4096
 # quantized matmul. Keyed by profile, the paths a Mac runs: an M5 before macOS 26.2 runs the m4 profile and takes the
 # M4's rows (unmeasured there).
 OLDER_UNPACK_ROWS = {"m1": 224, "m2": 224, "m4": 1024}
+# Q8_0 (8-bit affine in groups of 32) on the same 48 GB M4 Pro (MLX 0.32.4, d1-2B's and H2O-Lightning-4B's 12 Q8_0
+# shapes): unpacked on every call, it took 1% longer than MLX's quantized matmul at 512 rows (median; 3 of 12
+# shapes faster) and was faster on all 12 from 1,024, a median 6% there, 10% at 2,048 and 13% at 4,096, so the M4
+# unpacks it from its MXFP8 rows. Whole requests there (fresh processes, 2 rounds, gemm=mlx against gemm=kernel, High
+# Power) took 4-8% less time from 2,000 words on both builds and 0-4% at 1,000, the same at 100, with answers identical
+# to every digit. On an M1, Q8_0 beat the same model at fp16 and stays MLX's.
+Q8_UNPACK = ("m4",)
 # Full precision (M5 Pro): the thin kernel was the fastest up to about 160 rows and lost to MLX's tile from 256 on
 # 2560- to 18432-row matrices; a 64 x 32 tile won from there to 384; MLX's tile was within 2% (median) above.
 THIN_ROWS = 160
@@ -225,14 +232,22 @@ def active(profile: Profile) -> bool:
 
 
 def older(profile: Profile) -> bool:
-    """Whether a profile unpacks its MXFP8 matrices (OLDER_UNPACK_ROWS): m1, m2 or m4 with the switch gemm=kernel."""
+    """Whether a profile unpacks its MXFP8 matrices (OLDER_UNPACK_ROWS), and on m4 its Q8_0 ones (Q8_UNPACK): m1, m2
+    or m4 with the switch gemm=kernel."""
     return profile.device is not None and profile.name in OLDER_UNPACK_ROWS and profile.switches.gemm == "kernel"
+
+
+def unpacks(w: QuantizedMatrix, profile: Profile) -> bool:
+    """Whether an `older` profile unpacks a packed matrix's format: MXFP8 on m1, m2 and m4, Q8_0 on m4 too."""
+    q8_0 = w.mode == "affine" and w.bits == 8 and w.group_size == 32
+    return w.mode == "mxfp8" or (q8_0 and profile.name in Q8_UNPACK)
 
 
 def summary(profile: Profile) -> str:
     """How the matmuls' kernels are chosen under `profile`, in a line (`ippon doctor`, `Decider.details`)."""
     if older(profile):
-        return f"MLX's own matmuls, MXFP8 unpacked to full precision from {OLDER_UNPACK_ROWS[profile.name]:,} rows"
+        formats = "MXFP8 and Q8_0" if profile.name in Q8_UNPACK else "MXFP8"
+        return f"MLX's own matmuls, {formats} unpacked to full precision from {OLDER_UNPACK_ROWS[profile.name]:,} rows"
     if (reason := _mlx_reason(profile)) is not None:
         return f"MLX's own matmuls ({reason})"
     device = profile.device
@@ -249,7 +264,7 @@ def attach(backbone: Layered, profile: Profile) -> dict[str, gemm.Bands[gemm.Til
         rows = OLDER_UNPACK_ROWS[profile.name]
         for layer in backbone.layers:
             for key, value in list(layer.items()):  # whole matrices only, as on the M5
-                if isinstance(value, QuantizedMatrix) and value.mode == "mxfp8" and staged(value):
+                if isinstance(value, QuantizedMatrix) and staged(value) and unpacks(value, profile):
                     layer[key] = replace(value, unpack_rows=rows)
         return {}
     if not active(profile):

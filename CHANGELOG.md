@@ -247,8 +247,10 @@ weights computed in fp32, Ollama moves up to 0.378 at 4,096 tokens and ippon mov
   to the last digit. Without the unpacking, MLX's MXFP8 matmul took 34% (M1) and 28% (M2 Pro) longer on d1-2B's
   prompts than the same model in fp16, though its 8-bit weights read as many bytes as Q8_0's. `--switch gemm=mlx`
   turns the unpacking off.
-- **MXFP8 on M4** - The M4 unpacks MXFP8 matrices from 1,024 rows, instead of the 224 rows of M1 and M2. On a 48 GB M4
-  Pro, unpacking took 18 to 28% longer than MLX's matmul at 256 rows and 10 to 14% less time at 4,096 rows.
+- **MXFP8 and Q8_0 on M4** - The M4 unpacks MXFP8 and Q8_0 matrices from 1,024 rows, instead of the 224 rows of M1
+  and M2. On a 48 GB M4 Pro, unpacking MXFP8 took 18 to 28% longer than MLX's matmul at 256 rows and 10 to 14% less
+  time at 4,096 rows. d1-2B's and H2O-Lightning-4B's Q8_0 builds answer in 4 to 8% less time from 2,000 words, with
+  the same answers to the last digit.
 - **Matmul tiles only where they were measured** - Full-precision matrices use ippon's tiles only on an M5 with the M5
   Pro's 20 GPU cores, and every other M5 runs MLX's matmul for them. On the base M5, the tiles made d3-mini,
   H2O-Lightning-4B, pplx-decider flash and Torchcast take 10 to 24% longer at 1,000 words and more. Quantized builds

@@ -142,8 +142,8 @@ def test_choices_reach_every_matrix_of_a_shape_on_the_m5_only(monkeypatch: pytes
 @pytest.mark.metal
 def test_m1_m2_and_m4_unpack_whole_mxfp8_matrices_from_their_rows(gpu: None) -> None:
     """On m1, m2 and m4 with gemm=kernel only a whole MXFP8 matrix is unpacked, from the profile's OLDER_UNPACK_ROWS,
-    and its product is MLX's quantized matmul's within fp16 rounding; gemm=mlx and m3 leave every matrix to MLX's
-    quantized matmul."""
+    and on m4 a Q8_0 one too, each product MLX's quantized matmul's within fp16 rounding; gemm=mlx and m3 leave every
+    matrix to MLX's quantized matmul."""
     w, q8 = matrix(128, 256, mode="mxfp8"), matrix(128, 256)
     backbone = Backbone()
     backbone.layers = [{"b": w, "q": q8, "joined": JoinedMatrix((w, q8))}]
@@ -159,15 +159,24 @@ def test_m1_m2_and_m4_unpack_whole_mxfp8_matrices_from_their_rows(gpu: None) -> 
     unpacked = quant.unpacked(x, layer["b"])
     assert isinstance(unpacked, mx.array)
     assert_mlx_close(x @ unpacked.T, expected, atol=2e-2, rtol=2e-2)
-    for chosen, expected_rows in (
-        (profile(M2, "m2", gemm="mlx"), 0),
-        (profile(M4, "m3"), 0),
-        (profile(M4, "m4"), 1024),
+    packed, scales, biases = mx.quantize(mx.random.normal((128, 256)).astype(mx.float16), group_size=32, bits=8)
+    q8_0 = QuantizedMatrix(packed, scales, biases, 8, 32, compute_dtype=mx.float16)  # GGUF's Q8_0 layout
+    for chosen, expected_rows, q8_0_rows in (
+        (profile(M2, "m2", gemm="mlx"), 0, 0),
+        (profile(M2, "m2"), rows, 0),
+        (profile(M4, "m3"), 0, 0),
+        (profile(M4, "m4"), 1024, 1024),
     ):
         plain = Backbone()
-        plain.layers = [{"b": w}]
+        plain.layers = [{"b": w, "q8_0": q8_0, "q": q8}]
         choices.attach(plain, chosen)
-        assert plain.layers[0]["b"].unpack_rows == expected_rows
+        assert [plain.layers[0][k].unpack_rows for k in ("b", "q8_0", "q")] == [expected_rows, q8_0_rows, 0]
+    assert "MXFP8 and Q8_0 unpacked" in choices.summary(profile(M4, "m4"))
+    x = mx.random.normal((1024, 256)).astype(mx.float16)
+    expected = mx.quantized_matmul(x, packed, scales, biases, transpose=True, group_size=32, bits=8)
+    unpacked = quant.unpacked(x, replace(q8_0, unpack_rows=1024))
+    assert isinstance(unpacked, mx.array)
+    assert_mlx_close(x @ unpacked.T, expected, atol=2e-2, rtol=2e-2)
 
 
 @pytest.mark.metal
