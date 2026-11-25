@@ -13,7 +13,7 @@ A profile above the chip is refused, since its kernels would not run. Each opera
 own, over the profile's (`Switches` lists them; "mlx" is always MLX's own operation, and a switch's first path the
 reference):
 
-    Decider.load(model, switches="glu=mlx,gemm=mlx")   IPPON_SWITCHES=glu=mlx   ippon run --switch glu=mlx
+    Decider.load(model, switches="conv=mlx,gemm=mlx")   IPPON_SWITCHES=conv=mlx   ippon run --switch conv=mlx
 
 attention=mlx remains the default. attention=bounded is an explicit memory mode for eligible large unmasked
 head-size-256 calls; it evaluates query blocks separately and runs all layers eagerly even when compile=layers
@@ -53,7 +53,6 @@ class Switches:
     matmuls, with m1, m2 and m4's MXFP8 matrices unpacked on long prompts."""
 
     add_norm: Literal["mlx", "kernel"] = "kernel"  # residual add + norm fused (kernels/norm.py)
-    glu: Literal["mlx", "kernel"] = "kernel"  # SwiGLU / GeGLU fused (kernels/glu.py)
     conv: Literal["mlx", "kernel"] = "kernel"  # the hybrids' short convolutions fused (kernels/conv.py)
     # MLX's own matmuls, or the kernels choices.py picks for each shape: kernels/gemm.py's and kernels/qgemm.py's
     # variants where they fill the GPU
@@ -81,7 +80,7 @@ PATHS: dict[str, tuple[str, ...]] = {name: get_args(kind) for name, kind in get_
 
 
 def overridden(base: Switches, text: str | None) -> Switches:
-    """`base` with IPPON_SWITCHES-style overrides ("add_norm=mlx,glu=mlx") applied; UnsupportedProfile for an
+    """`base` with IPPON_SWITCHES-style overrides ("add_norm=mlx,conv=mlx") applied; UnsupportedProfile for an
     unknown switch or path."""
     changes: dict[str, str] = {}
     for item in (text or "").split(","):
@@ -147,7 +146,7 @@ def native(device: Device) -> str | None:
 
 def resolve(override: str | None = None, device: Device | None = None, switched: str | None = None) -> Profile:
     """The profile to run: `override`, else IPPON_PROFILE, else the Mac's own (`native`); its switches with
-    IPPON_SWITCHES and then `switched` ("glu=mlx,gemm=mlx") applied. UnsupportedProfile for an unknown name,
+    IPPON_SWITCHES and then `switched` ("add_norm=mlx,gemm=mlx") applied. UnsupportedProfile for an unknown name,
     one above what the Mac runs, or an unknown switch."""
     device = device or detect()
     detected = native(device)

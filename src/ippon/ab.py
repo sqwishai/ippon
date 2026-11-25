@@ -1,6 +1,6 @@
 """Whether a change makes a model faster: two configurations timed in alternating fresh processes.
 
-    ippon bench MODEL --ab "--switch glu=mlx" "--switch glu=kernel" [--rounds 4] [bench's options]
+    ippon bench MODEL --ab "--switch add_norm=mlx" "--switch add_norm=kernel" [--rounds 4] [bench's options]
 
 An arm is extra `bench` options, after which any NAME=value words set environment variables for its process
 (`"MLX_METAL_FAST_SYNCH=1"`, `"--chunk 8192"`). Each arm runs `rounds` times in a new process (load and warm-up

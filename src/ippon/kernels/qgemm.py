@@ -38,8 +38,8 @@ import mlx.core as mx
 
 from . import gemm
 from ._source import metal_source
-from .glu import HEADER as ERF
-from .glu import activation_source
+from .activations import HEADER as ERF
+from .activations import activation_source
 
 QTile = tuple[int, int, int]  # BM (rows per threadgroup), SM (rows per SIMD group), S (K split)
 

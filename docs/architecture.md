@@ -523,10 +523,11 @@ also the hybrids' short convolutions (Gated DeltaNet's inputs with SiLU, LFM2's 
 ippon sets `arch/ops.py` on the backbone at load from the chip profile's switches. The MLX compositions are the
 reference.
 
-On every Apple GPU, the fused Metal kernels (`kernels/norm.py`, `kernels/glu.py`, `kernels/conv.py`) compute the
-same numbers in one read and one write. The compositions make up to 6 passes over the MLP's widest activation. Each
-layer carries its MLP output forward, so the residual add and the next norm are one kernel.
-`IPPON_SWITCHES="add_norm=mlx,glu=mlx"` turns the kernels off, for comparisons in fresh processes. The kernels are
+On every Apple GPU, the fused Metal kernels (`kernels/norm.py`, `kernels/conv.py`) compute the same numbers in one
+read and one write. Each layer carries its MLP output forward, so the residual add and the next norm are one kernel.
+The gated linear unit is MLX's composition, or the matmul's epilogue where `choices.py` picks a tile. A separate GLU
+kernel ran 1 to 3% slower than MLX's composition on an M4 Pro, so ippon has none.
+`IPPON_SWITCHES="add_norm=mlx,conv=mlx"` turns the kernels off, for comparisons in fresh processes. The kernels are
 tested against the compositions for every dtype and width. Whole models are tested against the numpy models with
 exact fp32 kernels.
 
@@ -536,13 +537,13 @@ ippon reads the chip from MLX's device info. This is the GPU family, where `appl
 the suffix is the tier. A profile, m1 to m5, picks each operation's code path once at load. You can force a lower
 profile with `profile=`, `IPPON_PROFILE` or `--profile`. ippon refuses a profile above the chip.
 
-You can set the path of any single operation over the profile's path with `switches="glu=mlx,gemm=mlx"`,
+You can set the path of any single operation over the profile's path with `switches="add_norm=mlx,gemm=mlx"`,
 `IPPON_SWITCHES` or `--switch`. `profiles.Switches` lists the switches, and "mlx" is always MLX's own operation. This
 is how every fused or chosen path is A/B'd.
 
 | Switch | Paths | Every profile runs |
 |---|---|---|
-| `add_norm`, `glu`, `conv` | `kernel`, `mlx` | the fused kernels (`kernels/norm.py`, `glu.py`, `conv.py`) |
+| `add_norm`, `conv` | `kernel`, `mlx` | the fused kernels (`kernels/norm.py`, `conv.py`) |
 | `gemm` | `kernel`, `mlx` | the kernels that `choices.py` picks at load for each matrix shape and band of rows from the chip ([kernels.md](kernels.md)). On m5, these are the neural accelerators' tile library and the quantized kernel (`kernels/gemm.py`, `kernels/qgemm.py`). The tile library fuses the GLU into the gate/up matmul, and it also runs MLX's thin kernel as tiles, which MLX itself runs only up to 64 rows. On m1 to m4, MLX's matmul, except that m1, m2 and m4 unpack MXFP8 matrices to full precision from 224, 224 and 1,024 rows |
 | `gated_delta` | `mlx`, `half` | MLX's chunked kernel with FP32 inputs (`ops.gated_delta`). `half` is an opt-in precision experiment |
 | `delta_inputs` | `kernel`, `mlx` | fused preparation of DeltaNet inputs |

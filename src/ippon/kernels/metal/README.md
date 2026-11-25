@@ -14,7 +14,7 @@ fragments and scalar literals that vary between compiled kernels, and it generat
 | `gemm_simd`, `gemm_glu_simd` | Dense products and the fused GLU on the SIMD-group tiles of M1 to M4 |
 | `qgemm`, `qgemm_staged` | Quantized product body and shared double-buffered loop |
 | `qgemm_affine`, `qgemm_fp`, `qgemm_*_loader` | Separate affine and floating-point quantization loaders |
-| `norm*`, `conv*`, `delta`, `glu` | Normalization, convolution, DeltaNet preparation and gated activations |
+| `norm*`, `conv*`, `delta` | Normalization, convolution and DeltaNet preparation |
 | `activation_*`, `erf` | Shared activation statements and the FP32 error-function helper |
 
 All names above have the `.metal` extension. Each Python wrapper replaces its body placeholders, such as

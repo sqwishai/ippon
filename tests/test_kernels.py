@@ -48,16 +48,6 @@ def test_a_strided_input_is_read_as_its_values() -> None:
     close(FUSED.norm(q, w, 1e-6), MLX.norm(q, w, 1e-6), mx.bfloat16)
 
 
-@pytest.mark.parametrize("dtype", [mx.float32, mx.float16, mx.bfloat16])
-@pytest.mark.parametrize("activation", ["silu", "gelu"])
-@pytest.mark.parametrize("width", [48, 10752])
-def test_glu_equals_the_mlx_composition(dtype: mx.Dtype, activation: str, width: int) -> None:
-    """A grid whose last threadgroup is partial (48 wide: 864 values) and a wide model's rows (10752)."""
-    mx.random.seed(width)
-    gu = (mx.random.normal((2, 9, 2 * width)) * 4).astype(dtype)
-    close(FUSED.glu(gu, activation), MLX.glu(gu, activation), dtype)
-
-
 def test_whole_models_match_the_numpy_models_with_and_without_the_fused_kernels() -> None:
     """In a process with M4-family kernels, whose fp32 matmuls are exact (the M5's round to about TF32)."""
     import json
@@ -115,7 +105,7 @@ def test_gated_norm_equals_the_mlx_composition(dtype: mx.Dtype, weight: mx.Dtype
 def test_no_kernel_is_compiled_again_for_another_length(monkeypatch: pytest.MonkeyPatch) -> None:
     """Every request has its own length; a length among a kernel's template constants would compile the kernel
     again for each (about 60 ms on an M5 Pro). Lengths and row counts go in as inputs."""
-    from ippon.kernels import conv, glu, norm
+    from ippon.kernels import conv, norm
 
     seen: dict[str, set[str]] = {}
 
@@ -126,16 +116,15 @@ def test_no_kernel_is_compiled_again_for_another_length(monkeypatch: pytest.Monk
 
         return kernel
 
-    for module, attr in ((glu, "_kernel"), (conv, "_causal"), (conv, "_gated")):
+    for module, attr in ((conv, "_causal"), (conv, "_gated")):
         real = getattr(module, attr)
         monkeypatch.setattr(module, attr, lambda *a, real=real, attr=attr: recording(attr, real(*a)))
     for length in (5, 9, 17):
-        mx.eval(glu.glu(mx.random.normal((1, length, 64)).astype(mx.float16), "silu"))
         x = mx.random.normal((1, length, 48)).astype(mx.float16)
         mx.eval(conv.causal_conv(x, mx.zeros((1, 3, 32), mx.float16), mx.random.normal((32, 4)), True))
         mx.eval(conv.gated_conv(x, None, mx.random.normal((16, 3))))
         mx.eval(norm.add_norm(mx.random.normal((length, 64)).astype(mx.float16), None, mx.ones((64,)), 1e-6, "rms"))
-    assert set(seen) == {"_kernel", "_causal", "_gated"}
+    assert set(seen) == {"_causal", "_gated"}
     assert all(len(templates) == 1 for templates in seen.values()), seen
 
 

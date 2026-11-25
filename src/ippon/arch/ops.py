@@ -49,7 +49,6 @@ from ..kernels import attention as attention_kernels
 from ..kernels import conv as conv_kernels
 from ..kernels import delta as delta_kernels
 from ..kernels import gemm
-from ..kernels import glu as glu_kernels
 from ..kernels import norm as norm_kernels
 from ..kernels.launches import Launches
 from ..profiles import Profile, Switches
@@ -106,7 +105,6 @@ def layer_norm(x: mx.array, w: mx.array, b: mx.array, eps: float) -> mx.array:
 @dataclass(frozen=True)
 class Ops:
     norm_kernel: bool = False
-    glu_kernel: bool = False
     conv_kernel: bool = False
     gemm_tiles: Mapping[str, gemm.Bands[gemm.Tile]] = field(
         default_factory=dict, hash=False
@@ -358,8 +356,6 @@ class Ops:
         return ((back * top[..., None]).astype(F32).sum(axis=1)).astype(y.dtype)
 
     def glu(self, gate_up: mx.array, activation: str = "silu") -> mx.array:
-        if self.glu_kernel and self._kernels_apply(gate_up):
-            return glu_kernels.glu(gate_up, activation)
         gate, up = mx.split(gate_up, 2, axis=-1)
         return (_activation(gate.astype(F32), activation) * up.astype(F32)).astype(gate_up.dtype)
 
@@ -407,7 +403,7 @@ class Ops:
 
 PIPELINE_LAYERS = 4
 MLX = Ops()
-FUSED = Ops(norm_kernel=True, glu_kernel=True, conv_kernel=True, delta_kernel=True)
+FUSED = Ops(norm_kernel=True, conv_kernel=True, delta_kernel=True)
 
 
 # The key/value head counts MLX's fused Gated DeltaNet kernels take, at 128-wide heads (MLX 0.32, profiles.FITTED_MLX,
@@ -484,7 +480,6 @@ def for_switches(
     knows of the MLX running (`Ops`)."""
     return Ops(
         norm_kernel=switches.add_norm == "kernel",
-        glu_kernel=switches.glu == "kernel",
         conv_kernel=switches.conv == "kernel",
         gemm_tiles=dict(gemm_tiles or {}),
         half_delta=switches.gated_delta == "half",

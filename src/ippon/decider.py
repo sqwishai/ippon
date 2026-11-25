@@ -186,11 +186,11 @@ class Decider:
         compute in the dtype auto would choose. A model below 8 bits, quantized here or published so, warns of its
         drift from the creator's answers (`drift.LowBitWarning`, `details["drift"]`, each response's `warnings`).
         `decider.precision` says what it computes in, `decider.details["weights"]` how its weights are stored.
-        `profile` forces a chip profile ("m1".."m5"), and `switches` sets single operations' paths ("glu=mlx,gemm=mlx",
-        `profiles.Switches`). After loading it answers a warm-up request and wires the model's memory
-        (`residency.pin`); `keep_awake`, by default, also sends the GPU a trivial command every that many seconds
-        for 5 minutes after each answer, which keeps the model's memory wired across the pauses an agent leaves
-        between calls (Kettei Dot, M5 Pro: 30 ms a short call 5 to 15 s after the last, 109 to 115 ms without);
+        `profile` forces a chip profile ("m1".."m5"), and `switches` sets single operations' paths
+        ("add_norm=mlx,gemm=mlx", `profiles.Switches`). After loading it answers a warm-up request and wires the model's
+        memory (`residency.pin`); `keep_awake`, by default, also sends the GPU a trivial command every that many seconds
+        for 5 minutes after each answer, which keeps the model's memory wired across the pauses an agent leaves between
+        calls (Kettei Dot, M5 Pro: 30 ms a short call 5 to 15 s after the last, 109 to 115 ms without);
         None sends none. `settings` is a bring-your-own model's `ippon.json` given in code (docs/bring-your-own.md),
         in place of a file beside its weights. `window` replaces the window a creator's code sets below what the
         model reads (a server's context, a training budget: H2O-Lightning's 40,944 tokens, its server's 40,960 less

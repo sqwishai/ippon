@@ -1513,8 +1513,8 @@ def common_options() -> Parser:
         "--accept-license", action="store_true", help="accept model licences before downloading new weights"
     )
     # the tuning options run unlisted (help=SUPPRESS): --profile forces a chip profile, m1..m5 (a lower one than this
-    # Mac's); --switch sets operations' code paths over the profile's (profiles.Switches: "glu=mlx,gemm=mlx"); --chunk
-    # is the tokens per pass of a long state; --settings a bring-your-own model's ippon.json, from anywhere
+    # Mac's); --switch sets operations' code paths over the profile's (profiles.Switches: "conv=mlx,gemm=mlx");
+    # --chunk is the tokens per pass of a long state; --settings a bring-your-own model's ippon.json, from anywhere
     # (docs/bring-your-own.md); --keep-awake sends the GPU a trivial command every SECONDS for AWAKE_WINDOW_S after
     # each answer (default PERIOD_S)
     loading.add_argument("--profile", help=argparse.SUPPRESS)

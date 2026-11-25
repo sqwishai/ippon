@@ -69,7 +69,7 @@ def arm(spec: str, cells: dict[tuple[str, int, int, float], list[float]]) -> ab.
 def test_the_verdict_follows_the_promotion_rule() -> None:
     key, other = ("fresh", 300, 1, 0.0), ("fresh", 1000, 1, 0.0)
     a = arm("", {key: ms(100), other: ms(200)})
-    faster = arm("--switch glu=mlx", {key: ms(90), other: ms(200)})
+    faster = arm("--switch add_norm=mlx", {key: ms(90), other: ms(200)})
     rows = ab.compare(a, faster)
     assert [r["verdict"] for r in rows] == ["faster", "same"]
     assert ab.verdict(rows) == "promote"
@@ -185,9 +185,9 @@ def test_the_revision_is_the_checkouts_or_the_one_its_wheel_recorded(
 def test_a_report_records_the_environment_without_its_secrets(monkeypatch: pytest.MonkeyPatch) -> None:
     """Results get shared: the API key a server reads must not land in them, while the switches that change speed do."""
     monkeypatch.setenv("IPPON_API_KEY", "sk-private")
-    monkeypatch.setenv("IPPON_SWITCHES", "glu=mlx")
+    monkeypatch.setenv("IPPON_SWITCHES", "add_norm=mlx")
     d = toy()
     spec = bench.Spec((20,), (1,), n=1, warmup=0)
     env = bench.report("toy", d, bench.run(d, spec), spec)["env"]
     assert env["IPPON_API_KEY"] == "<set>"
-    assert env["IPPON_SWITCHES"] == "glu=mlx"
+    assert env["IPPON_SWITCHES"] == "add_norm=mlx"

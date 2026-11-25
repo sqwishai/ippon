@@ -745,7 +745,7 @@ A model's adapter lists the arms that fit it (`compare_arms`).
 
 ## Comparing two configurations (`--ab`)
 
-    ippon bench MODEL --ab "--switch glu=mlx" "--switch glu=kernel" --rounds 4 --n 20
+    ippon bench MODEL --ab "--switch add_norm=mlx" "--switch add_norm=kernel" --rounds 4 --n 20
     ippon bench MODEL --ab "" "MLX_METAL_FAST_SYNCH=1"
 
 `--ab` times 2 configurations of ippon against each other. Each arm is a set of extra options, and `NAME=value` words

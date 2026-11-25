@@ -13,7 +13,6 @@ from ippon.profiles import Switches
 # every operation on MLX's own path: the reference a test turns single switches on over
 MLX_SWITCHES = Switches(
     add_norm="mlx",
-    glu="mlx",
     conv="mlx",
     gemm="mlx",
     gated_delta="mlx",

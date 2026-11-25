@@ -38,7 +38,7 @@ from typing import Any, TypeVar
 
 import mlx.core as mx
 
-from . import glu
+from . import activations
 from ._source import metal_source
 from .launches import Launches
 
@@ -139,8 +139,8 @@ def _simd_kernel(activation: str | None = None) -> object:
         name=f"ippon_glu_gemm_simd_{activation}",
         input_names=["x", "w", "dims"],
         output_names=["out"],
-        header=simd_header() + glu.HEADER,
-        source=SIMD_GLU_SOURCE.replace("ACTIVATION", glu.activation_source(activation, "v")),
+        header=simd_header() + activations.HEADER,
+        source=SIMD_GLU_SOURCE.replace("ACTIVATION", activations.activation_source(activation, "v")),
     )
 
 
@@ -157,24 +157,24 @@ def _kernel() -> object:
 
 @cache
 def _thin_kernel(activation: str | None = None) -> object:
-    act = glu.activation_source(activation, "v")
+    act = activations.activation_source(activation, "v")
     return mx.fast.metal_kernel(
         name="ippon_gemm_thin_xwt" if activation is None else f"ippon_glu_gemm_thin_{activation}",
         input_names=["x", "w", "dims"],
         output_names=["out"],
-        header=header() + ("" if activation is None else glu.HEADER),
+        header=header() + ("" if activation is None else activations.HEADER),
         source=THIN_SOURCE.replace("ACTIVATION", act),
     )
 
 
 @cache
 def _glu_kernel(activation: str) -> object:
-    act = glu.activation_source(activation, "v")
+    act = activations.activation_source(activation, "v")
     return mx.fast.metal_kernel(
         name=f"ippon_glu_gemm_{activation}",
         input_names=["x", "w", "dims"],
         output_names=["out"],
-        header=header() + glu.HEADER,
+        header=header() + activations.HEADER,
         source=GLU_SOURCE.replace("ACTIVATION", act),
     )
 

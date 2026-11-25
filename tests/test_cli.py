@@ -31,7 +31,7 @@ def test_check_reports_metal_initialization_failure_without_a_traceback(
 
 
 ALL_COMMON = [
-    "--profile", "m4", "--switch", "glu=mlx", "--precision", "fp32", "--chunk", "512", "--keep-awake", "2",
+    "--profile", "m4", "--switch", "add_norm=mlx", "--precision", "fp32", "--chunk", "512", "--keep-awake", "2",
     "--prefix-budget", "1G", "--literal-state", "--truncation", "error",
     "--window", "65536", "--answer-cache", "64",
 ]  # fmt: skip
@@ -53,7 +53,7 @@ def test_every_common_option_reaches_the_load_here_and_in_another_process() -> N
     assert set(options) <= set(inspect.signature(Decider.load).parameters)
     assert options == {
         "profile": "m4",
-        "switches": "glu=mlx",
+        "switches": "add_norm=mlx",
         "precision": "fp32",
         "chunk": 512,
         "keep_awake": 2.0,

@@ -189,17 +189,15 @@ This dispatch includes fused GLUs and unpacking. Each record includes the MLX ve
 ## Every Metal source
 
 The kernels are `.metal` files in `src/ippon/kernels/metal/`, and the Python launchers beside them assemble them.
-Each source below has a production caller, except `gemm_simd.metal` and `gemm_glu_simd.metal`. No kernel choice
-gives a SIMD-group tile, so only `scripts/measure_kernels.py` and `tests/test_gemm.py` run those 2. The
+Each source below has a production caller. The
 [audit of 29 October 2026](../references/kernel-audit/README.md) traced the sources of that day to their callers.
 
 | Sources | When it runs | Launcher and caller |
 |---|---|---|
 | `gemm.metal`, `gemm_glu.metal`, `gemm_thin.metal`, `gemm_tile_loop.metal` | an M5, at rows the rule gives a tile | `gemm.gemm`, `gemm.glu_gemm` → `Ops.mm`, `Ops.glu_mm` |
-| `gemm_simd.metal`, `gemm_glu_simd.metal` | when `scripts/measure_kernels.py` (on M1 to M4, or with `--simd`) or `tests/test_gemm.py` picks a SIMD-group tile | `gemm.gemm`, `gemm.glu_gemm` with a tile of `gemm.simd_candidates` |
+| `gemm_simd.metal`, `gemm_glu_simd.metal` | an M4 with 20 GPU cores, full-precision weights at 65 to 96 and 129 to 160 rows | `gemm.gemm`, `gemm.glu_gemm` → `Ops.mm`, `Ops.glu_mm` |
 | `qgemm.metal`, `qgemm_staged.metal`, `qgemm_affine.metal`, `qgemm_affine_loader.metal`, `qgemm_fp.metal`, `qgemm_fp_loader.metal` | an M5, quantized weights (4- to 8-bit affine, MXFP8, MXFP4 or NVFP4) from 16 rows | `qgemm.qmm`, `qgemm.glu_qmm` → `quant.mm`, `quant.glu_mm` |
-| `glu.metal` | every Mac | `glu.glu` → `Ops.glu`, for dense and expert MLPs, and `Ops.glu_mm` without a tile |
-| `activation_silu.metal`, `activation_gelu.metal`, `activation_gelu_tanh.metal`, `activation_identity.metal`, `erf.metal` | inside the GLU and matmul kernels | `glu.activation_source`, with SiLU (dense, Qwen3.5, LFM2 and LFM3), exact GELU (ModernBERT), tanh GELU (Gemma 3 and 4), none for a plain multiply |
+| `activation_silu.metal`, `activation_gelu.metal`, `activation_gelu_tanh.metal`, `activation_identity.metal`, `erf.metal` | inside the fused matmul kernels | `activations.activation_source`, with SiLU (dense, Qwen3.5, LFM2 and LFM3), exact GELU (ModernBERT), tanh GELU (Gemma 3 and 4), none for a plain multiply |
 | `norm.metal`, `norm_add_store.metal`, `norm_add_sum.metal`, `norm_weight_at.metal` | every Mac | `norm.add_norm` → `Ops.norm`, `Ops.add_norm`, for decoders, encoders, vision towers and grouped norms |
 | `norm_gated.metal`, `conv_causal.metal`, `delta.metal` | every Mac | `norm.gated_norm`, `conv.causal_conv`, `delta.delta_inputs` → Qwen3.5's DeltaNet layers |
 | `conv_gated.metal` | every Mac | `conv.gated_conv` → LFM2 and LFM3 mixers |

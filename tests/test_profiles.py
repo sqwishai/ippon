@@ -84,8 +84,8 @@ def test_a_profile_says_whether_mlx_runs_its_chips_kernels_too(monkeypatch: pyte
 
 def test_switches_given_to_load_override_the_environments(monkeypatch: pytest.MonkeyPatch) -> None:
     m5 = mac("applegpu_g17s", "Apple M5 Pro")
-    monkeypatch.setenv("IPPON_SWITCHES", "glu=mlx,conv=mlx")
+    monkeypatch.setenv("IPPON_SWITCHES", "add_norm=mlx,conv=mlx")
     p = resolve(device=m5, switched="conv=kernel,gemm=mlx")
-    assert (p.switches.glu, p.switches.conv, p.switches.gemm) == ("mlx", "kernel", "mlx")
+    assert (p.switches.add_norm, p.switches.conv, p.switches.gemm) == ("mlx", "kernel", "mlx")
     with pytest.raises(UnsupportedProfile, match="unknown switch"):
         resolve(device=m5, switched="attention=fast")

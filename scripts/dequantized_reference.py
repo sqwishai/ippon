@@ -52,7 +52,7 @@ def main() -> None:
         pin_memory=False,
         warm_up=False,
         strategy="reference",
-        switches="add_norm=mlx,glu=mlx,conv=mlx,gemm=mlx,delta_inputs=mlx,pipeline=off",
+        switches="add_norm=mlx,conv=mlx,gemm=mlx,delta_inputs=mlx,pipeline=off",
     ) as model:
         if args.stream_weights:
             model.backbone.ops = StreamingReference()
