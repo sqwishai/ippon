@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Fewer of ippon's own kernels** - The switches `glu`, `norm_rope`, `conv` and `delta_inputs` are gone. Remove them
+  from `IPPON_SWITCHES`, `--switch` and `switches=`, where ippon now refuses them as unknown. MLX's own operations do
+  that work, with the same fp32 arithmetic rounded once. The kernels saved little. On a 48 GB M4 Pro the GLU kernel
+  took 1 to 4% longer than MLX, and the others made no difference. On an M5 Pro the convolution kernel saved 1 to 3%
+  on d1-2B and d3-mini and the DeltaNet-input kernel 2 to 3% on d3-mini. `norm_rope` was off by default.
+- **Q8_0 on M4** - The M4 unpacks Q8_0 matrices from 1,024 rows, as it does MXFP8 ones. On a 48 GB M4 Pro, d1-2B's and
+  H2O-Lightning-4B's Q8_0 builds answer in 4 to 8% less time from 2,000 words, with the same answers to the last
+  digit.
+- **Short prompts on an M4 Pro** - From 65 rows, MLX's matmul on an M4 uses tiles of 64 rows, so a 65-token prompt
+  costs almost as much as a 128-token one. On an M4 with 20 GPU cores, ippon uses MLX's 32-row tiles at 65 to 96 and
+  129 to 160 rows. There, the matmuls of d1-2B, Kettei Core and Kettei Dot took 4 to 33% less time, and their fused
+  gate and up projections 20 to 28% less.
+
 ## 0.1.0 (25 November 2026)
 
 This is the first release of ippon. ippon runs decision models on Macs with Apple silicon, as their creators published
@@ -247,14 +260,8 @@ weights computed in fp32, Ollama moves up to 0.378 at 4,096 tokens and ippon mov
   to the last digit. Without the unpacking, MLX's MXFP8 matmul took 34% (M1) and 28% (M2 Pro) longer on d1-2B's
   prompts than the same model in fp16, though its 8-bit weights read as many bytes as Q8_0's. `--switch gemm=mlx`
   turns the unpacking off.
-- **MXFP8 and Q8_0 on M4** - The M4 unpacks MXFP8 and Q8_0 matrices from 1,024 rows, instead of the 224 rows of M1
-  and M2. On a 48 GB M4 Pro, unpacking MXFP8 took 18 to 28% longer than MLX's matmul at 256 rows and 10 to 14% less
-  time at 4,096 rows. d1-2B's and H2O-Lightning-4B's Q8_0 builds answer in 4 to 8% less time from 2,000 words, with
-  the same answers to the last digit.
-- **Short prompts on an M4 Pro** - From 65 rows, MLX's matmul on an M4 uses tiles of 64 rows, so a 65-token prompt
-  costs almost as much as a 128-token one. On an M4 with 20 GPU cores, ippon uses MLX's 32-row tiles at 65 to 96 and
-  129 to 160 rows. There, the matmuls of d1-2B, Kettei Core and Kettei Dot took 4 to 33% less time, and their fused
-  gate and up projections 20 to 28% less.
+- **MXFP8 on M4** - The M4 unpacks MXFP8 matrices from 1,024 rows, instead of the 224 rows of M1 and M2. On a 48 GB M4
+  Pro, unpacking took 18 to 28% longer than MLX's matmul at 256 rows and 10 to 14% less time at 4,096 rows.
 - **Matmul tiles only where they were measured** - Full-precision matrices use ippon's tiles only on an M5 with the M5
   Pro's 20 GPU cores, and every other M5 runs MLX's matmul for them. On the base M5, the tiles made d3-mini,
   H2O-Lightning-4B, pplx-decider flash and Torchcast take 10 to 24% longer at 1,000 words and more. Quantized builds
