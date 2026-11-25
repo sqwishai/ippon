@@ -26,9 +26,6 @@ The version is written in 2 places, and both change together. One is `version` i
 package's version and the one that the release workflow checks the tag against. The other is `__version__` in
 `src/ippon/__init__.py`, which `ippon --version`, `info` and every bench and suite result report.
 
-The package is currently installed from the private source repository. The PyPI steps below describe the release
-process, and the package is not yet published on PyPI.
-
 ## Before tagging
 
 1. Make sure that `main` passes CI on every supported Python, including installing and repairing the built wheel.
@@ -115,9 +112,6 @@ The release is a pull request like any other change, so CI runs on exactly what 
    section, from `scripts/release.py --notes`) and publish it.
 4. Run `uv run python scripts/release.py 0.3.0.dev0` (the next `.dev0` version and an empty `## Unreleased`) and
    open a pull request with it.
-
-The first release goes out as a release candidate first. `0.1.0rc1` exercises the whole workflow, PyPI included,
-while pip and uv skip it unless asked (`--pre`). `0.1.0` follows from the same notes.
 
 A tag is `v` and the version exactly, for example `v0.2.0` or `v0.2.0rc1`.
 
