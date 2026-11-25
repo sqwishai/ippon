@@ -14,8 +14,8 @@ Versions follow [PEP 440](https://peps.python.org/pep-0440/), as `MAJOR.MINOR.PA
 - A pre-release is `rcN` on the version it leads to, so `0.2.0rc1`, then `0.2.0rc2`, then `0.2.0`. pip and uv skip
   pre-releases unless asked (`pip install --pre ippon`, `uv pip install --prerelease allow ippon`, or
   the exact version, `ippon==0.2.0rc1`), and the workflow marks its GitHub release as a pre-release.
-- Between releases, `main` carries the next version with `.dev0` (`0.2.0.dev0`). A `.dev` version is never
-  tagged.
+- Between releases, `main` keeps the last released version, and changes collect under `## Unreleased` until the
+  next one.
 
 Integrations that wrap ippon (such as the Sqwish SDK's Mac backend) rely on 5 stable calls, so every ippon release
 must keep them working as they do: `Decider.load(model, precision=..., accept_license=...)`, `Decider.sqwish(body)`,
@@ -91,7 +91,7 @@ as it lands ([CONTRIBUTING.md](../CONTRIBUTING.md)). At a release, update it as 
    notes are the coming version's.
 2. Lines a caller has to act on go first, each saying what to do (a renamed option, a dropped command).
 3. Each line keeps its numbers and the machine they came from, and nothing is rounded into an adjective.
-4. A new, empty `## Unreleased` goes above it once the release is out, with the `.dev0` version bump.
+4. A new, empty `## Unreleased` goes above it once the release is out.
 
 ## Tagging
 
@@ -110,8 +110,7 @@ The release is a pull request like any other change, so CI runs on exactly what 
 
 3. When the workflow has finished, read over the draft release it opened (its text is the version's changelog
    section, from `scripts/release.py --notes`) and publish it.
-4. Run `uv run python scripts/release.py 0.3.0.dev0` (the next `.dev0` version and an empty `## Unreleased`) and
-   open a pull request with it.
+4. Add a new, empty `## Unreleased` at the top of `CHANGELOG.md`.
 
 A tag is `v` and the version exactly, for example `v0.2.0` or `v0.2.0rc1`.
 
