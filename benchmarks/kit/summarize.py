@@ -851,9 +851,10 @@ def scheduled_steps(folders: list[Path]) -> dict[Path, set[str] | None]:
 def _runtime_failure(run: dict, path: Path) -> dict:
     """A runtime whose own requests failed, which the campaign keeps as its result: why, and where it is recorded."""
     error = run["errors"][0]["error"]
+    said = " ".join([error, *run.get("server_errors", [])])  # the server's own log, where its reply says less
     meta = run.get("meta", {})
     return {
-        "reason": "out of memory" if "out of memory" in error.lower() else "failed",
+        "reason": "out of memory" if "out of memory" in said.lower() else "failed",
         "error": error[:400],
         "source": portable(path),
         "runtime": meta.get("display_runtime") or meta.get("runtime"),

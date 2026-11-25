@@ -20,6 +20,7 @@ import math
 import os
 import platform
 import queue
+import re
 import signal
 import statistics
 import struct
@@ -298,12 +299,29 @@ def most_clients(args) -> int:
 
 def server_log(args) -> Path:
     """Keep a native server's diagnostics beside its result, so later attempts cannot overwrite them."""
-    if args.log:
+    if getattr(args, "log", None):  # only the adapters that start a server take --log
         return Path(args.log)
     out = args.out or (json.loads(args.plan)[0]["out"] if args.plan else None)  # a plan's first workload names it
     if out:
         return Path(out).with_suffix(".server.log")
     return RESULTS / f"{args.engine}.server.log"
+
+
+# The last line of a Python exception in a server's log, "RuntimeError: MPS backend out of memory (...)": what the
+# server itself said when a request failed, which an HTTP 500's body ("Internal Server Error") may leave out
+RAISED = re.compile(r"^(?:[\w.]+\.)?\w*(?:Error|Exception)\b: .+")
+
+
+def raised_since(log: Path, start: int) -> list[str]:
+    """The distinct exception lines a server logged after byte `start` of its log, the home folder written as ~,
+    for a result that is published."""
+    if not log.is_file():
+        return []
+    with log.open("rb") as f:
+        f.seek(start)
+        text = f.read().decode(errors="replace")
+    lines = (line.strip().replace(str(Path.home()), "~") for line in text.splitlines())
+    return list(dict.fromkeys(line[:500] for line in lines if RAISED.match(line)))[:5]
 
 
 def check(answers: dict, qs: list[dict]) -> list[str]:
@@ -399,8 +417,9 @@ def run(args, decide, meta: dict, *, memory=None, server_pid: int | None = None,
     engine's own tokenizer; without it, the estimate of prompt_tokens_needed against --max-input.
     With --plan, each workload in turn on the runtime as loaded, one result file each; the last result is returned."""
     if args.plan:
+        log = {"log": str(server_log(args))} if server_pid is not None else {}  # the first workload names it
         results = [
-            run(argparse.Namespace(**{**vars(args), **workload, "plan": None}), decide, meta, memory=memory,
+            run(argparse.Namespace(**{**vars(args), **workload, **log, "plan": None}), decide, meta, memory=memory,
                 server_pid=server_pid, fits=fits)
             for workload in json.loads(args.plan)
         ]  # fmt: skip
@@ -413,6 +432,8 @@ def run(args, decide, meta: dict, *, memory=None, server_pid: int | None = None,
         return run_http(args, decide, meta, memory=memory, fits=fits, run=run)
     if server_pid is not None:
         meta = {**meta, "transport": "native HTTP"}
+        log = server_log(args)
+        logged = log.stat().st_size if log.is_file() else 0  # what this workload's server says starts here
     campaign_path = os.environ.get("IPPON_BENCH_CAMPAIGN")
     campaign = json.loads(Path(campaign_path).read_text()) if campaign_path else None
     sizes = [int(s) for s in args.sizes.split(",")]
@@ -619,6 +640,8 @@ def run(args, decide, meta: dict, *, memory=None, server_pid: int | None = None,
     result["summary"] = summary(timed, kept, counts)
     if args.min_n:
         result["stopped"] = {f"{s}x{c}": stopped.get((s, c), "n") for s, c in began}
+    if result["errors"] and server_pid is not None:
+        result["server_errors"] = raised_since(log, logged)
     result["complete"] = True
     out.write_text(dumps(result, indent=1))
     print(
