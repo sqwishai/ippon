@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 0.1.0 (25 November 2026)
 
 This is the first release of ippon. ippon runs decision models on Macs with Apple silicon, as their creators published

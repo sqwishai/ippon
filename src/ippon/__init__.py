@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from .registry import register
     from .schema import Answer, Question, Request, Result, parse_request
 
-__version__ = "0.1.0"
+__version__ = "0.2.0.dev0"
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())  # a library's log, shown where the caller configures it
 
