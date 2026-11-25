@@ -462,6 +462,8 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
   <img alt="Strands-Decider-12B: ippon beside AWS Strands' server on the same builds, for typical call and same context again" src="docs/assets/readme-strands-decider-12b-light.svg" width="830">
 </picture>
 
+With a growing context and with 16 clients at once, AWS Strands' server returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
+
 </details>
 
 <details>
@@ -556,6 +558,8 @@ for d1, and Ollama refuses video for every decision model.
   <img alt="d3-mini: ippon beside Ollama, oMLX and vllm-sr's server on the same builds, for typical call, same context again, context grown, 16 clients at once, an image, a video, growing images, same image again and same video again" src="docs/assets/readme-d3-mini-light.svg" width="830">
 </picture>
 
+With growing images, Ollama returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
+
 </details>
 
 <details>
@@ -565,6 +569,8 @@ for d1, and Ollama refuses video for every decision model.
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d3-flash-dark.svg">
   <img alt="d3-flash: ippon beside Ollama, oMLX and vllm-sr's server on the same builds, for typical call, same context again, context grown, 16 clients at once, an image, a video, growing images, same image again and same video again" src="docs/assets/readme-d3-flash-light.svg" width="830">
 </picture>
+
+With growing images, Ollama returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
 
 </details>
 

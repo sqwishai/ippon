@@ -1322,6 +1322,7 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
         for other, ours in workload["pairs"]:
             if other not in groups or (name, other) in newer:  # dropped from the kit, or measured again since
                 continue
+            group, model = groups[other]
             arms, failures = [], {}
             ran = [f for f in folders if scheduled[f] is None or f"{other}{suffix}" in scheduled[f]]
             for engine in (other, ours):
@@ -1331,8 +1332,8 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
                     run = json.loads(path.read_text()) if path.is_file() else {}
                     if not run.get("complete"):
                         break
-                    if run.get("errors"):
-                        failures[engine] = _runtime_failure(run, path)
+                    if run.get("errors"):  # named as a finished run of its runtime is (`_readme_runtime`)
+                        failures[engine] = {**_runtime_failure(run, path), "runtime": _readme_runtime(group, [run])}
                         break
                     _more_run(run, workload, portable(path))
                     found.append(
@@ -1340,7 +1341,6 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
                     )
                 arms.append(found)
             a, b = arms
-            group, model = groups[other]
             if failures and len(b if other in failures else a) == len(ran):
                 failed = next(iter(failures.values()))
                 done = b if other in failures else a
@@ -1919,6 +1919,44 @@ def wait_sentence(model: dict) -> str:
     return " ".join(sentences)
 
 
+def failed_rivals(report: dict) -> list[dict]:
+    """The other workloads' records whose rival failed while ippon answered every request, which the charts leave
+    out (`chart_models`)."""
+    return [r for r in (report.get("more") or {}).get("records", []) if r.get("failed") and r["ippon"] is not None]
+
+
+# A README panel's workload as the sentence under a chart names what a rival failed at (`failure_sentence`)
+FAILED_AT = {
+    "typical": "a typical call",
+    "repeat": "the same context again",
+    "grow": "a growing context",
+    "burst": "16 clients at once",
+    "image": "an image",
+    "pictures": "growing images",
+    "image-again": "the same image again",
+    "video": "a video",
+    "video-again": "the same video again",
+    "audio": "an audio clip",
+}
+
+
+def failure_sentence(report: dict, model: dict) -> str:
+    """One plain sentence for each rival that failed a README workload of a model's chart while ippon answered every
+    request: the chart leaves that pair out, so the sentence says what the rival failed at and on which Mac."""
+    found: dict[tuple[str, str, str], list[str]] = {}
+    for r in failed_rivals(report):
+        if family(r["model"]) == model["name"] and r["workload"] in FAILED_AT:
+            name = bare(short_runtime({"group": r["group"], "runtime": runtime_display(r)}))  # as the charts name it
+            mac = f"{r['machine']['memory_bytes'] / 2**30:g} GB {r['machine']['chip']}"
+            found.setdefault((name, r["failed"]["reason"], mac), []).append(FAILED_AT[r["workload"]])
+    did = {"out of memory": "ran out of memory"}
+    return " ".join(
+        f"With {' and with '.join(at)}, {name} {did.get(reason, 'returned errors')} on the {mac}, "
+        "while ippon answered every request."
+        for (name, reason, mac), at in found.items()
+    )
+
+
 def readme_chart_models(report: dict) -> list[dict]:
     """The README's model charts: each model measured against a rival, with its README panels only."""
     out = []
@@ -2003,6 +2041,8 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
                 "",
             ]
             if sentence := wait_sentence(model):
+                lines += [sentence, ""]
+            if sentence := failure_sentence(report, model):
                 lines += [sentence, ""]
             if model["name"] == "pplx-decider flash v1.3":
                 lines += [
@@ -2148,12 +2188,18 @@ def readme_tables(report: dict) -> str:
         lines += [f"- {model}" for model in dict.fromkeys(report.get("pending_pairs", {}).values())]
         lines += [f"- {name} on ippon" for name in report.get("pending_alone", [])]
         lines.append("")
-    if report.get("failed"):
+    if report.get("failed") or failed_rivals(report):
+        titles = {key: f"{title.lower()} ({what})" for key, title, what, _ in PANELS}
         lines += ["## Runtimes that failed", ""]
         lines += [
             f"- {record['model']} with {runtime_display(record)} - {record['reason']}. "
             f"[Recorded failure](https://github.com/sqwishai/ippon/blob/main/{record['source']})."
-            for record in report["failed"]
+            for record in report.get("failed", [])
+        ]
+        lines += [
+            f"- {r['model']} with {runtime_display(r)} - {r['failed']['reason']}, {titles[r['workload']]}. "
+            f"[Recorded failure](https://github.com/sqwishai/ippon/blob/main/{r['failed']['source']})."
+            for r in failed_rivals(report)
         ]
         lines.append("")
     if report["excluded_pairs"]:
