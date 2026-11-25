@@ -15,13 +15,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-hero-dark.svg">
-    <img alt="On average over every model and workload, time to answer the same requests on the same model builds, relative to ippon. Ollama takes 34% longer, oMLX 55% longer, llama.cpp 3.4x as long, the creators' own code 4.1x as long" src="docs/assets/readme-hero-light.svg" width="700">
+    <img alt="On average over every model and workload, time to answer the same requests on the same model builds, relative to ippon. Ollama takes 34% longer, oMLX 55% longer, llama.cpp 3.4x as long, the creators' own code 4x as long" src="docs/assets/readme-hero-light.svg" width="700">
   </picture>
 </p>
 
 <p align="center">Every runtime answers the same requests on the same model builds. Each model's chart is under <a href="#speed-">Speed</a>.</p>
 
-**Run decision models on your Mac, blazing fast,** down to **51 ms** text (14 ms on cached context), **39 ms** audio, **179 ms** image, and **828 ms** video on M5 Pro, **4.1x faster** on average than creators' code and **45% less memory** than Ollama (up to 68% less), with no PyTorch, text generation, or cloud API.
+**Run decision models on your Mac, blazing fast,** down to **51 ms** text (14 ms on cached context), **39 ms** audio, **179 ms** image, and **828 ms** video on M5 Pro, **4x faster** on average than creators' code and **45% less memory** than Ollama (up to 68% less), with no PyTorch, text generation, or cloud API.
 
 ### Try it with your agent
 
@@ -459,10 +459,10 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-12b-dark.svg">
-  <img alt="Strands-Decider-12B: ippon beside AWS Strands' server on the same builds, for typical call and same context again" src="docs/assets/readme-strands-decider-12b-light.svg" width="830">
+  <img alt="Strands-Decider-12B: ippon beside AWS Strands' server on the same builds, for typical call, same context again and 16 clients at once" src="docs/assets/readme-strands-decider-12b-light.svg" width="830">
 </picture>
 
-With a growing context and with 16 clients at once, AWS Strands' server returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
+On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned errors on 2 of its 20 requests, while ippon answered every request.
 
 </details>
 
@@ -558,7 +558,7 @@ for d1, and Ollama refuses video for every decision model.
   <img alt="d3-mini: ippon beside Ollama, oMLX and vllm-sr's server on the same builds, for typical call, same context again, context grown, 16 clients at once, an image, a video, growing images, same image again and same video again" src="docs/assets/readme-d3-mini-light.svg" width="830">
 </picture>
 
-With growing images, Ollama returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
+On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 5 of its 7 requests, while ippon answered every request.
 
 </details>
 
@@ -570,7 +570,7 @@ With growing images, Ollama returned errors on the 48 GB Apple M5 Pro, while ipp
   <img alt="d3-flash: ippon beside Ollama, oMLX and vllm-sr's server on the same builds, for typical call, same context again, context grown, 16 clients at once, an image, a video, growing images, same image again and same video again" src="docs/assets/readme-d3-flash-light.svg" width="830">
 </picture>
 
-With growing images, Ollama returned errors on the 48 GB Apple M5 Pro, while ippon answered every request.
+On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 6 of its 8 requests, while ippon answered every request.
 
 </details>
 

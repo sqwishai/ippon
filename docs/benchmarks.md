@@ -588,16 +588,16 @@ Kettei Core - Measured 2026-10-29 on Apple M5 Pro, 48 GiB, macOS 27.0.1, MLX 0.3
 Kettei Dot - Measured 2026-10-29 on Apple M5 Pro, 48 GiB, macOS 27.0.1, MLX 0.32.4, ippon commit `d27c0ad9523d0c5f025ec05c2d65a7a84c78aa9e`.
 - [Recorded run 1](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-29-readme-targeted/r1/kettei-dot-ippon-serve.json)
 
-### Runtimes that failed
+### Runtimes that failed requests
 
 - Clef-Flash 9B · full checkpoint with Cloudflare's code · Transformers 5.10.2 · PyTorch 2.11.0 - out of memory. [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-28-readme/r1/clef-flash-tf.json).
 - Jeff-1.1-Medium · BF16 with Jonathan Geuter's server · Transformers 5.17.0 · PyTorch 2.13.0 - out of memory. [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-04-jeff/r1/jeff-medium-maker-mps.json).
-- Clef-Flash 9B · MLX 8-bit with mlx-vlm 0.7.10 - failed, 8 clients at once (~1,000 tokens, 1 question each). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-28-readme/r1/clef-flash-mlx-8bit.c8.json).
-- Torchcast Decision 4B · BF16 with Torchcast's server · Transformers 5.8.1 · PyTorch 2.9.1 - failed, 8 clients at once (~1,000 tokens, 1 question each). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-29-readme-targeted/r1/torchcast-4b-maker-mps.c8.json).
-- d3-mini · Ollama MXFP8 with Ollama 0.40.13 - failed, growing images (1 to 8, one more each request, median). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-18-pictures/r1/d3-mini-mxfp8-ollama.pictures.json).
-- d3-flash · Ollama MXFP8 with Ollama 0.40.13 - failed, growing images (1 to 8, one more each request, median). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-18-pictures/r1/d3-flash-mxfp8-ollama.pictures.json).
-- Strands-Decider-12B · BF16 with AWS Strands' server · Transformers 5.24.0 · PyTorch 2.15.0 - failed, context grown (~1,000 tokens and one ~60-token message). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-24-strands-12b/r1/strands-12b-maker-mps.grow.json).
-- Strands-Decider-12B · BF16 with AWS Strands' server · Transformers 5.24.0 · PyTorch 2.15.0 - failed, 16 clients at once (short requests, 1 question each). [Recorded failure](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-24-strands-12b/r1/strands-12b-maker-mps.c16s.json).
+- Clef-Flash 9B · MLX 8-bit with mlx-vlm 0.7.10 - dropped the connection on 2 of its 80 timed requests, 8 clients at once (~1,000 tokens, 1 question each). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-28-readme/r1/clef-flash-mlx-8bit.c8.json).
+- d3-mini · Ollama MXFP8 with Ollama 0.40.13 - returned errors on 5 of its 7 timed requests, growing images (1 to 8, one more each request, median). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-18-pictures/r1/d3-mini-mxfp8-ollama.pictures.json).
+- d3-flash · Ollama MXFP8 with Ollama 0.40.13 - returned errors on 6 of its 8 timed requests, growing images (1 to 8, one more each request, median). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-18-pictures/r1/d3-flash-mxfp8-ollama.pictures.json).
+- Strands-Decider-12B · BF16 with AWS Strands' server · Transformers 5.24.0 · PyTorch 2.15.0 - returned errors on 2 of its 20 timed requests, context grown (~1,000 tokens and one ~60-token message). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-24-strands-12b/r1/strands-12b-maker-mps.grow.json).
+- Torchcast Decision 4B · BF16 with Torchcast's server · Transformers 5.8.1 · PyTorch 2.9.1 - dropped the connection on 9 of its 16 warm-up requests and then answered every timed request, 8 clients at once (~1,000 tokens, 1 question each). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-10-29-readme-targeted/r1/torchcast-4b-maker-mps.c8.json).
+- Strands-Decider-12B · BF16 with AWS Strands' server · Transformers 5.24.0 · PyTorch 2.15.0 - returned errors on 4 of its 32 warm-up requests and then answered every timed request, 16 clients at once (short requests, 1 question each). [Recorded run](https://github.com/sqwishai/ippon/blob/main/benchmarks/results/m5pro-2026-11-24-strands-12b/r1/strands-12b-maker-mps.c16s.json).
 <!-- /README round -->
 
 <!-- runtime comparisons: benchmarks/kit/summarize.py -->

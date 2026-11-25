@@ -848,17 +848,47 @@ def scheduled_steps(folders: list[Path]) -> dict[Path, set[str] | None]:
     return out
 
 
+# A run's errors by what its result says they were (`_error_kind`), as a sentence says what the runtime did
+DID = {
+    "out of memory": "ran out of memory on",
+    "dropped connections": "dropped the connection on",
+    "errors": "returned errors on",
+}
+
+
+def _error_kind(run: dict) -> str:
+    """What a run's errors were: its requests' errors and, from a server, the exception lines it logged meanwhile
+    (`server_errors`), where its reply ("Internal Server Error") says less."""
+    said = " ".join([*(e["error"] for e in run["errors"]), *run.get("server_errors", [])]).lower()
+    if "out of memory" in said:
+        return "out of memory"
+    if any(reset in said for reset in ("connection reset", "broken pipe", "remote end closed")):
+        return "dropped connections"
+    return "errors"
+
+
 def _runtime_failure(run: dict, path: Path) -> dict:
-    """A runtime whose own requests failed, which the campaign keeps as its result: why, and where it is recorded."""
-    error = run["errors"][0]["error"]
-    said = " ".join([error, *run.get("server_errors", [])])  # the server's own log, where its reply says less
-    meta = run.get("meta", {})
+    """A runtime whose own requests failed, which the campaign keeps as its result: why, how many of each phase's
+    requests (failed, sent), and where it is recorded."""
+    meta, kind = run.get("meta", {}), _error_kind(run)
+    counts = {}
+    for phase in ("warmup", "timed"):
+        failed = sum(e["phase"] == phase for e in run["errors"])
+        counts[phase] = [failed, failed + sum(r["phase"] == phase for r in run["requests"])]
     return {
-        "reason": "out of memory" if "out of memory" in said.lower() else "failed",
-        "error": error[:400],
+        "reason": "out of memory" if kind == "out of memory" else "failed",
+        "kind": kind,
+        "counts": counts,
+        "error": run["errors"][0]["error"][:400],
         "source": portable(path),
         "runtime": meta.get("display_runtime") or meta.get("runtime"),
     }
+
+
+def failed_requests(failure: dict, phase: str, of: str = "") -> str:
+    """What a runtime did with one phase's requests, counted: "ran out of memory on 2 of its 20 requests"."""
+    failed, sent = failure["counts"][phase]
+    return f"{DID[failure['kind']]} {failed} of its {sent} {of}requests"
 
 
 def _readme_runs(
@@ -1228,8 +1258,9 @@ def _same_payloads(left: dict, right: dict, label: str) -> None:
         raise ValueError(f"{label}: the paired arms did not record identical request payloads")
 
 
-def _more_run(run: dict, workload: dict, source: str) -> None:
-    """Refuse an incomplete or mislabeled run of one of the other workloads; busy readings stay and are counted."""
+def _more_run(run: dict, workload: dict, source: str, warmup_errors: bool = False) -> None:
+    """Refuse an incomplete or mislabeled run of one of the other workloads, or one with errors (with
+    `warmup_errors`, a rival's, only in its timed requests); busy readings stay and are counted."""
 
     def require(condition: bool, message: str) -> None:
         if not condition:
@@ -1237,7 +1268,8 @@ def _more_run(run: dict, workload: dict, source: str) -> None:
 
     options = workload["options"]
     config = run.get("config", {})
-    require(run.get("complete") is True and not run.get("errors"), "run is incomplete or has errors")
+    errors = [e for e in run.get("errors", []) if e["phase"] == "timed" or not warmup_errors]
+    require(run.get("complete") is True and not errors, "run is incomplete or has errors")
     require(isinstance(run.get("busy"), list) and not run.get("activity_errors"), "activity readings are missing")
     require(
         config.get("sizes") == [int(options[options.index("--sizes") + 1])]
@@ -1324,7 +1356,7 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
             if other not in groups or (name, other) in newer:  # dropped from the kit, or measured again since
                 continue
             group, model = groups[other]
-            arms, failures = [], {}
+            arms, failures, warmup = [], {}, None
             ran = [f for f in folders if scheduled[f] is None or f"{other}{suffix}" in scheduled[f]]
             for engine in (other, ours):
                 found = []
@@ -1333,10 +1365,15 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
                     run = json.loads(path.read_text()) if path.is_file() else {}
                     if not run.get("complete"):
                         break
-                    if run.get("errors"):  # named as a finished run of its runtime is (`_readme_runtime`)
+                    # a rival's errors in its warm-up leave its timed requests a measurement; ippon's never
+                    timed_errors = any(e["phase"] == "timed" for e in run.get("errors", []))
+                    if timed_errors or (run.get("errors") and engine == ours):
+                        # named as a finished run of its runtime is (`_readme_runtime`)
                         failures[engine] = {**_runtime_failure(run, path), "runtime": _readme_runtime(group, [run])}
                         break
-                    _more_run(run, workload, portable(path))
+                    if run.get("errors"):
+                        warmup = warmup or _runtime_failure(run, path)
+                    _more_run(run, workload, portable(path), warmup_errors=engine == other)
                     found.append(
                         {**run, "source": portable(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                     )
@@ -1406,6 +1443,7 @@ def _readme_more_campaign(folders: list[Path], newer: frozenset[tuple[str, str]]
                     "agreement": agreement(a, b),
                     "server_env": (a[0]["meta"].get("server_env") or {}).get("OLLAMA_NUM_PARALLEL"),
                     "sources": [run["source"] for run in a + b],
+                    "warmup_errors": warmup,
                 }
             )
             if name in CLIENTS:
@@ -1921,8 +1959,8 @@ def wait_sentence(model: dict) -> str:
 
 
 def failed_rivals(report: dict) -> list[dict]:
-    """The other workloads' records whose rival failed while ippon answered every request, which the charts leave
-    out (`chart_models`)."""
+    """The other workloads' records whose rival failed timed requests while ippon answered every request, which the
+    charts leave out (`chart_models`)."""
     return [r for r in (report.get("more") or {}).get("records", []) if r.get("failed") and r["ippon"] is not None]
 
 
@@ -1942,20 +1980,18 @@ FAILED_AT = {
 
 
 def failure_sentence(report: dict, model: dict) -> str:
-    """One plain sentence for each rival that failed a README workload of a model's chart while ippon answered every
-    request: the chart leaves that pair out, so the sentence says what the rival failed at and on which Mac."""
-    found: dict[tuple[str, str, str], list[str]] = {}
+    """One plain sentence for each README workload of a model's chart whose rival failed timed requests while ippon
+    answered every request: the chart leaves that pair out, so the sentence says what the rival did, counted."""
+    sentences = []
     for r in failed_rivals(report):
         if family(r["model"]) == model["name"] and r["workload"] in FAILED_AT:
             name = bare(short_runtime({"group": r["group"], "runtime": runtime_display(r)}))  # as the charts name it
             mac = f"{r['machine']['memory_bytes'] / 2**30:g} GB {r['machine']['chip']}"
-            found.setdefault((name, r["failed"]["reason"], mac), []).append(FAILED_AT[r["workload"]])
-    did = {"out of memory": "ran out of memory"}
-    return " ".join(
-        f"With {' and with '.join(at)}, {name} {did.get(reason, 'returned errors')} on the {mac}, "
-        "while ippon answered every request."
-        for (name, reason, mac), at in found.items()
-    )
+            sentences.append(
+                f"On the {mac}, with {FAILED_AT[r['workload']]}, {name} {failed_requests(r['failed'], 'timed')}, "
+                "while ippon answered every request."
+            )
+    return " ".join(sentences)
 
 
 def readme_chart_models(report: dict) -> list[dict]:
@@ -2189,18 +2225,25 @@ def readme_tables(report: dict) -> str:
         lines += [f"- {model}" for model in dict.fromkeys(report.get("pending_pairs", {}).values())]
         lines += [f"- {name} on ippon" for name in report.get("pending_alone", [])]
         lines.append("")
-    if report.get("failed") or failed_rivals(report):
+    warmed = [r for r in (report.get("more") or {}).get("records", []) if r.get("warmup_errors")]
+    if report.get("failed") or failed_rivals(report) or warmed:
         titles = {key: f"{title.lower()} ({what})" for key, title, what, _ in PANELS}
-        lines += ["## Runtimes that failed", ""]
+        lines += ["## Runtimes that failed requests", ""]
         lines += [
             f"- {record['model']} with {runtime_display(record)} - {record['reason']}. "
             f"[Recorded failure](https://github.com/sqwishai/ippon/blob/main/{record['source']})."
             for record in report.get("failed", [])
         ]
         lines += [
-            f"- {r['model']} with {runtime_display(r)} - {r['failed']['reason']}, {titles[r['workload']]}. "
-            f"[Recorded failure](https://github.com/sqwishai/ippon/blob/main/{r['failed']['source']})."
+            f"- {r['model']} with {runtime_display(r)} - {failed_requests(r['failed'], 'timed', 'timed ')}, "
+            f"{titles[r['workload']]}. [Recorded run](https://github.com/sqwishai/ippon/blob/main/{r['failed']['source']})."
             for r in failed_rivals(report)
+        ]
+        lines += [
+            f"- {r['model']} with {runtime_display(r)} - {failed_requests(r['warmup_errors'], 'warmup', 'warm-up ')} "
+            f"and then answered every timed request, {titles[r['workload']]}. "
+            f"[Recorded run](https://github.com/sqwishai/ippon/blob/main/{r['warmup_errors']['source']})."
+            for r in warmed
         ]
         lines.append("")
     if report["excluded_pairs"]:
