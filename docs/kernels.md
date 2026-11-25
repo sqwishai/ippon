@@ -24,7 +24,7 @@ SIMD group and a split of K as parameters. So they fill the GPU where MLX's fixe
 | any M5 (base, Pro, Max, Ultra) | ippon's quantized kernel from 16 rows, with MXFP8 unpacked to full precision from 4,096 | on an M5 with 20 GPU cores (the M5 Pro), the thin kernel to 160 rows, a 64 × 32 tile to 384, then MLX's matmul or, for a down projection, a 32 × 64 tile. Other M5s use MLX's matmul |
 | M1 and M2 | MLX's quantized matmul, with MXFP8 unpacked to full precision from 224 | MLX's matmul |
 | M3 | MLX's quantized matmul | MLX's matmul |
-| M4, and an M5 before macOS 26.2 | MLX's quantized matmul, with MXFP8 and Q8_0 unpacked to full precision from 1,024 | MLX's matmul |
+| M4, and an M5 before macOS 26.2 | MLX's quantized matmul, with MXFP8 and Q8_0 unpacked to full precision from 1,024 | on an M4 with 20 GPU cores (an M4 Pro), 32-row tiles at 65 to 96 and 129 to 160 rows. Other rows, other M4s and an M5 before macOS 26.2 use MLX's matmul |
 
 Every Mac runs ippon's other kernels and its planning either way. These are the fused norm, GLU and convolution
 kernels and one reading of a state for all of a request's questions. They also include the last layer for the answer
@@ -121,8 +121,16 @@ matmul for full-precision matrices, which cannot be slower than itself. Quantize
 every M5, and d1-2B's Q8_0 was up to 28% faster on the base M5.
 
 M1 to M4 run MLX's matmuls. ippon's quantized kernel and its fastest tiles use the M5's neural accelerators, which
-earlier chips do not have. No measurement on those chips shows another of its tiles helping there yet. The one
-exceptions are MXFP8 on M1, M2 and M4, and Q8_0 on M4.
+earlier chips do not have. The exceptions are MXFP8 on M1, M2 and M4, Q8_0 on M4, and short prompts on an M4 Pro.
+
+From 65 rows, MLX's matmul on an M4 uses tiles of 64 rows. So a prompt of 65 tokens costs almost as much as one of
+128. On a 48 GB M4 Pro, Kettei Core took 81 ms at 60 tokens and 134 ms at 65 tokens, and Kettei Dot took 23 ms and
+34 ms. MLX's own 32-row tiles do less of this empty work. At 72 to 96 rows and at 160 rows, they were faster on every
+matrix of d1-2B, Kettei Core and Kettei Dot. The matmuls took 4 to 33% less time (15% on average). The fused gate and
+up projection took 20 to 28% less time. At other row counts the result changed from matrix to matrix, so MLX's matmul
+stays there. Kettei Core's matmuls at 72 to 96 rows add up to about the time of a whole request, and the 32-row tiles
+cut them from 139 ms to 112 ms. Whole requests with these tiles were not timed on the M4. Only an M4 with 20 GPU cores
+uses them, because that is the only M4 that was measured.
 
 On M1 and M2, MLX's MXFP8 matmul took 34% (M1) and 28% (M2 Pro) longer on d1-2B's 1,100-token prompts than the same
 model in fp16. It took 44% and 16% longer than the model's Q8_0, which reads as many bytes. So from 224 rows, an

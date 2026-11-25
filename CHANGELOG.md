@@ -251,6 +251,10 @@ weights computed in fp32, Ollama moves up to 0.378 at 4,096 tokens and ippon mov
   and M2. On a 48 GB M4 Pro, unpacking MXFP8 took 18 to 28% longer than MLX's matmul at 256 rows and 10 to 14% less
   time at 4,096 rows. d1-2B's and H2O-Lightning-4B's Q8_0 builds answer in 4 to 8% less time from 2,000 words, with
   the same answers to the last digit.
+- **Short prompts on an M4 Pro** - From 65 rows, MLX's matmul on an M4 uses tiles of 64 rows, so a 65-token prompt
+  costs almost as much as a 128-token one. On an M4 with 20 GPU cores, ippon uses MLX's 32-row tiles at 65 to 96 and
+  129 to 160 rows. There, the matmuls of d1-2B, Kettei Core and Kettei Dot took 4 to 33% less time, and their fused
+  gate and up projections 20 to 28% less.
 - **Matmul tiles only where they were measured** - Full-precision matrices use ippon's tiles only on an M5 with the M5
   Pro's 20 GPU cores, and every other M5 runs MLX's matmul for them. On the base M5, the tiles made d3-mini,
   H2O-Lightning-4B, pplx-decider flash and Torchcast take 10 to 24% longer at 1,000 words and more. Quantized builds

@@ -21,8 +21,10 @@ the same tiles made the 4B models' whole requests (d3-mini, H2O-Lightning-4B, pp
 Torchcast) take 10 to 24% longer at 1,000 words and more, though the chips have the same memory bandwidth per core:
 which tile wins depends on what the spec sheets leave out (cache sizes), so each chip is measured before its tiles
 are chosen. Quantized matrices take QTILE on every M5 (d1-2B's Q8_0 up to 28% faster on the base M5). M1 to M4 run
-MLX's own matmuls, and on M1, M2 and M4 an MXFP8 matrix is unpacked to full precision from OLDER_UNPACK_ROWS (by
-profile: the m4 profile's rows on any Mac running the M4's paths, an M5 before macOS 26.2 among them). The switch
+MLX's own matmuls, apart from an M4 of the M4 Pro's M4_CORES GPU cores, whose full-precision matrices take MLX's
+SIMD-group tiles at M4_BANDS rows (`m4_bands`). On M1, M2 and M4 an MXFP8 matrix is unpacked to full precision from
+OLDER_UNPACK_ROWS (by profile: the m4 profile's rows on any Mac running the M4's paths, an M5 before macOS 26.2 among
+them). The switch
 gemm=mlx turns every choice off (MLX's own matmuls throughout: the reference path, and the other arm of an A/B).
 
 Fitted on the M5 Pro (20 GPU cores, MLX 0.32.4, profiles.FITTED_MLX; scripts/measure_kernels.py:
@@ -107,6 +109,18 @@ GLU_WIDE: gemm.Tile = (32, 32, 128, 1, 1, 0, 0)  # a fused gate/up's from MID_RO
 # (Clef-Flash's).
 DOWN_TILE: gemm.Tile = (32, 64, 128, 1, 1, 0, 0)
 DOWN_RATIO = 2.5
+# Full precision on a 48 GB M4 Pro (20 GPU cores, MLX 0.32.4, High Power; scripts/measure_kernels.py, MLX's SIMD-group
+# tiles on d1-2B's, Kettei Core's and Kettei Dot's 15 shapes at 48 to 192 rows, and 6 builds' at 128 to 2,048): past
+# 64 rows MLX's matmul takes 64-row tiles, and at 72 to 96 and at 160 rows these 32-row tiles were faster in every
+# cell, the matmul's by 4-33% (a mean 15%, 48 cells) and the fused gate/up's by 20-28% against MLX's matmul and the
+# GLU (a mean 25%, 12 cells). At the other row counts the matmul's ranged from 35% faster to 15% slower, so MLX's
+# matmul stays there. Kettei Core's matmuls, timed alone, summed to 139 ms a request at 72 to 96 rows and 84 ms at 64,
+# against whole requests of 134 to 137 ms at 65 to 90 tokens and 81 ms at 55 to 60: they are nearly all of a short
+# request, and these tiles took their sum to 112 ms. Whole requests weren't timed with them on the M4.
+M4_CORES = 20
+M4_BANDS = ((65, 96), (129, 160))
+M4_TILE: gemm.Tile = (32, 32, 32, 2, 2, 0, gemm.SIMD)
+M4_GLU: gemm.Tile = (32, 32, 16, 1, 2, 0, gemm.SIMD)
 
 
 def thin(split: int) -> gemm.Tile:
@@ -189,6 +203,18 @@ def gemm_bands(n: int, k: int, cores: int, glu: str | None = None) -> gemm.Bands
     return gemm.banded(choose, MID_ROWS + 1)
 
 
+def m4_bands(n: int, k: int, glu: str | None = None) -> gemm.Bands[gemm.Tile]:
+    """The tiles of an [n, k] full-precision matrix on an M4 of M4_CORES GPU cores (with `glu`, its fused GLU's):
+    M4_TILE or M4_GLU at M4_BANDS rows where it fits, MLX's matmul elsewhere."""
+    tile = M4_GLU if glu else M4_TILE
+    fits = gemm.fits(tile, n // 2 if glu else n, k)
+
+    def choose(m: int) -> gemm.Tile | None:
+        return tile if fits and any(low <= m <= high for low, high in M4_BANDS) else None
+
+    return gemm.banded(choose, M4_BANDS[-1][1] + 1)
+
+
 def qgemm_bands(w: QuantizedMatrix, glu: str | None = None) -> gemm.Bands[qgemm.QTile]:
     """The tiles of a packed matrix with kernels/qgemm.py's variants (with `glu`, its fused GLU's); below the first,
     MLX's quantized matmul."""
@@ -231,6 +257,23 @@ def active(profile: Profile) -> bool:
     return _mlx_reason(profile) is None
 
 
+def m4_tiled(profile: Profile) -> bool:
+    """Whether full-precision matrices take M4_BANDS' tiles: the chip's own m4 profile on an M4 of M4_CORES GPU
+    cores, the switch gemm=kernel, an MLX of the minor version they were fitted on, and MLX's SIMD-group library
+    passing its check on this Mac."""
+    device = profile.device
+    return (
+        device is not None
+        and device.generation == 4
+        and device.gpu_cores == M4_CORES
+        and profile.name == "m4"
+        and not profile.forced
+        and profile.switches.gemm == "kernel"
+        and profile.mlx_fitted
+        and gemm.failure(simd=True) is None
+    )
+
+
 def older(profile: Profile) -> bool:
     """Whether a profile unpacks its MXFP8 matrices (OLDER_UNPACK_ROWS), and on m4 its Q8_0 ones (Q8_UNPACK): m1, m2
     or m4 with the switch gemm=kernel."""
@@ -247,7 +290,13 @@ def summary(profile: Profile) -> str:
     """How the matmuls' kernels are chosen under `profile`, in a line (`ippon doctor`, `Decider.details`)."""
     if older(profile):
         formats = "MXFP8 and Q8_0" if profile.name in Q8_UNPACK else "MXFP8"
-        return f"MLX's own matmuls, {formats} unpacked to full precision from {OLDER_UNPACK_ROWS[profile.name]:,} rows"
+        tiles = (
+            f"; full precision: SIMD-group tiles at {M4_BANDS[0][0]} to {M4_BANDS[-1][1]} rows"
+            if m4_tiled(profile)
+            else ""
+        )
+        rows = OLDER_UNPACK_ROWS[profile.name]
+        return f"MLX's own matmuls, {formats} unpacked to full precision from {rows:,} rows{tiles}"
     if (reason := _mlx_reason(profile)) is not None:
         return f"MLX's own matmuls ({reason})"
     device = profile.device
@@ -259,14 +308,18 @@ def summary(profile: Profile) -> str:
 def attach(backbone: Layered, profile: Profile) -> dict[str, gemm.Bands[gemm.Tile]]:
     """Set each quantized matrix's choices on `backbone` and return its full-precision matrices' tiles (by
     `gemm.key`), for `profile`; nothing where MLX's own matmuls run (`active`), apart from the MXFP8 matrices of
-    `older` profiles (m1, m2 and m4), which are unpacked from OLDER_UNPACK_ROWS and multiplied by MLX's matmul."""
+    `older` profiles (m1, m2 and m4), which are unpacked from OLDER_UNPACK_ROWS and multiplied by MLX's matmul, and
+    the full-precision tiles of an `m4_tiled` M4."""
     if older(profile):
         rows = OLDER_UNPACK_ROWS[profile.name]
         for layer in backbone.layers:
             for key, value in list(layer.items()):  # whole matrices only, as on the M5
                 if isinstance(value, QuantizedMatrix) and staged(value) and unpacks(value, profile):
                     layer[key] = replace(value, unpack_rows=rows)
-        return {}
+        if not m4_tiled(profile):
+            return {}
+        tables = {gemm.key(d, n, k): m4_bands(n, k) for d, n, k in gemm_shapes(backbone)}
+        return tables | {gemm.key(d, n, k, act): m4_bands(n, k, act) for d, n, k, act in glu_shapes(backbone)}
     if not active(profile):
         return {}
     assert profile.device is not None

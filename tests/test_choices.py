@@ -122,7 +122,7 @@ def test_choices_reach_every_matrix_of_a_shape_on_the_m5_only(monkeypatch: pytes
     for q in (first["b"], second["b"].parts[0], second["b"].parts[1]):  # alone and joined
         assert q.tile(200) is not None
     assert first["gate_up"].glu_tile(200, "silu") is not None  # its fused GLU's own steps
-    for unchosen in (profile(M5, gemm="mlx"), profile(M5, "m4"), profile(M4, "m4")):  # MLX's own matmuls
+    for unchosen in (profile(M5, gemm="mlx"), profile(M5, "m4")):  # MLX's own matmuls
         plain = Backbone()
         assert choices.attach(plain, unchosen) == {}
         assert plain.layers[0]["b"].tile(200) is None
@@ -137,6 +137,40 @@ def test_choices_reach_every_matrix_of_a_shape_on_the_m5_only(monkeypatch: pytes
     newer = replace(profile(M5), mlx="0.33.0")
     assert choices.attach(Backbone(), newer) == {}
     assert choices.summary(newer) == "MLX's own matmuls (MLX 0.33.0, kernel choices fitted on 0.32.x)"
+
+
+@pytest.mark.metal
+def test_an_m4_pro_takes_32_row_tiles_where_mlxs_64_row_ones_leave_rows_empty(gpu: None) -> None:
+    """On an M4 of M4_CORES GPU cores (its m4 profile, gemm=kernel) a full-precision matrix and its fused GLU take
+    M4_TILE and M4_GLU at 65 to 96 and 129 to 160 rows, each product MLX's within fp16 rounding, and MLX's matmul at
+    every other count; an M4 of other core counts, gemm=mlx, the m3 profile and an M5 running the m4 profile take
+    none."""
+    backbone = Backbone()
+    for layer in backbone.layers:
+        layer["gate_up"] = (mx.random.normal((512, 256)) * 0.05).astype(mx.float16)
+    table = choices.attach(backbone, profile(M4, "m4"))
+    plain, fused = gemm.key(mx.float16, 128, 256), gemm.key(mx.float16, 512, 256, "silu")
+    chosen = {m: gemm.band(table[plain], m) for m in range(1, 300)}
+    assert {m for m, t in chosen.items() if t is not None} == set(range(65, 97)) | set(range(129, 161))
+    assert {gemm.band(table[fused], m) for m in (65, 96, 129, 160)} == {choices.M4_GLU}
+    assert gemm.band(table[fused], 128) is None
+    assert "SIMD-group tiles at 65 to 160 rows" in choices.summary(profile(M4, "m4"))
+    for rows in (80, 150):
+        x = mx.random.normal((rows, 256)).astype(mx.float16)
+        w, gate_up = backbone.layers[0]["a"] + 0.01, backbone.layers[0]["gate_up"]
+        assert_mlx_close(gemm.gemm(x, w, choices.M4_TILE), x @ w.T, atol=2e-2, rtol=2e-2)
+        g, u = mx.split(x @ gate_up.T, 2, axis=-1)
+        g, u = g.astype(mx.float32), u.astype(mx.float32)
+        expected = g * mx.sigmoid(g) * u
+        got = gemm.glu_gemm(x, gate_up, choices.M4_GLU).astype(mx.float32)
+        assert_mlx_close(got, expected, atol=2e-2, rtol=2e-2)
+    for unchosen in (
+        profile(replace(M4, gpu_cores=16), "m4"),
+        profile(M4, "m4", gemm="mlx"),
+        profile(M4, "m3"),
+        profile(M5, "m4"),
+    ):
+        assert choices.attach(Backbone(), unchosen) == {}
 
 
 @pytest.mark.metal

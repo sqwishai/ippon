@@ -115,7 +115,7 @@ def run(
     kernels: bool | None = None,
 ) -> dict[str, Any]:
     """`kernels`: whether ippon's matmul choices run on this Mac, so their A/B means something (default: an M5 with
-    its neural accelerators, or an M1 or M2, which unpack MXFP8 matrices); elsewhere both arms are MLX's own matmuls
+    its neural accelerators, or an M1, M2 or M4, which unpack MXFP8 matrices); elsewhere both arms are MLX's own matmuls
     and the A/B is recorded as skipped."""
     if kernels is None:
         profile = resolve()
