@@ -46,15 +46,15 @@ def test_a_precision_that_does_not_fit_is_refused_naming_what_fits() -> None:
     """Explicit or auto, a precision past the budget is refused with the precisions that fit; auto never quantizes on
     its own, and an imported build (which can't be quantized again) is pointed at smaller published builds."""
     with pytest.raises(InsufficientMemory, match="Precisions that fit: q8"):
-        admit(model(19), "fp16", working_set=12 * GIB)
+        admit(model(19), "fp16", working_set=16 * GIB)
     assert admit(model(19), "fp16", working_set=None) > 0  # nothing known: no check
-    assert admit(model(6), "auto", 12 * GIB) > 0
+    assert admit(model(6), "auto", 16 * GIB) > 0
     with pytest.raises(InsufficientMemory, match=r"q8 quantizes the model's weights, which changes its answers"):
-        admit(model(19), "auto", 12 * GIB)
+        admit(model(19), "auto", 16 * GIB)
     with pytest.raises(InsufficientMemory, match=r"No precision fits\.$"):
         admit(model(60), "auto", 8 * GIB)
     with pytest.raises(InsufficientMemory, match="Choose a smaller published build") as caught:
-        admit(model(19), "auto", 12 * GIB, can_quantize=False)
+        admit(model(19), "auto", 16 * GIB, can_quantize=False)
     assert "q4" not in str(caught.value)
     # a refusal names the creator's smaller build of a named model (d1-2B's Q8_0 file), else where builds are listed
     assert smaller_build("LiquidAI/d1-2B").endswith("ippon pull d1-2b:q8_0.")

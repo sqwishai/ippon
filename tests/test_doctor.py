@@ -32,7 +32,7 @@ def _no_profile_override(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_a_mac_at_full_speed_has_nothing_to_change() -> None:
     found = checks(m5(), resolve(device=m5()), "0.32.4", {})
     assert all(c.status == "ok" for c in found), report(found)
-    assert any("up to ~17B in bf16" in c.what for c in found)  # admission.budget(36 GiB) / 2 bytes
+    assert any("up to ~16B in bf16" in c.what for c in found)  # admission.budget(36 GiB) / 2 bytes
 
 
 def test_an_untested_mlx_an_old_macos_and_a_broken_adapter_are_named_with_their_fix() -> None:

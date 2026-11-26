@@ -12,6 +12,11 @@
   download's progress every few seconds, where the file stayed empty until the end. A question setup can't show,
   such as a licence, is no longer asked on the terminal behind it: setup stops and says to pass `--accept-license`.
   The installer takes the same path when its output goes to a file.
+- **A model ippon admits always has room to read** - ippon admitted a model up to 1 GB short of the GPU's working
+  set, then kept 2 GB for a pass and the default kept prefixes beside it, so on an 8 GB Mac Kettei Core at 8-bit
+  downloaded 10 GB, then held 1 token and refused every request. Admission now keeps what loading keeps, so `pull`,
+  `check`, setup and `serve` refuse such a model before downloading it. On an 8 GB Mac that is Kettei Core (Kettei
+  Dot fits), and on a 16 GB Mac some 4B models only fit at 8-bit; models list as fitting a little less often.
 - **A model too big at full precision names its 8-bit tag** - `ippon pull kettei-core --dry-run` on a Mac where
   Kettei Core's bf16 doesn't fit says `ippon pull kettei-core:q8` fits, where it suggested nothing.
 - **MCP takes raw base64 JPEGs** - An image or clip sent as base64 that starts like a path (every JPEG's starts with

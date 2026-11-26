@@ -180,8 +180,8 @@ def test_a_precision_a_name_carries_is_the_one_pull_checks_the_fit_of(
     layers = [Tensor(f"encoder.layer.{i}.weight", "F32", (2048, 2048)) for i in range(10)]
     stored = [*layers, Tensor("classifier.weight", "F32", (2048, 4096))]  # about 101 MB at 16 bits, 61 MB at 8
     monkeypatch.setattr(locate, "_remote", lambda *a: (stored, 1, 65536))
-    room = 80_000_000
-    mac = Device("Apple M1", "applegpu_g13g", 8 << 30, (1 << 30) + room, (26, 1), True)
+    room = 80_445_440  # admission's budget of a 3.072 GB working set: between the two sizes
+    mac = Device("Apple M1", "applegpu_g13g", 8 << 30, 3_072_000_000, (26, 1), True)
     monkeypatch.setattr(pull, "detect", lambda: mac)
     plan = pull.prepare("kettei-core:q8")
     assert plan.report["room_bytes"] == room

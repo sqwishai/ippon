@@ -26,9 +26,9 @@ def test_recommend_orders_each_familys_published_build_and_never_shrinks_one(tas
         assert all(m.family == p.named.family and m.size < p.named.size for m in p.smaller)
         assert not p.smaller or p.fits is False  # offered beside a build that doesn't fit, and only then
     by_name = {p.named.name: p for p in picks}
-    if task == "routing" and device is MAC_8GB:  # Kettei Core is listed, too big; h2o offers its 8-bit build beside
+    if task == "routing" and device is MAC_8GB:  # Kettei Core is listed, too big; d1-2B offers its 8-bit build beside
         assert (by_name["kettei-core:bf16"].fits, by_name["kettei-dot:bf16"].fits) == (False, True)
-        assert [m.name for m in by_name["h2o:bf16"].smaller] == ["h2o:q8_0"]
+        assert [m.name for m in by_name["d1-2b:bf16"].smaller] == ["d1-2b:q8_0"]
     if device is MAC_64GB:
         assert all(p.fits and not p.smaller for p in picks)
     order = [(RANK[p.status], not p.fits, p.named.size) for p in picks]
@@ -38,8 +38,12 @@ def test_recommend_orders_each_familys_published_build_and_never_shrinks_one(tas
     starter = [
         p for family in ("kettei-core", "kettei-dot") for p in usable if p.named.family == family
     ]  # Core, else Dot
-    first = (starter or usable)[0]
-    assert f"Start with: ippon pull {(first.faster or first.named).name} " in text
+    if usable:  # an 8 GB Mac holds no media model as published: none to start with, its smaller builds named
+        first = (starter or usable)[0]
+        assert f"Start with: ippon pull {(first.faster or first.named).name} " in text
+    else:
+        assert "Start with" not in text
+        assert "smaller builds that do" in text
     if kind != "text":
         assert all(p.named.kind == "safetensors" for p in picks)  # the GGUF builds carry no media towers
     if task == "audio":

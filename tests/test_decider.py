@@ -459,14 +459,16 @@ def test_a_prompt_whose_reading_this_mac_cannot_hold_is_refused_before_it_is_rea
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Inside the window is not enough: a prompt whose keys and values don't fit the GPU's working set beside the
-    model's weights and kept prefixes is refused (context_too_long), before any pass."""
+    model's weights and kept prefixes is refused (context_too_long), before any pass. And the largest model admission
+    lets onto a Mac still has a reading's room beside it: an 8 GB Mac admitted Kettei Core at 8 bits, then held 1 of
+    its tokens and refused every request."""
     import dataclasses
     import types
 
     import mlx.core as mx
 
+    from ippon.admission import MIN_READING, READING_MARGIN, budget
     from ippon.arch.cache import Attention
-    from ippon.decider import READING_MARGIN
     from ippon.device import Device
     from ippon.errors import ContextTooLong
     from ippon.profiles import resolve
@@ -485,3 +487,12 @@ def test_a_prompt_whose_reading_this_mac_cannot_hold_is_refused_before_it_is_rea
     with pytest.raises(ContextTooLong, match="about 40 of this model's tokens"):
         d.systemone({**REQUEST, "state": "x" * 200})
     assert backbone.tokens_read == read  # refused before anything was read
+    gpu = 5_726_623_744  # what macOS gives an 8 GB Mac's GPU, 5.33 GiB
+    eight = Device("Apple M1", "applegpu_g13g", 8 << 30, gpu, (26,), True)
+    monkeypatch.setattr(
+        ToyBackbone, "new_cache", lambda self, capacity, start=None: types.SimpleNamespace(layers=[layer])
+    )
+    largest, _ = decider(profile=dataclasses.replace(resolve(), device=eight), resident=budget(gpu))
+    monkeypatch.setattr(ToyBackbone, "new_cache", plain)
+    assert largest.tokens_here is not None
+    assert largest.tokens_here * 256 >= MIN_READING  # with the default kept prefixes, as a load makes them

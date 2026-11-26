@@ -50,8 +50,8 @@ def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     [
         (48, 37.4, "kettei-core:bf16", "fits"),  # an M5 Pro: Kettei Core as published, with room to spare
         (16, 12, "kettei-core:bf16", "tight"),  # a 16 GB Mac: Kettei Core only just fits, and its description says so
-        (8, 5, "kettei-dot:bf16", "fits"),  # an 8 GB M1 Air: Kettei Core is too big at full precision, so Dot
-        (8, 3.5, "kettei-dot:bf16", "tight"),  # less still: Dot, only just
+        (8, 5.33, "kettei-dot:bf16", "tight"),  # an 8 GB M1 Air: Kettei Core is too big, so Dot, beside a reading
+        (8, 4.6, "kettei-core:bf16", "too big"),  # less still: nothing fits, and the list starts on Core, saying so
     ],
 )
 def test_the_list_keeps_one_order_and_starts_on_the_first_model_this_mac_holds(

@@ -101,13 +101,13 @@ def test_a_hub_model_is_checked_without_its_weights(tmp_path: Path, monkeypatch:
     monkeypatch.setattr(hub, "fetch", lambda model, patterns: snapshot)
     monkeypatch.setattr(registry, "select", lambda directory, adapter: Found())
     monkeypatch.setattr(locate, "_remote", remote)
-    found = check_module.check("LiquidAI/d1-2B", device=mac(5 * GIB))
+    found = check_module.check("LiquidAI/d1-2B", device=mac(8 * GIB))
     assert asked["model"] == f"LiquidAI/d1-2B@{commit}"  # the weights' headers at the commit read first
     assert found["revision"] == commit
     assert found["download"] == {"files": 2, "bytes": 4 * GIB}
     memory = {m["precision"]: m for m in found["memory"]}
     assert memory["bf16"]["fits"]
-    assert not memory["fp32"]["fits"]  # 8 GiB, past 5 GiB less the room kept for a request
+    assert not memory["fp32"]["fits"]  # 8 GiB, past what an 8 GiB working set keeps for a model
     assert found["verified"][0]["load"] == "LiquidAI/d1-2B@10e7671d44e4b37700020b1eed3f594c5f2af0b4"
 
 

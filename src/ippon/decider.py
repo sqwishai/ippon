@@ -42,6 +42,7 @@ from . import (
     quantization,
 )
 from .adapter import Hidden, LoadContext, Loaded, Rendering
+from .admission import PREFIX_BUDGET, READING_MARGIN  # what admission keeps free beside a model's weights
 from .answers import DEFAULT_SIZE as ANSWERS_KEPT
 from .answers import Answers
 from .arch.base import Layered
@@ -77,10 +78,7 @@ from .tokenizer import Tokenizer, literal, placeholder
 # short window still cuts a long text as its creators' code does) is refused before it is tokenized: text averages
 # about 4 a token, and tokenizing 120 MiB of it (18 million tokens) took 40 s and 14 GB the server didn't get back
 CHARS_PER_POSITION = 8
-# what a pass needs beside its cache (activations, the GPU's own buffers), kept free when `tokens_here` counts the room
-READING_MARGIN = 2 << 30
 MOST_STATE_CHARS = 1 << 22
-PREFIX_BUDGET = 4 << 30  # bytes of kept prefixes at most; a sixteenth of memory on smaller Macs
 
 
 def quantized(backbone: Layered) -> int:

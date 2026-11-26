@@ -11,8 +11,8 @@ size from its safetensors headers (no weights read), and:
 The estimate: every floating-point tensor at the compute dtype's width; weight matrices quantized to b bits at b/8
 bytes per weight plus one scale and bias per group (64 columns, or 32 where the width is not a multiple of 64, as
 `quantization.group_for` groups them for quant.quantize); tensors already quantized at their stored size; the
-vocabulary tables not at all, since a load reads them from the file. Room is kept for the activations and caches of a
-request (RESERVE, or a tenth of the working set if more).
+vocabulary tables not at all, since a load reads them from the file. Room is kept for what a decider takes beside the
+weights (`budget`), as `Decider` counts it once the model is loaded, so a model admitted here always reads.
 """
 
 from __future__ import annotations
@@ -25,7 +25,12 @@ from .quantization import OFFERED, PRECISIONS, Precision, group_for, is_global_s
 from .quantization import get as get_precision
 from .safetensors import FLOATS, WIDTH, Tensor
 
-RESERVE = 1 << 30
+# What a decider takes of the working set beside the model's weights, which `budget` keeps free and Decider._room
+# counts: a pass's activations and the GPU's own buffers, the prefixes it keeps by default (a sixteenth of memory, at
+# most PREFIX_BUDGET), and the least room for a reading's keys and values a model is admitted with.
+READING_MARGIN = 2 << 30
+PREFIX_BUDGET = 4 << 30
+MIN_READING = 512 << 20
 # the vocabulary tables' last names: a checkpoint's (checkpoint.EMBEDDING, HEAD, Gemma 4's per-layer embeddings), and a
 # GGUF file's own, which gguf/names.py renames to them
 TABLES = (matrix_of(EMBEDDING), "embed_tokens_per_layer", matrix_of(HEAD), "token_embd", "output")
@@ -65,8 +70,11 @@ def quantized_bytes(values: int, bits: int, width: int, group: int) -> int:
 
 
 def budget(working_set: int) -> int:
-    """What a model may take of the GPU's working set, leaving room for a request's activations and caches."""
-    return working_set - max(RESERVE, working_set // 10)
+    """What a model may take of the GPU's working set: the rest holds a pass (READING_MARGIN), the prefixes a decider
+    keeps by default (a sixteenth of memory, which is at most a tenth of the working set macOS gives the GPU) and a
+    reading of MIN_READING at least. Admitting more loads a model with room for no prompt: an 8 GB Mac admitted Kettei
+    Core at 8 bits (3.7 GB resident against 4.3 GB) and then read 1 token at a time, refusing every request."""
+    return working_set - READING_MARGIN - min(PREFIX_BUDGET, working_set // 10) - MIN_READING
 
 
 def admit(

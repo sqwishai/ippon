@@ -57,9 +57,11 @@ unpacking answered a ~500-word question in 22 to 25% less time than without it. 
 unpacking, MXFP8 d1-2B runs at about the speed of its Q8_0 file, which reads the same number of bytes for each weight.
 The [A/B and the matrix sweep](../benchmarks/results/m1-2026-11-07-mxfp8) were recorded on 7 November 2026.
 
-Kettei Core and Dot also run on the same 8 GB M1 Air. Core runs at 8-bit (`--precision q8`, about 3.7 GiB) to fit its
-5 GiB GPU working set. `ippon verify` gives Dot 0.0041 (bound 0.032) and Core 8-bit 0.030 (bound 0.037), so both stay
-within their bounds against the reference. The M1 GPU reads each new context, so those calls take seconds. A context
+Kettei Core and Dot also ran on the same 8 GB M1 Air on 7 November. Core ran at 8-bit (`--precision q8`, about
+3.7 GiB) to fit its 5 GiB GPU working set. `ippon verify` gave Dot 0.0041 (bound 0.032) and Core 8-bit 0.030 (bound
+0.037), so both stayed within their bounds against the reference. ippon now keeps 2 GiB of the working set for a
+pass's activations beside the model and its kept prefixes, which an 8 GB Mac can't spare beside Core at 8-bit, so
+ippon refuses Core there before downloading it and Kettei Dot is the model for an 8 GB Mac. The M1 GPU reads each new context, so those calls take seconds. A context
 that ippon has already read comes back fast.
 
 | Workload | Kettei Dot | Kettei Core, 8-bit |
