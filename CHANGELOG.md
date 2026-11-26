@@ -12,6 +12,10 @@
   a path and not as base64.
 - **A tag ippon refuses names the ones it runs** - `kettei-core:q3` now lists `kettei-core:q8`, `kettei-core:q6`,
   `kettei-core:q4` and `kettei-core:bf16`, where it offered only `kettei-core:bf16`.
+- **Kettei's reference asks questions with many options** - Kettei Core's and Dot's references gain a 120-option and a
+  255-option request (references/requests/many-options.json), from the SDK's fp32 code as before. At q8 Kettei Core
+  is 0.0414 from it on the 255-option request, past its 0.0369 bound, with the same top answer; docs/accuracy.md
+  gives Kettei's q8 results.
 - **The licence docs match what asks** - The README, the agent and architecture docs list every licence that needs no
   acceptance (Apache-2.0, MIT, BSD, the LFM Open License and the Fastino Community License), and the Python quick
   start and examples pass `accept_license=True` for Kettei.

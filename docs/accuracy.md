@@ -91,8 +91,8 @@ requests.
 | vllm-sr d3-mini, videos (14 video requests in MP4, QuickTime, WebM and Matroska, 4 to 32 frames, images and videos together) | 0.0197 | 0.0585 | 0.0477 |
 | vllm-sr d3-flash, images (the same 17) | 0.0119 | 0.0195 | 0.0219 |
 | vllm-sr d3-flash, videos (the same 14) | 0.0022 | 0.0346 | 0.0249 |
-| Sqwish Labs' Kettei Core (the 20 standard requests it accepts) | 0.0067 | 0.0450 | 0.0369 |
-| Sqwish Labs' Kettei Dot (the same 20) | 0.0026 | 0.0250 | 0.0324 |
+| Sqwish Labs' Kettei Core (22 requests: the 20 standard ones it accepts, and 2 with 120 and 255 options) | 0.0109 | 0.0362 | 0.0369 |
+| Sqwish Labs' Kettei Dot (the same 22) | 0.0048 | 0.0428 (past bound on 40-questions) | 0.0324 |
 | Base Labs elephant-1, images (19 image requests at its `<image:N>` placeholders or the state's start) | 0.0122 | 0.0479 | 0.0195 |
 | H2O-Lightning-4B, two-way, images (18 image requests) | 0.0097 | 0.0750 | 0.0787 |
 | H2O-Lightning-4B, one-way, images (the same 18) | 0.0035 | 0.0277 | 0.0302 |
@@ -281,6 +281,13 @@ reference by 0.045, against a 0.0172 bound, and changes a top answer. ippon is n
 the same file, and the 2 checks answer different questions. To establish the numerical result of an application build,
 use `ippon verify MODEL --reference FILE --precision q8` (or the precision you selected). Do not assume that a bit
 width is accurate for every model.
+
+Kettei at q8 (`kettei-core:q8`, `kettei-dot:q8`), on the 22 requests above, with every top answer unchanged:
+
+| Model | Largest difference at q8 | Recorded bound | Past the bound |
+|---|---|---|---|
+| Kettei Core | 0.0414 | 0.0369 | the 255-option request only. The 120-option one is 0.026 |
+| Kettei Dot | 0.0498 | 0.0324 | 40-questions (0.0498) and state-3000 (0.0342) |
 
 ## Ollama's builds, on ippon and on Ollama
 
