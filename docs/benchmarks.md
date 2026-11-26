@@ -19,19 +19,19 @@ ippon against Ollama 0.40.13 on the same builds, in an agent's loop (the same ~1
 
 | Model, build | Agent's loop | Typical call |
 |---|---|---|
-| d3-mini, MXFP8 | 518 ms against 696, Ollama takes 34% longer | 580 ms against 835, Ollama takes 44% longer |
-| Clef-Flash 9B, MXFP8 | 123 ms against 179, Ollama takes 46% longer | 494 ms against 510, Ollama takes 3% longer |
-| d3-flash, MXFP8 | 934 ms against 1,153, Ollama takes 23% longer | 1,045 ms against 1,349, Ollama takes 29% longer |
-| d1-2B, BF16 | 160 ms against 174, Ollama takes 8% longer | 67 ms against 78, Ollama takes 17% longer |
+| d3-mini, MXFP8 | 518 ms against 696, ippon 34% faster | 580 ms against 835, ippon 44% faster |
+| Clef-Flash 9B, MXFP8 | 123 ms against 179, ippon 46% faster | 494 ms against 510, ippon 3% faster |
+| d3-flash, MXFP8 | 934 ms against 1,153, ippon 23% faster | 1,045 ms against 1,349, ippon 29% faster |
+| d1-2B, BF16 | 160 ms against 174, ippon 8% faster | 67 ms against 78, ippon 17% faster |
 
-Clef-Flash 9B answers one question about ~1,000 tokens in 654 ms on ippon, where llama.cpp b11960 takes 57% longer (1,028 ms) on the same Q8_0 file. Every result here was measured on an Apple M5 Pro with 48 GB, macOS 27.0.1 and MLX 0.32.4, on 28 October to 24 November 2026.
+Clef-Flash 9B answers one question about ~1,000 tokens in 654 ms on ippon, 57% faster than llama.cpp b11960 (1,028 ms) on the same Q8_0 file. Every result here was measured on an Apple M5 Pro with 48 GB, macOS 27.0.1 and MLX 0.32.4, on 28 October to 24 November 2026.
 <!-- /speed headline -->
 
 ## On an 8 GB M1
 
-On a base M1 Air with 8 GB, d1-2B answers sooner on ippon than on llama.cpp b11960 and Ollama 0.40.13 in every
-workload measured. Over the typical, repeat, grow, burst and image workloads, those 2 runtimes take 35% longer on
-average. Each cell below gives the other runtime's time against ippon's. For several clients at once, each cell gives
+On a base M1 Air with 8 GB, d1-2B answers faster on ippon than on llama.cpp b11960 and Ollama 0.40.13 in every
+workload measured. Over the typical, repeat, grow, burst and image workloads, ippon is 35% faster than those 2
+runtimes on average. Each cell below gives how much faster ippon is. For several clients at once, each cell gives
 how many more answers a second ippon gives.
 
 ippon picks its own matmul kernels on the M5. On an M1 to M4 it runs MLX's own kernels, the same ones that every MLX
@@ -40,10 +40,10 @@ before MLX multiplies it, from 224 rows on M1 and M2 and from 1,024 rows on M4 (
 
 | Workload | llama.cpp, Q8_0 | Ollama, BF16 | Ollama, MXFP8 |
 |---|---:|---:|---:|
-| Typical call, about 500 tokens and 3 questions | 3.3x as long | 26% longer | 39% longer |
-| The same context with a new question | 32% longer | 26% longer | 37% longer |
-| The context sent again with one more message | 13% longer | 21% longer | 24% longer |
-| One question with an image | 19% longer | 36% longer | 28% longer |
+| Typical call, about 500 tokens and 3 questions | 3.3x faster | 26% faster | 39% faster |
+| The same context with a new question | 32% faster | 26% faster | 37% faster |
+| The context sent again with one more message | 13% faster | 21% faster | 24% faster |
+| One question with an image | 19% faster | 36% faster | 28% faster |
 | 16 clients sending short requests at once | 10% more answers a second | 30% more answers a second | 38% more answers a second |
 | 8 clients at once | 21% more answers a second | 26% more answers a second | 33% more answers a second |
 
@@ -76,23 +76,23 @@ The table gives medians, measured on 5 November 2026 with macOS 26.5.2, MLX 0.32
 
 ## On a 16 GB M2 Pro
 
-On an M2 Pro with 16 GB (16 GPU cores), every model answers sooner on ippon than on llama.cpp b11960 and Ollama
-0.40.13 in every workload measured. For d1-2B, the other runtimes take 29% longer on average over the typical, repeat,
-grow, 8-client and 16-client workloads. Over the 5 pairs together, they take 71% longer. Each cell gives the other
-runtime's time against ippon's. For several clients at once, each cell gives how many more answers a second ippon
+On an M2 Pro with 16 GB (16 GPU cores), every model answers faster on ippon than on llama.cpp b11960 and Ollama
+0.40.13 in every workload measured. For d1-2B, ippon is 29% faster than the other runtimes on average over the
+typical, repeat, grow, 8-client and 16-client workloads. Over the 5 pairs together, it is 71% faster. Each cell gives
+how much faster ippon is. For several clients at once, each cell gives how many more answers a second ippon
 gives.
 
 | Workload | d1-2B, llama.cpp Q8_0 | d1-2B, Ollama BF16 | d1-2B, Ollama MXFP8 | d3-mini, Ollama MXFP8 | H2O-Lightning-4B, llama.cpp Q8_0 |
 |---|---:|---:|---:|---:|---:|
-| Typical call, about 500 tokens and 3 questions | 2.7x as long | 19% longer | 38% longer | 43% longer | 12% longer |
-| The same context with a new question | 5% longer | 17% longer | 36% longer | 70% longer | 18x as long |
-| The context sent again with one more message | 5% longer | 15% longer | 34% longer | 3.7x as long | 19x as long |
+| Typical call, about 500 tokens and 3 questions | 2.7x faster | 19% faster | 38% faster | 43% faster | 12% faster |
+| The same context with a new question | 5% faster | 17% faster | 36% faster | 70% faster | 18x faster |
+| The context sent again with one more message | 5% faster | 15% faster | 34% faster | 3.7x faster | 19x faster |
 | 8 clients at once | 7% more answers a second | 23% more answers a second | 38% more answers a second | 93% more answers a second | 11% more answers a second |
 | 16 clients sending short requests at once | 10% more answers a second | 30% more answers a second | 45% more answers a second | 47% more answers a second | 28% more answers a second |
 
 d1-2B reads its context and its questions in both directions, so no runtime can keep what it read for a new
 question. Its single-question cells against llama.cpp therefore come down to reading speed, and both runtimes run near
-the compute limit of this GPU. The typical call takes 2.7x as long on llama.cpp because ippon reads the context once
+the compute limit of this GPU. ippon answers the typical call 2.7x faster than llama.cpp because it reads the context once
 for all 3 questions. With several clients at once, the figure is requests answered a second. llama.cpp's median wait
 is lower there, because it finishes the requests of some clients while other clients wait. Its 90th percentile is 32 s
 with 8 clients, against 6 s for ippon.
@@ -130,7 +130,7 @@ pause had 8 requests after it, and the runtimes took turns. The results are in
 ## Memory beside other runtimes
 
 On the same builds, ippon's highest memory footprint was lower than Ollama's and oMLX's on every build. On average it
-was 45% below Ollama's and 9% below oMLX's (the geometric mean over each runtime's builds). A decision model runs beside
+was 45% less than Ollama's and 9% less than oMLX's (the geometric mean over each runtime's builds). A decision model runs beside
 the agent that calls it, so the highest memory it uses while it answers matters as much as its speed.
 
 | Build | Highest, ippon | Highest, other runtime |

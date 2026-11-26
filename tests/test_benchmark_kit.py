@@ -167,7 +167,7 @@ first = chart.model_svg(models[[m["name"] for m in models].index(s.family(pairs[
                         chart.THEMES["light"])
 words = " ".join(ET.fromstring(first).itertext()).split()
 words = " ".join(words)
-assert "takes 12% less time" in words and "takes 12% longer" not in words  # a loss, said as the rival's time
+assert "ippon 14% slower" in words and "ippon 14% faster" not in words  # a loss, said as ippon's speed
 """
     run_kit(program)
 
@@ -400,7 +400,7 @@ for record in report["alone"]:
     assert [c["ippon_ms"] for c in record["cells"]] == [30, 1500]
     assert all("speed_percent" not in c for c in record["cells"])
 assert "30 ms on ippon" in s.readme_headline(report)
-assert "takes 2x as long" in s.readme_headline(report)
+assert "2x faster than" in s.readme_headline(report)
 block = s.readme_charts(report)
 assert all(f"{s.README_CHARTS}-{s.slug(r['model'])}" not in block for r in report["alone"])  # a table, not charts
 assert s.alone_title(report) in s.readme_tables(report)

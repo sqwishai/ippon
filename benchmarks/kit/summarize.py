@@ -597,8 +597,8 @@ def headline(records: list[dict]) -> str:
         runtimes = ", ".join(sorted({r["runtime"] for r in pairs}))
         build = "Q8_0 " if group == "llama.cpp" else ""
         clauses.append(
-            f"{runtimes} took between {compared(ratios[0])} and {compared(ratios[-1])} across {len(pairs)} tested "
-            f"{build}builds"
+            f"ippon was between {compared(ratios[0])} and {compared(ratios[-1])} than {runtimes} across {len(pairs)} "
+            f"tested {build}builds"
         )
     dates = sorted({s["date"][:10] for r in selected for s in r["ippon_sources"]})
     machine = selected[0]["ippon_sources"][0]["machine"]["chip"]
@@ -1675,21 +1675,21 @@ def readme_pitch(report: dict) -> str:
 
 
 def compared(ratio: float, rate: bool = False) -> str:
-    """How the other runtime compares with ippon, in the terms a reader feels, with no subject (the caller names it).
+    """How much faster ippon is than the other runtime, with no subject or object (the caller names both).
     `ratio` is ippon's lead: their milliseconds over ippon's, or with `rate` ippon's requests per second over theirs.
-    A time is the other runtime's: "24% longer" up to twice ippon's, "3.2x as long" beyond, "12% less time" where it
-    is quicker. A rate is ippon's: "44% more answers a second", "2.6x the answers a second", "12% fewer". Never
-    "faster" or "slower", which read as a cut in waiting: 24% longer is 19% less waiting with ippon, not 24%."""
+    A time says ippon's speed: "24% faster" up to twice as fast, "3.2x faster" beyond, "12% slower" where the other
+    runtime is quicker. A rate is ippon's answers: "44% more answers a second", "2.6x the answers a second", "12%
+    fewer". Faster is speed, the other median over ippon's minus 1, so 24% faster is 19% less waiting."""
     if round((ratio - 1) * 100) == 0:
-        return "about the same time" if not rate else "about as many answers a second"
+        return "about as fast" if not rate else "about as many answers a second"
     times = (f"{ratio:.1f}" if ratio < 10 else f"{ratio:.0f}").removesuffix(".0")
     if rate:
         if ratio >= 2:
             return f"{times}x the answers a second"
         return f"{abs(ratio - 1) * 100:.0f}% {'more' if ratio > 1 else 'fewer'} answers a second"
     if ratio >= 2:
-        return f"{times}x as long"
-    return f"{(ratio - 1) * 100:.0f}% longer" if ratio > 1 else f"{(1 - ratio) * 100:.0f}% less time"
+        return f"{times}x faster"
+    return f"{(ratio - 1) * 100:.0f}% faster" if ratio > 1 else f"{(1 / ratio - 1) * 100:.0f}% slower"
 
 
 def long_date(text: str) -> str:
@@ -1736,11 +1736,10 @@ def readme_lead(more: dict | None) -> str:
     runtime = runtime_display(next(iter(chosen[models[0]].values())))
 
     def cell(r: dict | None) -> str:
-        name = runtime.split()[0]  # "Ollama" of "Ollama 0.40.13", which the line above the table names in full
         return (
             ""
             if r is None
-            else f"{r['ippon']:,.0f} ms against {r['other']:,.0f}, {name} takes {compared(r['other'] / r['ippon'])}"
+            else f"{r['ippon']:,.0f} ms against {r['other']:,.0f}, ippon {compared(r['other'] / r['ippon'])}"
         )
 
     lines = [
@@ -1766,7 +1765,7 @@ def readme_headline(report: dict) -> str:
         cell = record["cells"][0]
         paragraphs.append(
             f"{family(record['model'])} answers one question about ~1,000 tokens in {cell['ippon_ms']:,.0f} ms on "
-            f"ippon, where {runtime_display(record)} takes {compared(cell['ratio'])} ({cell['other_ms']:,.0f} ms) on "
+            f"ippon, {compared(cell['ratio'])} than {runtime_display(record)} ({cell['other_ms']:,.0f} ms) on "
             "the same Q8_0 file."
         )
     machine = report["machine"]
@@ -2053,12 +2052,14 @@ def alone_table(report: dict, section_key: str) -> str:
 
 def readme_charts(report: dict, section_key: str | None = None) -> str:
     """One Speed section's charts (`section_key`, every section's in turn if None): each model measured against a
-    rival, folded under a line naming its rivals with the sentences its numbers need, then one table of the models
-    only ippon runs."""
+    rival, after one table of the models only ippon runs, each folded under a line with its first timed workload and the
+    sentences its numbers need."""
     lines = []
     for key, _, models in readme_section_models(report):
         if section_key not in (None, key):
             continue
+        if table := alone_table(report, key):
+            lines += ["No other Mac runtime runs these models, so they are timed on ippon alone.", "", table, ""]
         for model in models:
             stem = f"{README_CHARTS}-{model['slug']}"
             runtimes = sorted(
@@ -2069,7 +2070,7 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
             alt = f"{model['name']}: ippon beside {_listed(runtimes)} on the same builds, for {workloads}"
             lines += [
                 "<details>",
-                f"<summary><b>{model['name']}</b> - ippon beside {named}</summary>",
+                f"<summary><b>{model['name']}</b> - {escape_attr(preview(model)) or f'ippon beside {named}'}</summary>",
                 "",
                 "<picture>",
                 f'  <source media="(prefers-color-scheme: dark)" srcset="{stem}-dark.svg">',
@@ -2088,9 +2089,22 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
                     "",
                 ]
             lines += ["</details>", ""]
-        if table := alone_table(report, key):
-            lines += ["No other Mac runtime runs these models, so they are timed on ippon alone.", "", table, ""]
     return "\n".join(lines).rstrip("\n")
+
+
+def preview(model: dict) -> str:
+    """The line a folded chart shows before it opens: ippon's time in the model's first timed workload and its lead
+    there, "typical call in 438 ms on ippon, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX"."""
+    panel = next((p for p in model["panels"] if p["unit"] == "ms" and any(c["rivals"] for c in p["clusters"])), None)
+    if panel is None:
+        return ""
+    clusters = [c for c in panel["clusters"] if c["rivals"]]
+    fastest = min(c["ippon"] for c in clusters)
+    ratios = [r["ratio"] for c in clusters for r in c["rivals"]]
+    runtimes = _listed(sorted({bare(short_runtime(r)) for c in clusters for r in c["rivals"]}))
+    lead = compared(max(ratios))
+    up_to = "up to " if len(ratios) > 1 and lead.endswith("faster") else ""
+    return f"{panel['title'].lower()} in {fastest:,.0f} ms on ippon, {up_to}{lead} than {runtimes}"
 
 
 def escape_attr(text: str) -> str:

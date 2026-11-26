@@ -33,7 +33,7 @@ SMALL = 11
 
 def text_width(text: str, size: float) -> float:
     """An estimate of a line's width in the system sans font: rendered by WebKit (qlmanage), the charts' widest
-    labels at 11 px, such as "takes 57% longer" in semibold, take about 0.50 of the font size per character."""
+    labels at 11 px, such as "ippon 57% faster" in semibold, take about 0.50 of the font size per character."""
     return len(text) * size * 0.52
 
 
@@ -55,7 +55,7 @@ def amount(value: float, unit: str) -> str:
 def verdict(rival: dict, unit: str) -> str:
     """How ippon compares with one rival, said the way the README's first chart says it."""
     rate = unit == "req/s"
-    return ("ippon: " if rate else "takes ") + s.compared(rival["ratio"], rate)
+    return ("ippon: " if rate else "ippon ") + s.compared(rival["ratio"], rate)
 
 
 def model_svg(model: dict, theme: dict[str, str]) -> str:
@@ -169,13 +169,13 @@ def hero_svg(
     rows: list[tuple[str, float, int, int]],
     theme: dict,
     title: str,
-    aria: str = "Time to answer the same requests, relative to ippon",
-    say: Callable[[float], str] = s.compared,
+    aria: str = "Time to answer the same requests, and how much faster ippon is than each runtime",
+    say: Callable[[float], str] = lambda ratio: "ippon " + s.compared(ratio),
 ) -> str:
     """One horizontal bar a runtime, its length its measure against ippon's, under a title that says what the bars
     average: the README's first chart (time), and with `aria` and `say` its memory chart."""
     label_w, bar_x, row_h, bar_h, top = 190, 200, 34, 20, 40
-    scale = (CHART_WIDTH - bar_x - 110) / max(r for _, r, _, _ in rows)  # room for the longest label
+    scale = (CHART_WIDTH - bar_x - 130) / max(r for _, r, _, _ in rows)  # room for the longest label
     height = top + len(rows) * row_h + 4
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {CHART_WIDTH} {height}" width="{CHART_WIDTH}" '
@@ -222,8 +222,8 @@ def memory(campaign: str = s.MEMORY_CAMPAIGN) -> list[tuple[str, float, int, int
 
 
 def more_memory(ratio: float) -> str:
-    """How much more memory another runtime needs than ippon: "10% more" up to twice ippon's, "2.1x as much" beyond."""
-    return f"{ratio:.1f}x as much".replace(".0x", "x") if ratio >= 2 else f"{(ratio - 1) * 100:.0f}% more"
+    """How much less memory ippon needs than another runtime that needs `ratio` times ippon's: "ippon 31% less"."""
+    return f"ippon {(1 - 1 / ratio) * 100:.0f}% less"
 
 
 def main() -> None:

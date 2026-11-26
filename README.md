@@ -15,7 +15,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-hero-dark.svg">
-    <img alt="On average over every model and workload, time to answer the same requests on the same model builds, relative to ippon. Ollama takes 34% longer, oMLX 55% longer, llama.cpp 3.4x as long, the creators' own code 4x as long" src="docs/assets/readme-hero-light.svg" width="700">
+    <img alt="On average over every model and workload, time to answer the same requests on the same model builds, and how much faster ippon is. ippon is 34% faster than Ollama, 55% faster than oMLX, 3.4x faster than llama.cpp and 4x faster than the creators' own code" src="docs/assets/readme-hero-light.svg" width="700">
   </picture>
 </p>
 
@@ -45,10 +45,10 @@ Install ippon on my Mac (`curl -fsSL https://sqwish.ai/ippon/install.sh | sh`), 
   ([memory](#memory)).
 
 <p align="center">
-  <img alt="Five runtimes answer the same 41-turn chat with a 9B decision model on a 48 GB M5 Pro, played at 4x and faster once ippon and Ollama finish. ippon answers all 41 turns in 8.1 s, about 140 ms a message, Ollama in 14.2 s, oMLX in 148 s, llama.cpp in 207 s and the creator's code in 559 s, the slower runtimes taking longer with every message" src="docs/assets/agent-loop.gif" width="830">
+  <img alt="Five runtimes answer the same 41-turn chat with Clef-Flash 9B on a 48 GB M5 Pro, played at 4x and faster once ippon and Ollama finish. ippon answers all 41 turns in 8.1 s, about 140 ms a message, Ollama in 14.2 s, oMLX in 148 s, llama.cpp in 207 s and the creator's code in 559 s, the slower runtimes taking longer with every message" src="docs/assets/agent-loop.gif" width="830">
 </p>
 
-<p align="center">41-turn agent loop on a 9B decision model (48 GB M5 Pro, played at 4x then faster once ippon and Ollama finish): <b>8.1 s</b> on ippon vs 14.2 s on Ollama, 148 s on oMLX, 207 s on llama.cpp and 559 s on the creator's code.</p>
+<p align="center">41-turn agent loop on Clef-Flash 9B (48 GB M5 Pro, played at 4x then faster once ippon and Ollama finish): <b>8.1 s</b> on ippon, 75% faster than Ollama (14.2 s), 18x faster than oMLX (148 s), 26x faster than llama.cpp (207 s) and 69x faster than the creator's code (559 s).</p>
 
 ## Installation
 
@@ -372,8 +372,15 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 [Highlights](#highlights)), and 16 concurrent clients.
 
 <!-- text charts: benchmarks/kit/summarize.py --readme -->
+No other Mac runtime runs these models, so they are timed on ippon alone.
+
+| Model | Typical call | Same context again | Context grown | 16 clients at once |
+|---|---:|---:|---:|---:|
+| Kettei Core | 183 ms | 44 ms | 48 ms | 12.0 req/s |
+| Kettei Dot | 51 ms | 14 ms | 16 ms | 46.4 req/s |
+
 <details>
-<summary><b>Jeff-1.1-Medium</b> - ippon beside Jonathan Geuter's server</summary>
+<summary><b>Jeff-1.1-Medium</b> - typical call in 1,615 ms on ippon, 69% faster than Jonathan Geuter's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-jeff-1-1-medium-dark.svg">
@@ -383,7 +390,7 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 </details>
 
 <details>
-<summary><b>elephant-1</b> - ippon beside Base Labs' runtime</summary>
+<summary><b>elephant-1</b> - typical call in 412 ms on ippon, 5x faster than Base Labs' runtime</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-elephant-1-dark.svg">
@@ -393,7 +400,7 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 </details>
 
 <details>
-<summary><b>Clef-Flash 9B</b> - ippon beside Cloudflare's code, Ollama, llama.cpp and oMLX</summary>
+<summary><b>Clef-Flash 9B</b> - typical call in 437 ms on ippon, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-clef-flash-9b-dark.svg">
@@ -405,7 +412,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>GLiDE 9B</b> - ippon beside Fastino's server</summary>
+<summary><b>GLiDE 9B</b> - typical call in 1,255 ms on ippon, 4.8x faster than Fastino's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-glide-9b-dark.svg">
@@ -415,7 +422,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>GLiDE 2B</b> - ippon beside Fastino's server</summary>
+<summary><b>GLiDE 2B</b> - typical call in 199 ms on ippon, 7x faster than Fastino's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-glide-2b-dark.svg">
@@ -425,7 +432,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Jeff-1.1-Qwen-4B</b> - ippon beside Jonathan Geuter's server</summary>
+<summary><b>Jeff-1.1-Qwen-4B</b> - typical call in 549 ms on ippon, 7.4x faster than Jonathan Geuter's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-jeff-1-1-qwen-4b-dark.svg">
@@ -435,7 +442,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Kev-9B</b> - ippon beside Jared Palmer's server</summary>
+<summary><b>Kev-9B</b> - typical call in 322 ms on ippon, 52% faster than Jared Palmer's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-kev-9b-dark.svg">
@@ -445,7 +452,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Kev-4B</b> - ippon beside Jared Palmer's server</summary>
+<summary><b>Kev-4B</b> - typical call in 187 ms on ippon, 44% faster than Jared Palmer's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-kev-4b-dark.svg">
@@ -455,7 +462,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Strands-Decider-12B</b> - ippon beside AWS Strands' server</summary>
+<summary><b>Strands-Decider-12B</b> - typical call in 677 ms on ippon, 34% faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-12b-dark.svg">
@@ -467,7 +474,7 @@ On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned 
 </details>
 
 <details>
-<summary><b>Strands-Decider-E4B</b> - ippon beside AWS Strands' server</summary>
+<summary><b>Strands-Decider-E4B</b> - typical call in 191 ms on ippon, 2x faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-e4b-dark.svg">
@@ -477,7 +484,7 @@ On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned 
 </details>
 
 <details>
-<summary><b>Strands-Decider-E2B</b> - ippon beside AWS Strands' server</summary>
+<summary><b>Strands-Decider-E2B</b> - typical call in 75 ms on ippon, 2.9x faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-e2b-dark.svg">
@@ -485,13 +492,6 @@ On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned 
 </picture>
 
 </details>
-
-No other Mac runtime runs these models, so they are timed on ippon alone.
-
-| Model | Typical call | Same context again | Context grown | 16 clients at once |
-|---|---:|---:|---:|---:|
-| Kettei Core | 183 ms | 44 ms | 48 ms | 12.0 req/s |
-| Kettei Dot | 51 ms | 14 ms | 16 ms | 46.4 req/s |
 <!-- /text charts -->
 
 ### Both text and images
@@ -510,7 +510,7 @@ request ([the round](benchmarks/results/m5pro-2026-11-18-pictures),
 
 <!-- text-images charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>Torchcast Decision 4B</b> - ippon beside Torchcast's server</summary>
+<summary><b>Torchcast Decision 4B</b> - typical call in 488 ms on ippon, 2.9x faster than Torchcast's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-torchcast-decision-4b-dark.svg">
@@ -520,7 +520,7 @@ request ([the round](benchmarks/results/m5pro-2026-11-18-pictures),
 </details>
 
 <details>
-<summary><b>pplx-decider flash v1.3</b> - ippon beside Perplexity's package</summary>
+<summary><b>pplx-decider flash v1.3</b> - typical call in 507 ms on ippon, 7.6x faster than Perplexity's package</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-pplx-decider-flash-v1-3-dark.svg">
@@ -532,7 +532,7 @@ These timings use the full BF16 checkpoint. Perplexity publishes no GGUF or MLX 
 </details>
 
 <details>
-<summary><b>H2O-Lightning-4B</b> - ippon beside llama.cpp</summary>
+<summary><b>H2O-Lightning-4B</b> - typical call in 229 ms on ippon, 89% faster than llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-h2o-lightning-4b-dark.svg">
@@ -551,7 +551,7 @@ for d1, and Ollama refuses video for every decision model.
 
 <!-- text-images-video charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>d3-mini</b> - ippon beside Ollama, oMLX and vllm-sr's server</summary>
+<summary><b>d3-mini</b> - typical call in 513 ms on ippon, up to 7.6x faster than Ollama, oMLX and vllm-sr's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d3-mini-dark.svg">
@@ -563,7 +563,7 @@ On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 5 of i
 </details>
 
 <details>
-<summary><b>d3-flash</b> - ippon beside Ollama, oMLX and vllm-sr's server</summary>
+<summary><b>d3-flash</b> - typical call in 920 ms on ippon, up to 4.8x faster than Ollama, oMLX and vllm-sr's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d3-flash-dark.svg">
@@ -575,7 +575,7 @@ On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 6 of i
 </details>
 
 <details>
-<summary><b>d1-2B</b> - ippon beside Liquid's code, Ollama and llama.cpp</summary>
+<summary><b>d1-2B</b> - typical call in 67 ms on ippon, up to 4.3x faster than Liquid's code, Ollama and llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d1-2b-dark.svg">
@@ -594,7 +594,7 @@ checkpoint and 76 ms on llama.cpp with the same Q8_0 file.
 
 <!-- text-images-video-audio charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>d1-Omni-2B</b> - ippon beside Liquid's code, Ollama and llama.cpp</summary>
+<summary><b>d1-Omni-2B</b> - typical call in 67 ms on ippon, up to 4.4x faster than Liquid's code, Ollama and llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d1-omni-2b-dark.svg">
