@@ -376,7 +376,6 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 [Highlights](#highlights)), and 16 concurrent clients.
 
 <!-- text charts: benchmarks/kit/summarize.py --readme -->
-No other Mac runtime runs these models, so they are timed on ippon alone.
 
 | Model | Typical call | Same context again | Context grown | 16 clients at once |
 |---|---:|---:|---:|---:|

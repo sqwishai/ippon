@@ -2059,7 +2059,7 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
         if section_key not in (None, key):
             continue
         if table := alone_table(report, key):
-            lines += ["No other Mac runtime runs these models, so they are timed on ippon alone.", "", table, ""]
+            lines += ["", table, ""]  # a blank line after the section's marker comment, so the table renders
         for model in models:
             stem = f"{README_CHARTS}-{model['slug']}"
             runtimes = sorted(
