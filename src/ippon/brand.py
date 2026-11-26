@@ -1,59 +1,40 @@
-"""ippon's look in the terminal: the lucky cat of its banner (assets/banner-*.svg) and its name, in its colours.
+"""ippon's look in the terminal: its name in pixel letters, Inky's sticker beside it where the terminal draws pictures,
+and the accents its screens use.
 
-The cat is the banner's 28 x 28 pixels, two to a character cell (an upper half block, the top pixel its foreground
-and the bottom one its background), so it is 28 columns by 14 lines. The small cat beside `ippon serve` and `ippon
-status` keeps every one of those pixels, six to a cell (Unicode's sextants), widened by half so they come out square:
-21 columns by 10 lines. Colours are 24-bit where the terminal says it
-takes them (COLORTERM), the nearest of xterm's 256 elsewhere (Apple's Terminal), and none under NO_COLOR. It is shown
-only to a person at a terminal: `ippon` alone and the start of `ippon setup`, and the small cat at the start of
-`ippon serve` and atop the live `ippon status`.
+The name is drawn two pixels to a character cell, an upper half block with the top pixel its foreground and the bottom
+one its background, in the terminal's own colour, so it reads on light and dark terminals alike. Inky, Sqwish's octopus
+at a laptop, is the README's sticker (assets/inky-sticker.svg, drawn into inky.png by scripts/sticker.py), shown as a
+picture where the terminal draws pictures: iTerm2 and WezTerm by iTerm2's inline images, kitty and Ghostty by kitty's
+graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) ippon shows its name and its
+lines alone, on one left edge, since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the
+terminal says it takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no
+colour there is no picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits
+beside the header `ippon serve` prints once it is ready. Both show only to a person at a terminal.
 """
 
 from __future__ import annotations
 
+import base64
+import fcntl
 import os
 import re
+import shutil
+import struct
+import sys
+import termios
+from collections.abc import Sequence
+from functools import cache
+from importlib.resources import files
+from typing import IO, Literal
 
-# the banner's pixels: b its blue, p its cream, c its orange, o its peach, . none (the terminal's own background)
-CAT = (
-    ".....bbbbb........bbbbb.....",
-    ".....bbbbb........bbbbb.....",
-    ".....bpppbbbbbbbbbbpppb.....",
-    "....bbpccbbbbbbbbbbccpbbbb..",
-    "....bbpccppppppppppccpbbbb..",
-    "....bbppppppppppppppppbbpbbb",
-    "....bbppppppppppppppppbppbbb",
-    "....bbpppbbpppppbbppppbccpbb",
-    "....bbppbppbpppbppbpbbbccpbb",
-    "....bbpppppppbbpppppbbbpppbb",
-    "....bbppppbppppbpbppb.bpppbb",
-    "....bbbbbppbbppbbpbbb.bpppbb",
-    "......bbbpppppppppbbb.bpppbb",
-    "......bbccccccccccccbbbpbbbb",
-    "......bbcccccoocccccbbppbb..",
-    "......bbppppccccpppppbppbb..",
-    "......bbppppcbbccccppbppbb..",
-    "bbb..bbbpbbpppccooccpbppbb..",
-    "bpb..bbppbbbbbbbooccpbbbbb..",
-    "bpb..bbppbbppppbbbccppbb....",
-    "bpb..bbppppbbbbbooccppbb....",
-    "bpb..bbpppppppccbbccppbb....",
-    "bbbbbbbpppppppccccccppbb....",
-    "..bpppbppppppppccccpppbb....",
-    "..bbbbbpbppbppppppbppbbb....",
-    "....bbppbppbppppppbppbpbb...",
-    "....bbbbbbbbbbbbbbbbbbbbb...",
-    "....bbbbbbbbbbbbbbbbbbbbb...",
-)
-# the name in the same pixels, lowercase as the banner writes it: 8 high to the baseline with two-pixel strokes, and two
-# rows under it for the p's descender, so it reads as a p and never as an o
+# the name in pixel letters, lowercase as the README's banner writes it: 8 high to the baseline with two-pixel
+# strokes, and two rows under it for the p's descender, so it reads as a p and never as an o
 LETTERS = {
     "i": ("##", "..", "..", "##", "##", "##", "##", "##", "..", ".."),
     "p": ("......", "......", "......", "#####.", "##..##", "##..##", "##..##", "#####.", "##....", "##...."),
     "o": ("......", "......", "......", ".####.", "##..##", "##..##", "##..##", ".####.", "......", "......"),
     "n": ("......", "......", "......", "#####.", "##..##", "##..##", "##..##", "##..##", "......", "......"),
 }
-COLOURS = {"b": (0x39, 0x87, 0xE5), "p": (0xFF, 0xFA, 0xF3), "c": (0xD9, 0x59, 0x26), "o": (0xFF, 0xBB, 0x80)}
 # Sqwish's accents (sqwish.ai's design system), used sparingly and in this order: pink for what is in hand
 # (the line pointed at, a ticked box, work going on), mint for what is settled (a check mark, an answer, the
 # recommendation), amber for what to do next (a command to run, a threshold to check), and red for answers that
@@ -65,6 +46,8 @@ ACCENTS = {
     "red": (0xF0, 0x5A, 0x5A),
 }
 TAGLINE = "run decision models on your mac"
+GAP = "   "  # between the sticker and the lines beside it
+Pictures = Literal["iterm", "kitty"]
 
 
 def _code(rgb: tuple[int, int, int], background: bool) -> str:
@@ -81,107 +64,122 @@ def accent(name: str) -> str:
     return _code(ACCENTS[name], False)
 
 
-def pixels(grid: tuple[str, ...] | list[str], colour: bool) -> list[str]:
-    """`grid`'s pixels as half-block lines, two rows of pixels to a line; spaces where a cell has none, and the
-    terminal's own foreground for pixels marked f."""
-    rows = list(grid) + (["." * len(grid[0])] if len(grid) % 2 else [])
-    out = []
-    for top, bottom in zip(rows[::2], rows[1::2], strict=True):
-        line = []
-        for up, down in zip(top, bottom, strict=True):
-            if up == "." and down == ".":
-                line.append(" ")
-            elif (
-                colour and up == down
-            ):  # one colour: a space on it, as a cell's background fills all of it where Apple's
-                # Terminal draws a block glyph short of the line (SF Mono), leaving a seam on every line; the terminal's
-                # own foreground (f) by reversing a space, as SGR can't name it as a background
-                line.append("\x1b[7m \x1b[0m" if up == "f" else f"\x1b[{_code(COLOURS[up], True)}m \x1b[0m")
-            elif not colour or {up, down} <= {"f", "."}:
-                line.append("▀" if down == "." else "▄" if up == "." else "█")
-            elif down == ".":
-                line.append(f"\x1b[{_code(COLOURS[up], False)}m▀\x1b[0m")
-            elif up == ".":
-                line.append(f"\x1b[{_code(COLOURS[down], False)}m▄\x1b[0m")
-            else:
-                line.append(f"\x1b[{_code(COLOURS[up], False)};{_code(COLOURS[down], True)}m▀\x1b[0m")
-        out.append("".join(line))
-    return out
-
-
-def wordmark(word: str = "ippon", ink: str = "f") -> list[str]:
-    """`word` in the pixel letters, as a grid in colour `ink`, a pixel between letters."""
+def wordmark(word: str = "ippon", ink: str = "#") -> list[str]:
+    """`word` in the pixel letters, as a grid in `ink` and '.', a pixel between letters."""
     return [".".join(LETTERS[ch][row] for ch in word).replace("#", ink) for row in range(len(LETTERS[word[0]]))]
 
 
-def banner(colour: bool, lines: list[str] = ()) -> list[str]:  # type: ignore[assignment]
-    """The cat with the name and the tagline beside it, then `lines` (the version, this Mac) under the tagline."""
-    cat, name = pixels(CAT, colour), pixels(wordmark(), colour)
+def name(colour: bool = False) -> list[str]:
+    """ippon's name in its pixel letters, two pixels to a character cell, in the terminal's own colour. With colour,
+    a cell inked top and bottom is a reversed space rather than a full block: Apple's Terminal draws block characters
+    from its font (SF Mono) short of the line, which left the letters in stripes, and a cell's background fills all of
+    it in every terminal. SGR can't name the terminal's own foreground as a background, so the space is reversed."""
+    grid = wordmark()
+    full = "\x1b[7m \x1b[0m" if colour else "█"
+    lines = []
+    for top, bottom in zip(grid[::2], grid[1::2], strict=True):
+        cells = (
+            full if up != "." and down != "." else "▀" if up != "." else "▄" if down != "." else " "
+            for up, down in zip(top, bottom, strict=True)
+        )
+        lines.append("".join(cells).rstrip())
+    return lines
+
+
+@cache
+def _sticker_png() -> bytes:
+    return (files("ippon") / "inky.png").read_bytes()
+
+
+def _aspect() -> float:
+    """The sticker's width over its height, from its PNG header."""
+    width, height = struct.unpack(">II", _sticker_png()[16:24])
+    return float(width) / float(height)
+
+
+def pictures(stream: IO[str]) -> Pictures | None:
+    """How the terminal on `stream` draws pictures, or None where it doesn't, or ippon can't tell that it does.
+    iTerm2 passes LC_TERMINAL over SSH, so a server's banner reaches the Mac's iTerm2 too. tmux and screen pass a
+    picture on only when asked to, so inside them there is none."""
+    if not stream.isatty() or os.environ.get("TMUX") or os.environ.get("TERM", "").startswith(("screen", "tmux")):
+        return None
+    program = os.environ.get("TERM_PROGRAM", "")
+    if program in ("iTerm.app", "WezTerm") or os.environ.get("LC_TERMINAL") == "iTerm2":
+        return "iterm"
+    kitty = os.environ.get("TERM") in ("xterm-kitty", "xterm-ghostty") or os.environ.get("KITTY_WINDOW_ID")
+    if kitty or program == "ghostty":
+        return "kitty"
+    return None
+
+
+def _cell_shape(stream: IO[str]) -> float:
+    """A character cell's width over its height, from the window's size in pixels, or 0.5 where the terminal doesn't
+    say (a cell is about twice as tall as it is wide in every monospaced font)."""
+    try:
+        rows, columns, x, y = struct.unpack("HHHH", fcntl.ioctl(stream.fileno(), termios.TIOCGWINSZ, b"\0" * 8))
+    except (OSError, ValueError):
+        return 0.5
+    return float(x / columns) / float(y / rows) if x and y and rows and columns else 0.5
+
+
+def _picture(how: Pictures, columns: int, rows: int) -> str:
+    """The sticker as the escape sequence that draws it over `columns` x `rows` cells, leaving the cursor where it is
+    for kitty (C=1) and asking it for no reply (q=2), which would otherwise arrive at the shell's prompt as text."""
+    png = _sticker_png()
+    data = base64.b64encode(png).decode()
+    if how == "iterm":
+        return f"\x1b]1337;File=inline=1;size={len(png)};width={columns};height={rows};preserveAspectRatio=1:{data}\x07"
+    chunks = [data[i : i + 4096] for i in range(0, len(data), 4096)]  # kitty's largest chunk
+    keys = f"a=T,f=100,q=2,C=1,c={columns},r={rows}"
+    return "".join(
+        f"\x1b_G{keys + ',' if i == 0 else ''}m={int(i < len(chunks) - 1)};{chunk}\x1b\\"
+        for i, chunk in enumerate(chunks)
+    )
+
+
+def sticker(lines: Sequence[str], stream: IO[str], width: int, most: int, indent: str = "") -> list[str] | None:
+    """`lines` beside Inky's sticker, `indent` in from the left edge, the sticker at most `most` columns wide and as
+    wide as `width` columns leave room for, the lines centred against it: lines to print one after another, or None
+    where the terminal on `stream` draws no pictures or has no room for a sticker 20 columns wide.
+
+    The first line makes room for the whole sticker (blank lines, so the screen scrolls before anything is drawn),
+    goes back to the top of that room and draws the sticker with the cursor kept, so every line beside it is written
+    after the picture, never ahead of a picture still arriving."""
+    how = pictures(stream)
+    columns = min(most, width - len(indent) - len(GAP) - max((len(_plain(line)) for line in lines), default=0))
+    if how is None or columns < 20:
+        return None
+    high = max(1, round(columns * _cell_shape(stream) / _aspect()))  # the sticker's rows, at its own shape
+    rows = max(high, len(lines))
+    top = (rows - len(lines)) // 2
+    beside = [""] * top + list(lines) + [""] * (rows - len(lines) - top)
+    at = len(indent) + columns + len(GAP) + 1  # the column the lines start in, counting from 1
+
+    def place(line: str) -> str:
+        return f"\x1b[{at}G{line}" if line else ""
+
+    room = "\n" * (rows - 1) + (f"\x1b[{rows - 1}A" if rows > 1 else "")
+    first = room + f"\x1b7\x1b[{len(indent) + 1}G" + _picture(how, columns, high) + "\x1b8" + place(beside[0])
+    return [first, *(place(line) for line in beside[1:])]
+
+
+def banner(
+    colour: bool, lines: Sequence[str] = (), stream: IO[str] | None = None, width: int | None = None
+) -> list[str]:
+    """The banner: ippon's name, its tagline and `lines` (the version, this Mac) under them, beside Inky's sticker
+    where the terminal draws pictures, else alone, on one left edge two columns in. Lines too long to sit beside the
+    sticker go under it, so the sticker keeps its size on an 80-column terminal."""
+    stream = stream or sys.stdout
+    width = width or shutil.get_terminal_size().columns - 1
     dim = (lambda text: f"\x1b[2m{text}\x1b[0m") if colour else (lambda text: text)
-    right = ["", "", "", *name, "", TAGLINE, "", *(dim(line) for line in lines)]
-    return [
-        f"  {left}   {text}".rstrip() for left, text in zip(cat, right + [""] * (len(cat) - len(right)), strict=False)
-    ]
-
-
-# terminals known to draw the sextants themselves; elsewhere (Apple's Terminal) a font may lack them, so the full cat
-SEXTANT_TERMINALS = ("iTerm.app", "ghostty", "WezTerm", "vscode", "kitty")
-
-
-def _sextant(bits: int) -> str:
-    """The character with the cells of `bits` set: 1 top left, 2 top right, 4 middle left, ... 32 bottom right.
-    Unicode has every pattern but the empty, full, left and right halves among its sextants."""
-    named = {0: " ", 63: "█", 21: "▌", 42: "▐"}
-    return named.get(bits) or chr(0x1FB00 + bits - 1 - (bits > 21) - (bits > 42))
-
-
-def sextants(grid: tuple[str, ...] | list[str], colour: bool) -> list[str]:
-    """`grid`'s pixels six to a character cell, two across and three down. A cell holds two colours, so where three
-    meet in one, the blue outline is drawn and the rest takes the cell's other colour."""
-    rows = [row + "." * (len(row) % 2) for row in grid]
-    rows += ["." * len(rows[0])] * (-len(rows) % 3)
-    out = []
-    for y in range(0, len(rows), 3):
-        line = []
-        for x in range(0, len(rows[0]), 2):
-            cell = [rows[y + j][x + i] for j in range(3) for i in range(2)]
-            inks = sorted({p for p in cell if p != "."}, key=lambda p: (p != "b", -cell.count(p)))
-            if not inks:
-                line.append(" ")
-            elif not colour:
-                line.append(_sextant(sum(1 << n for n, p in enumerate(cell) if p != ".")))
-            elif "." in cell or len(inks) == 1:  # one colour over the terminal's own background
-                bits = sum(1 << n for n, p in enumerate(cell) if p != ".")
-                line.append(f"\x1b[{_code(COLOURS[inks[0]], False)}m{_sextant(bits)}\x1b[0m")
-            else:  # the first colour drawn, the second behind it
-                bits = sum(1 << n for n, p in enumerate(cell) if p == inks[0])
-                code = f"{_code(COLOURS[inks[0]], False)};{_code(COLOURS[inks[1]], True)}"
-                line.append(f"\x1b[{code}m{_sextant(bits)}\x1b[0m")
-        out.append("".join(line))
-    return out
-
-
-def small_cat(colour: bool) -> list[str]:
-    """The cat at its smallest that keeps every pixel (21 x 10) where the terminal draws sextants, else the full cat."""
-    if os.environ.get("TERM_PROGRAM") not in SEXTANT_TERMINALS and "kitty" not in os.environ.get("TERM", ""):
-        return pixels(CAT, colour)
-    wide = ["".join(row[x * 2 // 3] for x in range(len(row) * 3 // 2)) for row in CAT]
-    return sextants(wide, colour)
-
-
-def beside(art: list[str], lines: list[str], width: int) -> list[str]:
-    """`lines` to the right of `art`, centred against it, with `art` dropped when the two don't fit in `width`
-    columns. `art` starts at the left edge, as the lines printed under it do, and GAP columns keep it from `lines`."""
-    room = len(_plain(art[0])) if art else 0
-    if not art or room + len(GAP) + max((len(_plain(line)) for line in lines), default=0) > width:
-        return lines
-    top = max(0, (len(art) - len(lines)) // 2)
-    right = [""] * top + lines + [""] * max(0, len(art) - len(lines) - top)
-    left = art + [" " * room] * (len(right) - len(art))
-    return [f"{a}{GAP}{b}".rstrip() for a, b in zip(left, right, strict=True)]
-
-
-GAP = "   "  # between the cat and the lines beside it, as in the banner
+    words, notes = [*name(colour), "", TAGLINE], [dim(line) for line in lines]
+    under = ["", *notes] if notes else []
+    if colour:
+        if (both := sticker([*words, *under], stream, width, 44, "  ")) is not None:
+            return both
+        if (alone := sticker(words, stream, width, 44, "  ")) is not None:
+            return [*alone, *(f"  {line}" if line else "" for line in under)]
+    return [f"  {line}" if line else "" for line in [*words, *under]]
 
 
 def _plain(text: str) -> str:

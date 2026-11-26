@@ -184,7 +184,7 @@ line for each answer it sends, and `ippon start` runs the same server in the bac
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-serve-dark.png">
-    <img alt="ippon serve kettei-core shows the ippon cat beside Kettei Core, serving at http://127.0.0.1:8000, ready in 1.3 s, then prints a line for each of four answers to a client named support, with the time, 73 to 252 ms, the tokens read and each question's answer, and on the last line 24 tokens kept from an earlier reading" src="docs/assets/cli-serve-light.png" width="680">
+    <img alt="ippon serve kettei-core shows Inky, Sqwish's octopus, beside Kettei Core, serving at http://127.0.0.1:8000, ready in 1.9 s, then prints a line for each of four answers to a client named support, with the time, 20 to 50 ms, the tokens read and each question's answer, and on the last line 24 tokens kept from an earlier reading" src="docs/assets/cli-serve-light.png" width="680">
   </picture>
 </p>
 
@@ -204,7 +204,7 @@ that URL too. In a terminal, `ippon status` watches live throughput, cache reuse
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-status-dark.png">
-    <img alt="ippon status shows the ippon cat beside Kettei Core, loaded in 7.6 GB, and its server watched live, 3 clients connected, 1,485 tokens read a second beside a small chart of that rate, 27.8 questions answered a second, 342 answered, 18,243 tokens read with 13% from earlier requests, and under it a bar for each client's questions answered, support 258, billing 69 and triage 15" src="docs/assets/cli-status-light.png" width="680">
+    <img alt="ippon status shows Kettei Core, loaded in 7.6 GB, and its server watched live: 20 ms per decision, 33.4 questions answered a second, 408 answered, 21.8k tokens read with 14% from earlier requests, 3 clients connected, and a bar for each client's decisions, support 321, billing 72 and triage 15" src="docs/assets/cli-status-light.png" width="680">
   </picture>
 </p>
 

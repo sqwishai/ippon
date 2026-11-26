@@ -419,7 +419,7 @@ def run(term: Terminal | None, device: Device, steps: Steps, answers: Answers | 
     say = term.say if term else functools.partial(print, flush=True)  # a log someone tails, line by line
     settings = Settings.load()
     if term:
-        say("\n".join(["", *brand.banner(term.colour, [f"ippon {__version__}", mac(device)]), ""]))
+        say("\n".join(["", *brand.banner(term.colour, [f"ippon {__version__} · {mac(device)}"], term.out), ""]))
     else:
         say(f"ippon {__version__} · {mac(device)}")
     found = found_agents()
