@@ -64,7 +64,7 @@ ACCENTS = {
     "amber": (0xF5, 0xA6, 0x23),
     "red": (0xF0, 0x5A, 0x5A),
 }
-TAGLINE = "run decision models on your mac blazingly fast"
+TAGLINE = "decision models on your mac"
 
 
 def _code(rgb: tuple[int, int, int], background: bool) -> str:
