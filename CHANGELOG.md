@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Ctrl-C stops a busy server cleanly** - `ippon serve` with agents attached ends their open connections as it
+  closes, and logs nothing after "Stopped". Before, a server stopped while clients kept their connections could
+  abort with "Fatal Python error: could not acquire lock for <stderr>".
+- **A server restarts at once on its port** - `ippon serve` no longer says the port is in use for half a minute
+  after a busy server on it stopped.
+- **"Stopped" is the last line** - A second Ctrl-C while `ippon status` printed its last state left part of that
+  state after the message.
+
 ## 0.2.0 (26 November 2026)
 
 **Before you upgrade** - Kettei Core and Kettei Dot now ask you to accept the Kettei Community Model License once,

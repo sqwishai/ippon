@@ -63,6 +63,7 @@ import sys
 import time
 import warnings
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
+from contextlib import suppress
 from dataclasses import asdict, replace
 from importlib.resources import files
 from pathlib import Path
@@ -2188,6 +2189,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(terminal.commands(f"ippon: {failure}", terminal.colour_on(sys.stderr)), file=sys.stderr)
         return failure.exit_code
     except KeyboardInterrupt:  # Ctrl-C while waiting (a download, another process's lock): stopped, not a crash
+        with suppress(OSError):  # what the command had written goes first: "Stopped" is the last thing on screen
+            sys.stdout.flush()
         print(terminal.commands(stopped(args.command), terminal.colour_on(sys.stderr)), file=sys.stderr)
         return 130
 

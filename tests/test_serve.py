@@ -27,10 +27,10 @@ from ippon.adapter import Rendering
 from ippon.cli import main
 from ippon.daemon import Client
 from ippon.device import max_body
-from ippon.errors import InsufficientMemory, InvalidRequest, ModelNotFound, Overloaded
+from ippon.errors import DecisionError, InsufficientMemory, InvalidRequest, ModelNotFound, Overloaded
 from ippon.pressure import Level, Monitor, Reading
 from ippon.schema import Result, parse_request
-from ippon.serve import Batcher, Model, Models, answered_line, make_server
+from ippon.serve import Batcher, Model, Models, _hold, answered_line, make_server
 from ippon.served import ServedModel
 from ippon.sglang import from_sglang
 from test_decider import REQUEST
@@ -70,20 +70,31 @@ def call(
     return status, response
 
 
+def logged(capsys: pytest.CaptureFixture[str], text: str) -> str:
+    """What the server has logged once `text` is in it: a handler writes its line after the response is sent, so
+    the client can hold its answer before the line exists."""
+    seen, until = "", time.monotonic() + 10
+    while text not in seen and time.monotonic() < until:
+        seen += capsys.readouterr().err  # each read takes what was written since the last
+        time.sleep(0.01)
+    assert text in seen
+    return seen
+
+
 def test_the_server_answers_as_the_decider_does(url: str, capsys: pytest.CaptureFixture[str]) -> None:
     """Both routes give the decider's own body, with how it was answered only when `?diagnostics=1` asks; with
     `log`, a line per answer and per error for a person watching, never the state's text."""
     status, body = call(url, "/v1/systemone", REQUEST)
     assert status == 200
     assert body == toy().systemone(REQUEST)
-    line = capsys.readouterr().err
+    line = logged(capsys, " tok")
     assert " ms" in line
     assert " tok" in line
     assert "kept" not in line  # a first reading
     assert REQUEST["state"] not in line
     assert all(f"{qid} " in line for qid in body["answers"])
     assert call(url, "/v1/systemone", {"state": "s", "questions": {}})[0] == 400
-    assert " 400 /v1/systemone: " in capsys.readouterr().err
+    assert " 400 /v1/systemone: " in logged(capsys, " 400 ")
     assert "diagnostics" not in body  # the model's server's body, as it is
     assert call(url, "/v1/decisions", REQUEST) == (200, body)  # Perplexity's Decisions API path, the same schema
     assert call(url, "/v1/systemone", REQUEST, headers={"Authorization": "Bearer x"}) == (200, body)  # no key: ignored
@@ -866,7 +877,9 @@ def test_pressure_eviction_cannot_race_with_admission(monkeypatch: pytest.Monkey
 def test_sigterm_stops_the_server_as_ctrl_c_does(monkeypatch: pytest.MonkeyPatch) -> None:
     """SIGTERM to a server serving on the main thread (as `ippon serve` runs it) ends serve_forever as Ctrl-C
     does; closing then answers the request the model is reading, refuses one still waiting past the grace (503), stops
-    the model and memory threads, and closes the socket."""
+    the model and memory threads, hangs up on a client keeping its connection between requests (an agent's) so no
+    handler thread outlives the server (one writing its log line as Python exits aborts it), and closes the socket."""
+    import http.client
     import os
     import signal
 
@@ -880,6 +893,7 @@ def test_sigterm_stops_the_server_as_ctrl_c_does(monkeypatch: pytest.MonkeyPatch
     server, batcher = make_server(models, port=0, monitor=monitor)
     host, port = server.server_address[:2]
     url = f"http://{host!s}:{port}"
+    idle = http.client.HTTPConnection(str(host), port, timeout=30)  # kept open between requests, as agents do
     decider.armed = True
     answers: dict[str, tuple[int, Any]] = {}
     clients = [
@@ -887,6 +901,8 @@ def test_sigterm_stops_the_server_as_ctrl_c_does(monkeypatch: pytest.MonkeyPatch
     ]
 
     def terminate() -> None:
+        idle.request("GET", "/health")
+        assert idle.getresponse().read()
         clients[0].start()
         assert decider.started.wait(30)
         clients[1].start()
@@ -901,10 +917,17 @@ def test_sigterm_stops_the_server_as_ctrl_c_does(monkeypatch: pytest.MonkeyPatch
         server.serve_forever()
     assert signal.getsignal(signal.SIGTERM) is before
     server.server_close()  # what `serve` does on Ctrl-C
+    for handler in [t for t in threading.enumerate() if "process_request_thread" in t.name]:
+        handler.join(1)  # none is left reading a connection when the process exits
+        assert not handler.is_alive()
     for client in clients:
         client.join(30)
     assert (answers["r"][0], answers["r"][1]["answers"]) == (200, toy().systemone(REQUEST)["answers"])
     assert (answers["w"][0], answers["w"][1]["error"]["type"]) == (503, "unavailable")
+    assert idle.sock is not None
+    idle.sock.settimeout(1)
+    assert idle.sock.recv(1) == b""  # the server hung up on it
+    idle.close()
     assert not batcher.alive
     stopped = monitor.readings
     time.sleep(0.05)
@@ -938,11 +961,22 @@ def test_a_port_in_use_keeps_the_bind_error_and_starts_no_monitor() -> None:
         return Reading(0, 16 << 30, 8 << 30, 0, 1)
 
     with socket.socket() as listener:
+        listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         listener.bind(("127.0.0.1", 0))
         listener.listen()
+        port = listener.getsockname()[1]
         with pytest.raises(OSError, match="Address already in use"):
-            make_server(toy(), port=listener.getsockname()[1], monitor=Monitor(read))
+            make_server(toy(), port=port, monitor=Monitor(read))
+        with pytest.raises(DecisionError, match=f"port {port} on 127.0.0.1 is in use"):
+            _hold("127.0.0.1", port)  # what `ippon serve` holds while its first model loads
+        for _ in range(3):  # connections this end closes first: they linger in TIME_WAIT once it stops
+            with socket.create_connection(("127.0.0.1", port)) as client:
+                listener.accept()[0].close()
+                client.recv(1)
     assert readings == []
+    held = _hold("127.0.0.1", port)  # a server just stopped leaves no port in use: restarting it at once works
+    assert held is not None
+    held.close()
 
 
 def test_shutdown_cannot_leave_a_concurrently_submitted_request_unanswered(monkeypatch: pytest.MonkeyPatch) -> None:

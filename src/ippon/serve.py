@@ -103,11 +103,12 @@ from collections import Counter, deque
 from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import Future
 from concurrent.futures import TimeoutError as FutureTimeout
+from contextlib import suppress
 from dataclasses import dataclass, field, replace
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import mlx.core as mx
 
@@ -813,6 +814,12 @@ class Server(ThreadingHTTPServer):
     batcher: Batcher
     answering: _Answering
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self._open: set[Any] = set()  # the client connections being handled, so closing can end them
+        self._connected = threading.Condition()
+        self.closing = threading.Event()  # set as closing starts: handlers log nothing more
+        super().__init__(*args, **kwargs)
+
     def server_bind(self) -> None:
         """Binds as socketserver does, without HTTPServer's lookup of the host's fully qualified name: that reverse
         DNS lookup can stall for seconds (it hung on GitHub's macOS runners), and nothing here reads `server_name`."""
@@ -829,11 +836,36 @@ class Server(ThreadingHTTPServer):
         finally:  # a second SIGTERM while closing ends the process as it would have before
             signal.signal(signal.SIGTERM, previous if previous is not None else signal.SIG_DFL)
 
+    def process_request(self, request: Any, client_address: Any) -> None:
+        with self._connected:
+            self._open.add(request)
+        super().process_request(request, client_address)
+
+    def shutdown_request(self, request: Any) -> None:
+        with self._connected:
+            self._open.discard(request)
+            self._connected.notify_all()
+        super().shutdown_request(request)
+
     def server_close(self) -> None:
+        self.closing.set()
         super().server_close()
         if hasattr(self, "batcher"):  # TCPServer also calls this if binding fails, before make_server starts a batcher
-            self.batcher.close(CLOSE_GRACE_S)
-            self.answering.wait(SEND_S)
+            try:
+                self.batcher.close(CLOSE_GRACE_S)
+                self.answering.wait(SEND_S)
+            finally:  # a second Ctrl-C cuts the wait for answers short, never the hang-up
+                self._hang_up(SEND_S)
+
+    def _hang_up(self, timeout: float) -> None:
+        """Ends the connections still open, once their answers are sent: a client keeping its connection between
+        requests (ippon's own clients, each agent's) holds a handler thread in its read until READ_TIMEOUT_S. Then
+        waits up to `timeout` for those threads to finish, so none outlives the server."""
+        with self._connected:
+            for request in self._open:
+                with suppress(OSError):  # the client hung up already
+                    request.shutdown(socket.SHUT_RDWR)
+            self._connected.wait_for(lambda: not self._open, timeout)
 
 
 @dataclass(frozen=True)
@@ -869,6 +901,9 @@ def _hold(host: str, port: int) -> socket.socket | None:
     if not port:
         return None
     held = socket.socket(socket.AF_INET6 if ":" in host else socket.AF_INET, socket.SOCK_STREAM)
+    # as the server itself binds (socketserver's allow_reuse_address): the connections of a server just stopped
+    # linger in TIME_WAIT for half a minute, and refuse a plain bind, while a server listening there still does
+    held.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
         held.bind((host, port))
     except OSError:
@@ -1223,7 +1258,13 @@ def make_server(
             failed = as_decision_error(error)
             self._send(failed.http_status, failed.to_json(), close=close, retry=failed.retry_after)
             if log:
-                sys.stderr.write(f"{time.strftime('%H:%M:%S')}  {failed.http_status} {self.path}: {failed}\n")
+                self._log(f"{time.strftime('%H:%M:%S')}  {failed.http_status} {self.path}: {failed}")
+
+        def _log(self, line: str) -> None:
+            """A line for the person watching the server, until it starts closing: a handler still writing as Python
+            exits aborts it ("could not acquire lock for <stderr>"), and nothing should follow "Stopped"."""
+            if not cast(Server, self.server).closing.is_set():
+                sys.stderr.write(line + "\n")
 
         def _refuse(self, error: DecisionError) -> None:
             """Send `error` and end the connection: the request's body is left unread."""
@@ -1423,9 +1464,9 @@ def make_server(
                     width = shutil.get_terminal_size().columns - 1 if sys.stderr.isatty() else None
                     waited = ms - model_ms  # what was neither its rendering nor its pass
                     line = answered_line(result.response, ms, client, result.kept_tokens, served, colour, width, waited)
-                    sys.stderr.write(line + "\n")
+                    self._log(line)
             except Exception as error:
-                sys.stderr.write(f"{time.strftime('%H:%M:%S')}  answered {self.path}, but not counted: {error!r}\n")
+                self._log(f"{time.strftime('%H:%M:%S')}  answered {self.path}, but not counted: {error!r}")
 
         def log_message(self, format: str, *args: Any) -> None:
             pass  # each answer and error has its own line (`answered_line`); the HTTP status line adds nothing
