@@ -147,14 +147,16 @@ class Terminal:
     @classmethod
     @contextlib.contextmanager
     def open(cls) -> Iterator[Terminal | None]:
-        """The terminal, or None when there is none to ask (a pipe, CI, an agent's shell)."""
+        """The terminal, or None when there is none to ask (a pipe, CI, an agent's shell), or when what is said goes
+        elsewhere (stderr to a file, as `nohup ippon setup --yes > log 2>&1` sends it): a question nobody sees is never
+        waited on."""
         try:
             keyboard = open("/dev/tty", encoding="utf-8")  # noqa: SIM115 - closed below
         except OSError:
             yield None
             return
         with keyboard:
-            yield cls(keyboard) if keyboard.isatty() else None
+            yield cls(keyboard) if keyboard.isatty() and sys.stderr.isatty() else None
 
     # -- drawing ----------------------------------------------------------------------------------------------------
 

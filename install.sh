@@ -136,7 +136,7 @@ fi
 # Then `ippon setup`: the model for this Mac, downloaded, and what to run next. It asks on the terminal, which is
 # /dev/tty here since this script arrives on standard input. With a model named (sh -s -- kettei-core) it asks no
 # question about the model, and options after it (sh -s -- kettei-dot --accept-license) go to setup too. Where nobody can answer (an agent's shell, CI), ippon stays installed and says so.
-if [ -n "${1:-}" ] && (: < /dev/tty) 2>/dev/null; then
+if [ -n "${1:-}" ] && (: < /dev/tty) 2>/dev/null && [ -t 1 ]; then
   # --yes takes every default, and a model's licence, which has none, is still asked on the terminal
   "$bin/ippon" setup "$@" --yes < /dev/tty || fail "ippon is installed, but setting up $1 failed (above). Run: ippon setup $1"
 elif [ -n "${1:-}" ]; then

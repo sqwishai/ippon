@@ -185,8 +185,9 @@ def test_a_precision_a_name_carries_is_the_one_pull_checks_the_fit_of(
     monkeypatch.setattr(pull, "detect", lambda: mac)
     plan = pull.prepare("kettei-core:q8")
     assert plan.report["room_bytes"] == room
-    with pytest.raises(InsufficientMemory, match="doesn't fit this Mac as published"):
+    with pytest.raises(InsufficientMemory, match="doesn't fit this Mac as published") as refused:
         pull.prepare("kettei-core")
+    assert "At 8 bits it fits: ippon pull kettei-core:q8." in str(refused.value)  # the name to pull instead
     assert not remote.transferred
 
 

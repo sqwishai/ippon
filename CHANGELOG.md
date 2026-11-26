@@ -7,6 +7,13 @@
 - **`ippon start` asks for a licence before it starts the server** - At a terminal, `ippon start` and
   `ippon serve --detach` ask for an undownloaded model's licence (Kettei's, say) before the server goes to the
   background, where it can't ask. Before, they never asked, and the background server stopped on the licence.
+- **`ippon setup --yes` writes a log you can follow, and never waits on a hidden question** - Run with its output
+  sent to a file (`nohup ippon setup --yes ... > setup.log 2>&1 &`), setup writes each line as it happens and the
+  download's progress every few seconds, where the file stayed empty until the end. A question setup can't show,
+  such as a licence, is no longer asked on the terminal behind it: setup stops and says to pass `--accept-license`.
+  The installer takes the same path when its output goes to a file.
+- **A model too big at full precision names its 8-bit tag** - `ippon pull kettei-core --dry-run` on a Mac where
+  Kettei Core's bf16 doesn't fit says `ippon pull kettei-core:q8` fits, where it suggested nothing.
 - **MCP takes raw base64 JPEGs** - An image or clip sent as base64 that starts like a path (every JPEG's starts with
   `/9j/`) was read as a file name and refused. A string is now a file only when that file exists, or when it reads as
   a path and not as base64.

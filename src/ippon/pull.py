@@ -73,19 +73,20 @@ def prepare(model: str) -> Plan:
     weights = names.weights_at(model)
     at = "as published" if weights == "full" else f"at {weights}"
     room = check.room(device)
-    rows = [
-        n
-        for n in check.needs(inspected, room)
-        if (n.precision == weights if weights != "full" else not n.changes_weights)
-    ]
+    every = check.needs(inspected, room)
+    rows = [n for n in every if (n.precision == weights if weights != "full" else not n.changes_weights)]
     if not any(n.fits for n in rows):
         needed = min((n.bytes for n in rows), default=0)
         others = names.families()[named.family] if named else ()
         smallest = names.smallest(others, lambda n: recommend.may_fit(n.resident, device))
+        # a family that stores only full precision (Kettei Core) still fits at 8 bits, which ippon computes as it loads
+        eight = named is not None and weights == "full" and any(n.precision == "q8" and n.fits for n in every)
         instead = (
             f" The smallest build of {smallest.family} that fits is {smallest.name} "
             f"({smallest.build.weights}, {smallest.status}): ippon pull {smallest.name}."
             if smallest
+            else f" At 8 bits it fits: ippon pull {named.family}:q8."
+            if eight and named
             else ""
         )
         raise InsufficientMemory(

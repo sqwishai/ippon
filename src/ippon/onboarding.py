@@ -21,6 +21,7 @@ taken, the agents' settings are left alone, and what was chosen is printed with 
 
 from __future__ import annotations
 
+import functools
 import os
 import plistlib
 import shutil
@@ -402,7 +403,7 @@ class Answers:
 def run(term: Terminal | None, device: Device, steps: Steps, answers: Answers | None = None) -> Settings:
     """Setup, asking `term` what `answers` leaves open (None: the defaults, nothing asked)."""
     answers = answers or Answers()
-    say = term.say if term else print
+    say = term.say if term else functools.partial(print, flush=True)  # a log someone tails, line by line
     settings = Settings.load()
     if term:
         say("\n".join(["", *brand.banner(term.colour, [f"ippon {__version__}", mac(device)]), ""]))

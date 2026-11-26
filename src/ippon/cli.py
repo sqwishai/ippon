@@ -1405,6 +1405,8 @@ def _setup(args: argparse.Namespace) -> int:
         needed = int(plan.report["disk"]["needed_bytes"])
         if approve is None and asker[0] is not None:  # --yes takes defaults, and a licence has none
             approve = onboarding.licence_question(asker[0])
+        if progress is None:  # no terminal to draw on: a line every few seconds, for a log someone tails
+            progress = pull.TerminalProgress(sys.stderr, tty=False)
         plan.run(accept_license=args.accept_license, approve=approve, progress=progress if needed else None)
         return needed
 
