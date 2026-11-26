@@ -34,11 +34,12 @@ from typing import Any, Literal
 from . import __version__, brand, daemon, drift, hashes, hub, licences, names, processes, recommend
 from .admission import budget
 from .agents import AGENTS, KINDS, Agent, add_everywhere, remove_everywhere
-from .device import Device
+from .device import Device, detect
 from .errors import DecisionError, InvalidRequest
 from .locate import downloaded
 from .options import precision_argv
 from .quantization import FULL, PRECISIONS, QUANTIZED, Precision, form_of
+from .quantization import get as get_precision
 from .schema import MEDIA
 from .served import DEFAULT_PORT, url_of
 from .storage import cache_dir, config_dir, read_record, set_aside, unreadable, write_json_atomic
@@ -112,11 +113,23 @@ class Settings:
 
 def chosen_model() -> tuple[str, str | None]:
     """The model the agent commands and `ippon start` use when none is named, and the precision it is served at
-    beside its name (`Settings.served_at`): setup's choice, else verified.DEFAULT_MODEL."""
+    beside its name (`Settings.served_at`): setup's choice, else `default_model` for this Mac."""
     settings = Settings.load()
     if settings.model:
         return settings.model, settings.served_at()
-    return DEFAULT_MODEL, None
+    return default_model(detect()), None
+
+
+def default_model(device: Device) -> str:
+    """verified.DEFAULT_MODEL where it isn't too big for `device` (or its size there is unknown), else the model to
+    start with on it (`recommend.start_with`: Kettei Dot on an 8 GB Mac), so a Mac setup never ran on is never handed
+    a model it refuses."""
+    named = names.find(DEFAULT_MODEL)[0]
+    at = get_precision(names.precision_of(DEFAULT_MODEL) or "auto")
+    if recommend.fit(recommend.gigabytes(named, at), device) != "too big":
+        return DEFAULT_MODEL
+    first = recommend.start_with(recommend.recommend("routing", device))
+    return first.name if first is not None else DEFAULT_MODEL
 
 
 # -- the models ------------------------------------------------------------------------------------------------------

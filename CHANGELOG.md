@@ -17,6 +17,10 @@
   downloaded 10 GB, then held 1 token and refused every request. Admission now keeps what loading keeps, so `pull`,
   `check`, setup and `serve` refuse such a model before downloading it. On an 8 GB Mac that is Kettei Core (Kettei
   Dot fits), and on a 16 GB Mac some 4B models only fit at 8-bit; models list as fitting a little less often.
+- **An 8 GB Mac gets a model it runs, unasked** - Without setup, `ippon claude`, `ippon start` and the other agent
+  commands take Kettei Core at 8-bit where it fits and Kettei Dot where it doesn't (an 8 GB Mac), where they took
+  Kettei Core at 8-bit on every Mac. When nothing of a family fits, `pull` names the model to start with on this Mac
+  and `ippon recommend`.
 - **A model too big at full precision names its 8-bit tag** - `ippon pull kettei-core --dry-run` on a Mac where
   Kettei Core's bf16 doesn't fit says `ippon pull kettei-core:q8` fits, where it suggested nothing.
 - **The installer puts uv on the PATH it puts ippon on** - When it installs uv where this terminal doesn't look, it

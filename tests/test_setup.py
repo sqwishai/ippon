@@ -102,6 +102,14 @@ def test_setup_without_a_terminal_takes_core_as_published_and_leaves_agents_alon
     assert not any(home.iterdir()), "wrote into HOME"
 
 
+@pytest.mark.parametrize(("memory", "gpu", "model"), [(48, 37.4, "kettei-core:q8"), (16, 10.67, "kettei-core:q8"),
+                                                     (8, 5.33, "kettei-dot:bf16")])  # fmt: skip
+def test_without_setup_the_agents_take_a_model_that_fits(memory: int, gpu: float, model: str) -> None:
+    """`ippon claude` on a Mac setup never ran on: Kettei Core at 8 bits where it fits, Kettei Dot on an 8 GB Mac,
+    which Core at 8 bits doesn't fit beside a reading."""
+    assert onboarding.default_model(mac(memory, gpu)) == model
+
+
 def test_an_agent_config_with_comments_is_left_alone_and_said_so(home: Path, tmp_path: Path) -> None:
     """OpenCode reads its opencode.json with comments: setup never rewrites one without them, and says how to add
     ippon by hand, where it raised JSON's own error."""

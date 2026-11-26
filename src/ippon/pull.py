@@ -89,6 +89,9 @@ def prepare(model: str) -> Plan:
             if eight and named
             else ""
         )
+        if not instead and (first := recommend.start_with(recommend.recommend("routing", device))) is not None:
+            # nothing of this family fits (Kettei Core on an 8 GB Mac): the model to start with here, and the list
+            instead = f" ippon pull {first.name} fits this Mac, and `ippon recommend` lists what else does."
         raise InsufficientMemory(
             f"{model} doesn't fit this Mac {at} (needs {needed:,} bytes; "
             f"model budget {room} bytes). No weights downloaded.{instead}"

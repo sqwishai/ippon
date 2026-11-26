@@ -50,8 +50,8 @@ OPEN = frozenset(
     }
 )
 
-# What the agent commands and `ippon start` load when neither setup nor the caller names a model:
-# Kettei Core at 8 bits, which fits every Mac ippon runs on
+# What the agent commands and `ippon start` load when neither setup nor the caller names a model: Kettei Core at 8
+# bits, where it fits (onboarding.default_model gives a Mac it doesn't fit, an 8 GB one, the model to start with)
 DEFAULT_MODEL = "kettei-core:q8"
 
 Status = Literal["verified", "prompts", "past bound", "experimental"]
