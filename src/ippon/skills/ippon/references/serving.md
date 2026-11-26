@@ -13,7 +13,7 @@ ippon stop kettei-core:q8 --json       # that model's server; alone, the only on
 
 - To serve every model you need from one server, run `ippon serve kettei-core d1-omni-2b --detach`. If a server is
   asked for a model it does not serve, it answers `model_not_found` and never substitutes another.
-- The HTTP endpoints are `POST /v1/decide` (the Sqwish SDK's format), `POST /v1/systemone` (TypeSafe's System One format, where `?diagnostics=1` names the build
+- The HTTP endpoints are `POST /v1/decide` (the Sqwish Labs SDK's format), `POST /v1/systemone` (TypeSafe's System One format, where `?diagnostics=1` names the build
   that answered), `POST /v1/decisions` (Perplexity's and SGLang's formats), `GET /v1/models`, `GET /v1/status` and
   `GET /health`.
 - For MCP, `ippon mcp MODEL` gives the tools `decide`, `models`, `recommend` and `lint`. It starts the shared server

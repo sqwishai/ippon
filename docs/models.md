@@ -22,7 +22,7 @@ the creator's code gives on the [standard requests](../references/requests/stand
 | `strands/decider` | StrandsAgents/strands-decider-{E2B,E4B,12B}-gemma4-v2-2611 (text) | Gemma 4 (E2B/E4B per-layer embeddings and KV-shared layers; 12B dense), every layer in prefix-bidirectional mode with no sliding window, 255-code readout (`readout.safetensors`) | the state read once both ways, then each question over the state and both ways within itself; E2B/E4B keep their per-layer embedding tables on host | prompts verified (430 of 430 text golden requests on E2B, E4B and 12B). Answers against the creator's bf16 golden vectors: E2B 0.0031 mean TV (max 0.025, 180/180 top-1), E4B 0.0037 mean TV (max 0.024, 90/90 top-1), 12B 0.0039 mean TV (max 0.034, 89/90 top-1 up to 32.7K tokens) |
 | `jaredpalmer/kev` | jaredpalmer/kev-0.8b, kev-4b and kev-9b (Qwen3.5 bases), text | Qwen3.5 with a LoRA adapter and a pointer head | the state read once, every question its own causal row after it | answers 0.0026, 0.0023 and 0.0027 from fp32 (bounds 0.020, 0.010, 0.011) |
 
-Sqwish Kettei Core and Kettei Dot run on ippon. Both have verified prompts on 20 accepted requests. Their answers
+Sqwish Labs' Kettei Core and Kettei Dot run on ippon. Both have verified prompts on 20 accepted requests. Their answers
 differ from the SDK's fp32 by at most 0.0067 and 0.0026 (bounds 0.037 and 0.032).
 
 Quantized MLX builds load as they are, such as the community build mlx-community/clef-flash-8bit (its packed weights
@@ -355,5 +355,5 @@ instructions where its prompt needs them, and states it cannot read.
 The adapters are Apache-2.0, as ippon is. Weights keep their creators' licences, and ippon downloads them from the
 creators' repositories. ippon redistributes none. Liquid's d1 models are under the LFM Open License v1.0, and Jonathan
 Geuter's Jeff models are under CC BY-NC 4.0. Base Labs' elephant-1 is under MIT, and Fastino's GLiDE models are under the
-Fastino Community License. Sqwish's Kettei Core and Dot are under the Kettei Community Model License 1.0. The others
+Fastino Community License. Sqwish Labs' Kettei Core and Dot are under the Kettei Community Model License 1.0. The others
 listed here are under Apache-2.0.

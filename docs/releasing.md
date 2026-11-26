@@ -17,7 +17,7 @@ Versions follow [PEP 440](https://peps.python.org/pep-0440/), as `MAJOR.MINOR.PA
 - Between releases, `main` keeps the last released version, and changes collect under `## Unreleased` until the
   next one.
 
-Integrations that wrap ippon (such as the Sqwish SDK's Mac backend) rely on 5 stable calls, so every ippon release
+Integrations that wrap ippon (such as the Sqwish Labs SDK's Mac backend) rely on 5 stable calls, so every ippon release
 must keep them working as they do: `Decider.load(model, precision=..., accept_license=...)`, `Decider.sqwish(body)`,
 `Decider.close()`, `Decider.name` and `DecisionError.kind`. If a release has to change one of them, coordinate the
 change with downstream callers.

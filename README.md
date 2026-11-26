@@ -39,7 +39,7 @@ Install ippon on my Mac (`curl -fsSL https://sqwish.ai/ippon/install.sh | sh`), 
 - Multimodal, with text, images, audio and video, each read the way the model's own code reads it.
 - Made for agents, with many questions in one read, growing conversations and one model shared by all your agents.
 - Our own models, Kettei Core and Kettei Dot, lead the open decision models of their size.
-- Plugs in to the [Sqwish SDK](https://docs.sqwish.ai/guides/sdks), the decision APIs of TypeSafe, Perplexity and
+- Plugs in to the [Sqwish Labs SDK](https://docs.sqwish.ai/guides/sdks), the decision APIs of TypeSafe, Perplexity and
   SGLang, Claude Code, Codex, Hermes, OpenCode, Pi and MCP.
 - Private and light, because nothing you send leaves your Mac and ippon uses less memory than Ollama and oMLX
   ([memory](#memory)).
@@ -269,7 +269,7 @@ with Decider.load("d1-2b:bf16") as model:
 ### SDKs and HTTP
 
 In your own Python process, `ippon.Decider` runs any model directly via `.decide()`, `.systemone()`, or `.sqwish()`.
-From another process, language, or the [Sqwish SDK](https://docs.sqwish.ai/guides/sdks), `ippon serve` answers the
+From another process, language, or the [Sqwish Labs SDK](https://docs.sqwish.ai/guides/sdks), `ippon serve` answers the
 same decide API over HTTP at `POST /v1/decide`.
 
 ```sh
@@ -315,8 +315,8 @@ own Q8_0 file). If you already have a model, give its folder, its GGUF file or `
 
 | Model | Creator | Size | Pull | Weights | Licence |
 |---|---|---:|---|---:|---|
-| [Kettei Core](https://huggingface.co/Sqwish/Kettei-Core) | Sqwish | 3.7B | `kettei-core` | 10.1 GB (7.6 GB resident) | Kettei Community Model License 1.0 |
-| [Kettei Dot](https://huggingface.co/Sqwish/Kettei-Dot) | Sqwish | 0.9B | `kettei-dot` | 2.2 GB (1.8 GB resident) | Kettei Community Model License 1.0 |
+| [Kettei Core](https://huggingface.co/Sqwish/Kettei-Core) | Sqwish Labs | 3.7B | `kettei-core` | 10.1 GB (7.6 GB resident) | Kettei Community Model License 1.0 |
+| [Kettei Dot](https://huggingface.co/Sqwish/Kettei-Dot) | Sqwish Labs | 0.9B | `kettei-dot` | 2.2 GB (1.8 GB resident) | Kettei Community Model License 1.0 |
 | [GLiDE 2B](https://huggingface.co/fastino/GLiDE-2B) | Fastino | 2B | `glide-2b` | 3.8 GB | Fastino Community License |
 | [Strands-Decider-E2B](https://huggingface.co/StrandsAgents/strands-decider-E2B-gemma4-v2-2611) | StrandsAgents | 2B active | `strands-e2b` | 10.3 GB (3.8 GB resident) | Apache-2.0 |
 | [Kev 0.8B](https://huggingface.co/jaredpalmer/kev-0.8b) | Jared Palmer | 0.8B | `kev-0.8b` | 1.8 GB with its base | Apache-2.0 |
@@ -362,7 +362,7 @@ for fewer bits. If you do, it warns how far the model drifts from its creator's 
 
 Our largest models, Kettei Chub and Kettei Fat, run on [console.sqwish.ai](https://console.sqwish.ai), where Kettei
 Fat leads every listed decision model on the public Decision Index and JevBench. There you can also fine-tune Kettei
-on your own labelled data and call it through the [Sqwish SDK](https://docs.sqwish.ai/guides/sdks) or the OneHot API.
+on your own labelled data and call it through the [Sqwish Labs SDK](https://docs.sqwish.ai/guides/sdks) or the OneHot API.
 
 ## Speed ⚡
 

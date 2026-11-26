@@ -103,7 +103,7 @@ that holds a file ippon did not download, such as another app's quantization of 
 ## Python API
 
 `ippon` exposes a direct Python API (`Decider.load`, `YesNo`, `Choice`, `Score`) for System One requests, typed results,
-precision and settings selection, classifiers, and batches of states. It also answers Sqwish's decide API shape via
+precision and settings selection, classifiers, and batches of states. It also answers Sqwish Labs' decide API shape via
 `model.sqwish(body)` (and `POST /v1/decide` on `ippon serve`).
 
 ```python
@@ -147,7 +147,7 @@ failures, as [errors.md](errors.md) describes.
 | `ippon decide MODEL request.json --states FILE.jsonl` | the request's questions asked about the state on each line, in batches. Each input line gives one JSON output line that holds its response or its error |
 | `ippon lint request.json [--model MODEL]` | what to change in a request (vague or doubled questions, overlapping options, no catch-all). With a model, its tokens and what would be cut, and with `--prompt` the text the model reads |
 | `ippon eval DATA.jsonl --model A [--model B]` | accuracy, macro-F1, confusion, confidence thresholds and where models disagree, on your labelled examples ([evaluating.md](evaluating.md)) |
-| `ippon serve [MODEL] [NAME=MODEL ...] --port 8000` | POST /v1/decide (Sqwish's decide API), /v1/systemone, and /v1/decisions in System One's or SGLang's format, on this Mac, for one model or several (`--policy` and `--api-key` are in the [server contract](#http-server)) |
+| `ippon serve [MODEL] [NAME=MODEL ...] --port 8000` | POST /v1/decide (Sqwish Labs' decide API), /v1/systemone, and /v1/decisions in System One's or SGLang's format, on this Mac, for one model or several (`--policy` and `--api-key` are in the [server contract](#http-server)) |
 | `ippon serve MODEL --detach` | start a background server and print its address and log location |
 | `ippon decide MODEL request.json --server` | use the shared server's loaded models, and start the server if needed |
 | `ippon ps` / `ippon stop [MODEL] [--all] [--port PORT]` | inspect the recorded servers or stop one (the only one, a model's, the one on a port, or `--all`), with `--json` for scripts |
@@ -178,14 +178,14 @@ one. Shared CLI/MCP clients reuse that server.
 The server has these routes.
 
 - `POST /v1/systemone` takes a System One request and returns its response.
-- `POST /v1/decide` takes Sqwish's decide API and checks the request as the API checks it. The API has `context`,
+- `POST /v1/decide` takes Sqwish Labs' decide API and checks the request as the API checks it. The API has `context`,
   `decisions` with `kind` single, binary or ordinal, `outcomes`, `rubric`, `policy` and `temperature`. For a model
   that reads images, it has `images` placed with `<image:N>`. On this Mac, it also has `videos` and `audio` placed
   with `<video:N>` and `<audio:N>`, and the anchors stay in the text. The response gives each decision's
   probabilities by outcome, `top`, `p_top`, an ordinal's `expected_level` and a policy's action (`decide_api.py`). It
   also gives `timing_ms`, with the milliseconds that the request's rendering (`render`) and its scoring pass (`score`)
-  took, as `Decider.sqwish` gives them in process. Any process or language can send the same request that the Sqwish
-  SDK's `decide` takes.
+  took, as `Decider.sqwish` gives them in process. Any process or language can send the same request that the
+  Sqwish Labs SDK's `decide` takes.
 - `POST /v1/decisions` takes System One, or SGLang's decisions format (`input` and a list of questions with IDs).
 - `GET /v1/models` lists the configured models in OpenAI and TypeSafe list shapes. For each model, it gives what the
   model loads, its weights (`full`, `q8`, `q6` or `q4`) and the precision it was asked to load at. It also gives the

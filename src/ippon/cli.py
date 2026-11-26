@@ -31,8 +31,9 @@
     ippon bench MODEL                 time it on this Mac (20 requests per shape after 2 warm-ups); --ab "A" "B"
                                             compares two configurations in fresh processes,
                                             --compare mlx-vlm-model=PYTHON compares it with another runtime of the model
-    ippon serve MODEL [--port 8000]   serve it over HTTP (127.0.0.1 by default): POST /v1/decide (the Sqwish SDK's),
-                                            /v1/systemone, and SGLang's decisions format at /v1/decisions
+    ippon serve MODEL [--port 8000]   serve it over HTTP (127.0.0.1 by default): POST /v1/decide
+                                            (the Sqwish Labs SDK's), /v1/systemone, and SGLang's decisions format at
+                                            /v1/decisions
     ippon new-adapter NAME --arch A   a package that plugs a decision model in, ready to fill in
     ippon profile MODEL               where a request's time goes, by operation (--size, --questions)
     ippon suite --models DIR --out D  verify and time every suite model on this Mac (docs/suite.md)
@@ -1805,7 +1806,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "setup",
         help="choose a decision model for this Mac, download it, and connect your agents",
         description="Choose a decision model for this Mac (each listed with what it reads and whether it fits, "
-        "Sqwish's first), download it, answer a first question, then choose what to use it with and how the "
+        "Sqwish Labs' first), download it, answer a first question, then choose what to use it with and how the "
         "server runs. Enter alone takes each step's default. Run it again to change any of it.",
     )
     setting_up.set_defaults(handler=_setup)
@@ -1850,7 +1851,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "start",
         parents=[common_options(), server, listening],
         help="serve the model to your own code, in the background",
-        description="Serve the model to your own code, in the background. It answers POST /v1/decide (the Sqwish "
+        description="Serve the model to your own code, in the background. It answers POST /v1/decide (the Sqwish Labs "
         "SDK's) and /v1/systemone at the address printed, and ippon status, ippon logs and ippon stop look after it.",
     )
     starting.set_defaults(handler=_start, options=starting, precision=None, from_setup=True)

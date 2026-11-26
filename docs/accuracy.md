@@ -91,8 +91,8 @@ requests.
 | vllm-sr d3-mini, videos (14 video requests in MP4, QuickTime, WebM and Matroska, 4 to 32 frames, images and videos together) | 0.0197 | 0.0585 | 0.0477 |
 | vllm-sr d3-flash, images (the same 17) | 0.0119 | 0.0195 | 0.0219 |
 | vllm-sr d3-flash, videos (the same 14) | 0.0022 | 0.0346 | 0.0249 |
-| Sqwish Kettei Core (the 20 standard requests it accepts) | 0.0067 | 0.0450 | 0.0369 |
-| Sqwish Kettei Dot (the same 20) | 0.0026 | 0.0250 | 0.0324 |
+| Sqwish Labs' Kettei Core (the 20 standard requests it accepts) | 0.0067 | 0.0450 | 0.0369 |
+| Sqwish Labs' Kettei Dot (the same 20) | 0.0026 | 0.0250 | 0.0324 |
 | Base Labs elephant-1, images (19 image requests at its `<image:N>` placeholders or the state's start) | 0.0122 | 0.0479 | 0.0195 |
 | H2O-Lightning-4B, two-way, images (18 image requests) | 0.0097 | 0.0750 | 0.0787 |
 | H2O-Lightning-4B, one-way, images (the same 18) | 0.0035 | 0.0277 | 0.0302 |
