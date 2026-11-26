@@ -124,6 +124,8 @@ class KetteiFormat(FormatBase):
         ids = [self.tokenizer.encode(label) for label in labels]
         if len(labels) < count or any(len(t) != 1 for t in ids) or len({t[0] for t in ids}) != count:
             raise InvalidRequest(f"{q.id}: {count} options are more than this model has single-token labels for")
+        if special := {t[0] for t in ids} & self.tokenizer.special_ids:  # a tokenizer that changed under the labels
+            raise UnsupportedModel(f"answer labels read as special tokens {sorted(special)}, as the SDK refuses them")
         return labels, [t[0] for t in ids], how
 
     def render(self, request: Request) -> Rendering:

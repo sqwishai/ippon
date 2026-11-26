@@ -64,6 +64,10 @@ REQUEST_FIELDS = {
 }
 
 
+# Costs each a float can hold can sum past the largest one, weighted by the probabilities: the SDK refuses the same.
+EXPECTED_COSTS = "policy.action_costs: expected costs must be finite, so use smaller costs"
+
+
 def refused(path: str, message: str) -> InvalidRequest:
     return InvalidRequest(f"{path}: {message}")
 
@@ -202,6 +206,7 @@ def decision(raw: Any, index: int) -> Decision:
     did, kind = raw.get("id"), raw.get("kind", "single")
     if not isinstance(did, str) or not 1 <= len(did) <= MAX_ID or not did.strip():
         raise refused(f"{path}.id", f"an id is 1 to {MAX_ID} characters, not all spaces")
+    check_json(did, f"{path}.id")
     check_text(raw.get("question"), f"{path}.question", empty=False)
     if not isinstance(kind, str) or kind not in SHAPES:
         raise refused(f"{path}.kind", "must be single, binary or ordinal")
@@ -334,6 +339,8 @@ def act(policy: dict[str, Any], names: tuple[str, ...], p: list[float], top: int
         expected = {
             action: sum(x * row[name] for x, name in zip(p, names, strict=True)) for action, row in costs.items()
         }
+        if not all(math.isfinite(cost) for cost in expected.values()):  # costs each finite, their sum past a float's
+            raise InvalidRequest(EXPECTED_COSTS)
         result = {"action": min(expected, key=expected.__getitem__), "expected_costs": expected}
     if policy.get("abstain_below") is not None and p[top] < policy["abstain_below"]:
         result["action"] = ABSTAIN

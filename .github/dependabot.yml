@@ -17,6 +17,11 @@ updates:
       - dependency-name: opencv-python-headless
         update-types: ["version-update:semver-minor", "version-update:semver-major"]
     groups:
+      # The Sqwish Labs SDK alone, first so no other group takes it: each release is one pull request, and
+      # tests/test_kettei.py renders Kettei's prompts through it, so a green one says ippon still writes them as the
+      # SDK does and a red one names the request that differs (fix ippon's Kettei adapter before merging)
+      sqwishai:
+        patterns: ["sqwishai"]
       # MLX alone: ippon's M5 kernel choices were fitted on one MLX series, so a bump of it gets its own pull request,
       # an ippon bench --ab spot-check before merging, and a refit (scripts/measure_kernels.py) on a new minor version
       mlx:

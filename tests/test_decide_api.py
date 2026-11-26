@@ -4,6 +4,7 @@ cheapest action and abstention) and its requests are refused as the API refuses 
 from __future__ import annotations
 
 import math
+import sys
 from types import SimpleNamespace
 from typing import Any
 
@@ -65,6 +66,14 @@ def test_answers_follow_the_apis_arithmetic() -> None:
     assert urgency["policy"]["action"] == "abstain"  # p_top under 0.9
     assert out["temperature"] == {"refund": 2.0, "team": 2.0, "urgency": 2.0}
     assert out["usage"] == {"prompt_tokens": 42, "decisions": 3}
+    # costs each a float can hold, whose expected cost isn't: refused, as the SDK refuses it, never an inf answered
+    huge = {"id": "h", "question": "?", "outcomes": ["a", "b"],
+            "policy": {"action_costs": {"go": {"a": sys.float_info.max, "b": sys.float_info.max}}}}  # fmt: skip
+    systemone, decisions, _ = decide_api.to_systemone({"context": "x", "decisions": [huge]})
+    (question,) = parse_request(systemone).questions
+    result = SimpleNamespace(answers={"h": Answer(question, (0.6, 0.4000001))}, response={}, timing_ms={})
+    with pytest.raises(InvalidRequest, match="expected costs must be finite"):
+        decide_api.response(result, decisions, None, "kettei-dot")  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize(
@@ -76,6 +85,7 @@ def test_answers_follow_the_apis_arithmetic() -> None:
         ({"decisions": [{"id": "x", "question": "?", "kind": "ordinal", "outcomes": ["a", "b"]}]}, "needs a rubric"),
         ({"decisions": [{"id": "x", "question": "?", "outcomes": ["abstain", "go"]}]}, "reserved"),
         ({"decisions": [{"id": "x", "question": " ", "kind": "binary"}]}, "must not be empty"),
+        ({"decisions": [{"id": "x\ud800", "question": "?", "kind": "binary"}]}, r"decisions\[0\]\.id: .*surrogate"),
         ({"surprise": 1}, "extra inputs"),
         ({"images": [{"id": 1, "media_type": "image/png", "data": "AAAA"}]}, "no <image:1> places it"),
         (
