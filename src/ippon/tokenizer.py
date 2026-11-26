@@ -77,11 +77,6 @@ class Tokenizer:
         found = {a.content for a in self.backend.get_added_tokens_decoder().values() if a.special}
         return sorted(found, key=len, reverse=True)
 
-    @property
-    def special_ids(self) -> set[int]:
-        """The ids of the tokenizer's special tokens."""
-        return {i for i, a in self.backend.get_added_tokens_decoder().items() if a.special}
-
     def _as_text(self) -> _Tokenizer:
         if not self._plain:
             plain = _Tokenizer.from_str(self.backend.to_str())

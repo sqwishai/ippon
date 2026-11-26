@@ -6,9 +6,7 @@
 
 - **The decide API refuses what the Sqwish Labs SDK refuses** - A decision id holding a lone UTF-16 surrogate is
   refused at `decisions[i].id`, and costs whose expected cost is past the largest float are refused as
-  `invalid_request`, never answered as infinite. Kettei's answer labels are checked not to be special tokens, so a
-  tokenizer changed under them stops the load. The SDK's tests now hold its prompts, refusals and answers equal to
-  ippon's, token for token.
+  `invalid_request`, never answered as infinite.
 - **Ctrl-C stops a busy server cleanly** - `ippon serve` with agents attached ends their open connections as it
   closes, and logs nothing after "Stopped". Before, a server stopped while clients kept their connections could
   abort with "Fatal Python error: could not acquire lock for <stderr>".

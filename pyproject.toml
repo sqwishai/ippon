@@ -65,13 +65,10 @@ ippon = "ippon.__main__:main"
 
 [dependency-groups]
 dev = [
-    "jinja2>=3.1",
     "mypy>=1.13",
     "numpy>=2.2.6",
     "pytest>=8.3",
     "ruff>=0.8",
-    "sqwishai>=0.5",
-    "transformers>=5",
     "types-pyyaml==6.0.12.20261113",  # yaml's types for mypy (licences.py)
 ]
 
@@ -146,10 +143,6 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = ["mlx_vlm", "mlx_vlm.*", "clef_mlx", "mlx_lm", "mlx_lm.*", "mlx_embeddings", "mlx_embeddings.*", "torch", "transformers", "glide"]  # what compare_arms/ run in other environments
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["transformers", "transformers.*"]  # a dev dependency for the SDK's renderer: compare_arms/ is checked as before
-follow_imports = "skip"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
