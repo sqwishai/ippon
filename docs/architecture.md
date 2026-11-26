@@ -59,9 +59,9 @@ architecture is not sufficient on its own. The preflight says whether a model is
 catalog status, runs in a generic format or is unsupported. ippon refuses a model that cannot run or fit before any
 weights download.
 
-A model under a permissive open-source licence (Apache-2.0, MIT, BSD) downloads without a question. Every other
-licence, such as the Kettei Community Model License or CC BY-NC 4.0, needs your acceptance once before ippon
-downloads the weights. ippon remembers the acceptance. It never asks again for a later model under the same licence
+A model under an open licence (Apache-2.0, MIT, BSD, the LFM Open License or the Fastino Community License)
+downloads without a question. Every other licence, such as the Kettei Community Model License or CC BY-NC 4.0, needs
+your acceptance once before ippon downloads the weights. ippon remembers the acceptance. It never asks again for a later model under the same licence
 or for a model already on your Mac.
 
 - At a terminal, ippon shows the licence and its link and asks you. If you press Enter alone, the answer is no.

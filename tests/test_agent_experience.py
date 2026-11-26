@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import contextlib
 import io
 import json
@@ -21,6 +22,7 @@ from typing import Any, ClassVar
 
 import mlx.core as mx
 import pytest
+from PIL import Image
 
 from ippon import Decider, cli, daemon, hub, locate, mcp, registry
 from ippon import check as checks
@@ -752,3 +754,14 @@ def test_mcp_accepts_local_media_file_paths(tmp_path: Path) -> None:
     )
     assert missing["isError"] is True
     assert "no such file" in missing["content"][0]["text"]
+    jpeg = io.BytesIO()
+    Image.open(photo).convert("RGB").save(jpeg, "JPEG")
+    sent = base64.b64encode(jpeg.getvalue()).decode()
+    assert sent.startswith("/9j/")  # every JPEG's base64 starts like a path, and is still an image
+    raw = session.call(
+        "lint",
+        {"state": "Is this photo sharp?", "images": [sent],
+         "questions": {"sharp": {"type": "noul", "instructions": "Is the photo sharp?"}}},
+    )  # fmt: skip
+    assert raw["isError"] is False
+    assert raw["structuredContent"]["ok"] is True

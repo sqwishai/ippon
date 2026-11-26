@@ -1770,7 +1770,7 @@ def _approve_before_detach(specs: Sequence[str], args: argparse.Namespace) -> No
     for spec in specs:
         model = spec.split("=", 1)[-1]
         resolved = names.resolve(model)
-        if isinstance(resolved, Path) or locate.downloaded(resolved) is not None:
+        if isinstance(resolved, Path) or locate.downloaded(resolved):
             continue
         plan = pull.prepare(model)
         for licence in plan.licenses:

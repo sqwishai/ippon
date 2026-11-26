@@ -17,7 +17,8 @@ questions = {
 }
 
 # Kettei Core at 8-bit by default (about half its memory, so it fits a 16 GB Mac), or kettei-dot
-with Decider.load(sys.argv[1] if len(sys.argv) > 1 else "kettei-core:q8") as model:
+# accept_license=True accepts the Kettei Community Model License, which Kettei asks for once before downloading
+with Decider.load(sys.argv[1] if len(sys.argv) > 1 else "kettei-core:q8", accept_license=True) as model:
     transcript = ""
     for role, text in [
         ("customer", "Hi, I was charged twice for my order #48213."),

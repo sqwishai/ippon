@@ -145,6 +145,9 @@ def test_a_precision_ippon_does_not_run_never_opens_a_model(precision: str, caps
         Decider.load("/does/not/exist", precision=precision)
     assert main(["decide", "/does/not/exist", "{}", "--precision", precision]) == InvalidRequest.exit_code
     assert "--precision auto, bf16, fp16, fp32, q8, q6 or q4" in capsys.readouterr().err
+    # asked by name, the refusal lists the names that do run, the precisions ippon computes first
+    assert main(["decide", f"kettei-core:{precision}", "{}"]) == UnsupportedModel.exit_code
+    assert "use kettei-core:q8, kettei-core:q6, kettei-core:q4 or kettei-core:bf16" in capsys.readouterr().err
 
 
 @pytest.mark.parametrize("bits", [2, 3])

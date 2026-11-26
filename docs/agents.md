@@ -62,7 +62,7 @@ ippon pull kettei-core
 ```
 
 An agent's shell has no terminal, so ippon never asks there about a model's licence. Show the licence to the user and
-ask, then pull with `--accept-license`. A model under Apache-2.0 or MIT needs no acceptance.
+ask, then pull with `--accept-license`. A model under an open licence (Apache-2.0, MIT, BSD, the LFM Open License or the Fastino Community License) needs no acceptance.
 
 For Claude Code, add the local stdio server.
 

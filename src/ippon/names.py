@@ -28,6 +28,7 @@ from typing import Literal, NamedTuple
 from . import terminal
 from .errors import DecisionError, InvalidRequest, UnsupportedModel
 from .quantization import FULL, QUANTIZED, low_bit, unsupported_format
+from .quantization import listing as spoken
 from .verified import MODELS, Build, Model
 
 Kind = Literal["safetensors", "gguf", "ollama"]
@@ -334,8 +335,12 @@ def find(name: str) -> tuple[Named, str]:
     groups = families()
     if family in groups:
         builds = groups[family]
-        if tag in REFUSED:
-            raise unsupported_format(name, " or ".join(n.name for n in builds if not n.low_bit))
+        if tag in REFUSED:  # what it takes instead: the precisions ippon computes from a full build, then its builds
+            computed = [f"{family}:{q}" for q in QUANTIZED] if any(n.kind == "safetensors" and n.tag in FULL
+                                                                   for n in builds) else []  # fmt: skip
+            raise unsupported_format(
+                name, spoken(list(dict.fromkeys([*computed, *(n.name for n in builds if not n.low_bit)])))
+            )
         if tag == "q8" and (own := own_eight_bit(family)) and (picked := recommended(own)):
             return picked[0], f"{family}'s own 8-bit build ({picked[1]})"
         if tag in PRECISIONS:  # ippon computes it at that precision, from a build stored at full precision

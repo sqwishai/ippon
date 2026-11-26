@@ -4,6 +4,17 @@
 
 ## 0.2.1 (26 November 2026)
 
+- **`ippon start` asks for a licence before it starts the server** - At a terminal, `ippon start` and
+  `ippon serve --detach` ask for an undownloaded model's licence (Kettei's, say) before the server goes to the
+  background, where it can't ask. Before, they never asked, and the background server stopped on the licence.
+- **MCP takes raw base64 JPEGs** - An image or clip sent as base64 that starts like a path (every JPEG's starts with
+  `/9j/`) was read as a file name and refused. A string is now a file only when that file exists, or when it reads as
+  a path and not as base64.
+- **A tag ippon refuses names the ones it runs** - `kettei-core:q3` now lists `kettei-core:q8`, `kettei-core:q6`,
+  `kettei-core:q4` and `kettei-core:bf16`, where it offered only `kettei-core:bf16`.
+- **The licence docs match what asks** - The README, the agent and architecture docs list every licence that needs no
+  acceptance (Apache-2.0, MIT, BSD, the LFM Open License and the Fastino Community License), and the Python quick
+  start and examples pass `accept_license=True` for Kettei.
 - **The decide API refuses what the Sqwish Labs SDK refuses** - A decision id holding a lone UTF-16 surrogate is
   refused at `decisions[i].id`, and costs whose expected cost is past the largest float are refused as
   `invalid_request`, never answered as infinite.

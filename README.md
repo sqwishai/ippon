@@ -60,8 +60,9 @@ curl -fsSL https://sqwish.ai/ippon/install.sh | sh
 
 The installer lists the decision models with whether each fits your Mac, downloads the one you choose and asks it a
 first question. In its list, the left and right arrow keys change a model's precision and show whether its answers
-hold there. Esc goes back a step. A model under Apache-2.0 or MIT downloads without a question. For any other
-licence, ippon shows it and asks you once ([licences](docs/architecture.md#pulling-and-licences)).
+hold there. Esc goes back a step. A model under an open licence (Apache-2.0, MIT, BSD, the LFM Open License or the
+Fastino Community License) downloads without a question. For any other licence, Kettei's included, ippon shows it
+and asks you once ([licences](docs/architecture.md#pulling-and-licences)).
 
 To upgrade, run the installer again. To remove ippon, run `ippon remove all --models`, then
 `uv tool uninstall ippon`. The first command takes ippon out of your agents' settings and your login items and
@@ -162,7 +163,7 @@ To ask from Python, in your own process, load the model with `ippon.Decider`:
 ```python
 from ippon import Choice, Decider, YesNo
 
-with Decider.load("kettei-core:q8") as model:
+with Decider.load("kettei-core:q8", accept_license=True) as model:
     result = model.decide(
         "I was charged twice. Please refund the second charge today.",
         {
@@ -173,8 +174,9 @@ with Decider.load("kettei-core:q8") as model:
     print(result["refund"].p_yes, result["team"].top)
 ```
 
-Non-commercial (`CC BY-NC 4.0`) and unverified custom-licence models ask for acceptance once before downloading
-(confirm interactively in the CLI, or pass `accept_license=True` in Python).
+`accept_license=True` accepts the Kettei Community Model License, which Kettei asks for once before its first
+download. Every licence but an open one (Apache-2.0, MIT, BSD, the LFM Open License or the Fastino Community License)
+asks the same way: confirm it in the CLI, or pass `accept_license=True` in Python.
 
 To share one model with every app and agent on your Mac, serve it. In a terminal, `ippon serve kettei-core` prints a
 line for each answer it sends, and `ippon start` runs the same server in the background.

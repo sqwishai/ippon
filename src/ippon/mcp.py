@@ -85,16 +85,25 @@ def _load_local_media(value: object, kind: MediaKind) -> object:
     URIs, URLs and non-strings for parse_request to validate."""
     if not isinstance(value, str) or not value or value.startswith("data:") or "://" in value:
         return value
-    looks_like_path = value.startswith(("/", "~/", "./", "../"))
     expanded = Path(value).expanduser()
-    if not looks_like_path:
-        try:
-            if not expanded.is_file():
-                return value
-        except OSError:
-            return value
+    try:
+        found = expanded.is_file()
+    except OSError:  # a name too long for a file, as base64 often is
+        return value
+    # base64 can start like a path (every JPEG's starts with "/9j/"): a path only when it is a file, or when it reads
+    # as one and not as base64 (a path to a missing file, said as such)
+    if not found and not (value.startswith(("/", "~/", "./", "../")) and not _base64(value)):
+        return value
     media = as_media(expanded, kind)
     return base64.b64encode(media.data).decode("ascii")
+
+
+def _base64(value: str) -> bool:
+    try:
+        base64.b64decode(value, validate=True)
+    except ValueError:  # binascii.Error
+        return False
+    return True
 
 
 def _resolve_media_paths(body: dict[str, Any]) -> dict[str, Any]:
