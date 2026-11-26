@@ -49,9 +49,12 @@ def test_monitor_retries_failed_readings_and_keeps_polling_through_a_long_reques
         assert monitor.status()["monitor_error"] == "memory reading unavailable"
         monitor.begin()
         time.sleep(0.4)  # the accepted request lasts longer than the recent-activity window
-        before = monitor.readings
-        time.sleep(0.15)
-        assert monitor.readings - before >= 3
+        # 10 readings take about 0.1 s at the busy cadence. The idle cadence could take at most 9 in the 2.5 s
+        # allowed, so a slow runner still passes and a monitor that fell back to idle still fails.
+        before, deadline = monitor.readings, time.monotonic() + 2.5
+        while monitor.readings - before < 10 and time.monotonic() < deadline:
+            time.sleep(0.01)
+        assert monitor.readings - before >= 10
         assert monitor.status()["pressure"] == "normal"
         assert monitor.status()["monitor_error"] is None
         monitor.end()
