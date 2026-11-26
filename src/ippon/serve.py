@@ -1017,7 +1017,10 @@ class _Traffic:
             if client is not None:
                 named = client in self.clients or len(self.clients) < self.CLIENTS
                 self.clients[client if named else "others"] += questions
-            self.recent.append((time.monotonic(), questions, tokens, None if ms is None else ms / max(questions, 1)))
+            now = time.monotonic()
+            self.recent.append((now, questions, tokens, None if ms is None else ms / max(questions, 1)))
+            while self.recent[0][0] < now - self.WINDOW_S:  # here too: a server nobody asks the status of
+                self.recent.popleft()
             each = [e for *_, e in self.recent if e is not None]
             if each:
                 self.last = (time.monotonic(), round(statistics.median(each), 1))

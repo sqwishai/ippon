@@ -124,9 +124,15 @@ if [ "$on_path" = 0 ] && [ -z "${UV_NO_MODIFY_PATH:-}" ]; then
     fi
   done
 fi
+# uv too, when this terminal can't find it (the uv just installed, beside ippon), so `uv run --with ippon` works here
+linked_uv=
+if [ -n "$linked" ] && ! command -v uv >/dev/null 2>&1 && [ ! -e "$linked/uv" ]; then
+  ln -s "$uv" "$linked/uv" && linked_uv=1
+fi
 
 if [ -n "$linked" ]; then
-  printf 'ippon is linked into %s, which is on your PATH, so it works in this terminal now.\n' "$linked"
+  printf '%s linked into %s, which is on your PATH, so it works in this terminal now.\n' \
+    "$([ -n "$linked_uv" ] && echo 'ippon and uv are' || echo 'ippon is')" "$linked"
 elif [ "$on_path" = 0 ] && [ -n "${UV_NO_MODIFY_PATH:-}" ]; then
   printf 'UV_NO_MODIFY_PATH is set, so add %s to your PATH to run ippon.\n' "$bin"
 elif [ "$on_path" = 0 ]; then

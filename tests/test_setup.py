@@ -102,6 +102,20 @@ def test_setup_without_a_terminal_takes_core_as_published_and_leaves_agents_alon
     assert not any(home.iterdir()), "wrote into HOME"
 
 
+def test_an_agent_config_with_comments_is_left_alone_and_said_so(home: Path, tmp_path: Path) -> None:
+    """OpenCode reads its opencode.json with comments: setup never rewrites one without them, and says how to add
+    ippon by hand, where it raised JSON's own error."""
+    opencode = home / ".config" / "opencode" / "opencode.json"
+    opencode.parent.mkdir(parents=True)
+    theirs = '{\n  // my theme\n  "theme": "dark"\n}\n'
+    opencode.write_text(theirs)
+    (tmp_path / "bin" / "opencode").write_text("#!/bin/sh\n")
+    (tmp_path / "bin" / "opencode").chmod(0o755)
+    with pytest.raises(ValueError, match=r"isn't plain JSON .*comments.*add ippon's MCP server to it by hand"):
+        agents.add_everywhere("opencode", "kettei-core", [])
+    assert opencode.read_text() == theirs
+
+
 def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Every-session setup adds ippon's MCP server and skill beside what the user has, and `remove` takes out only
     those, never a skill of the user's own."""

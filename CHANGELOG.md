@@ -19,6 +19,16 @@
   Dot fits), and on a 16 GB Mac some 4B models only fit at 8-bit; models list as fitting a little less often.
 - **A model too big at full precision names its 8-bit tag** - `ippon pull kettei-core --dry-run` on a Mac where
   Kettei Core's bf16 doesn't fit says `ippon pull kettei-core:q8` fits, where it suggested nothing.
+- **The installer puts uv on the PATH it puts ippon on** - When it installs uv where this terminal doesn't look, it
+  links uv beside ippon, so the README's `uv run --with ippon` works in the same terminal.
+- **`ippon claude --model sonnet` says where the agent's own option goes** - `--model` names the decision model, and
+  the refusal now shows `ippon claude -- --model sonnet` for Claude Code's (and Codex's, OpenCode's and Pi's).
+- **An agent config with comments is left alone, and said so** - OpenCode reads `opencode.json` with comments, which
+  setup raised JSON's own error on; it now leaves the file as it is and says how to add ippon by hand.
+- **A server nobody watches keeps its recent answers only** - A server that `ippon status` never asked kept every
+  answer it sent and took their median on each new one; what it keeps now ages out as it answers too.
+- **AVIF images that name `mif1` first are read as AVIF** - An AVIF that names the generic still image brand first
+  and AVIF among its compatible brands was refused as HEIC.
 - **MCP takes raw base64 JPEGs** - An image or clip sent as base64 that starts like a path (every JPEG's starts with
   `/9j/`) was read as a file name and refused. A string is now a file only when that file exists, or when it reads as
   a path and not as base64.

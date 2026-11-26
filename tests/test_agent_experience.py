@@ -26,7 +26,7 @@ from PIL import Image
 
 from ippon import Decider, cli, daemon, hub, locate, mcp, registry
 from ippon import check as checks
-from ippon.errors import DecisionError, InvalidRequest, ModelNotFound, Unavailable
+from ippon.errors import DecisionError, InvalidRequest, ModelNotFound, Unavailable, UnsupportedModel
 from ippon.options import Reads
 from ippon.serve import Batcher
 from ippon.served import ServedModel, url_of
@@ -728,6 +728,12 @@ def test_a_server_that_never_replies_is_described_as_not_answering_without_holdi
         assert [m["id"] for m in found["models"]] == ["toy"]
     finally:
         frozen.close()
+
+
+def test_an_agents_own_model_option_is_pointed_after_the_separator(capsys: pytest.CaptureFixture[str]) -> None:
+    """`ippon claude --model sonnet` meant Claude Code's model: the refusal says where that option goes."""
+    assert cli.main(["claude", "--model", "sonnet"]) == UnsupportedModel.exit_code
+    assert "ippon claude -- --model sonnet" in capsys.readouterr().err
 
 
 def test_mcp_accepts_local_media_file_paths(tmp_path: Path) -> None:

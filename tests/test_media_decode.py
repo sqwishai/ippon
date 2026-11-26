@@ -191,6 +191,10 @@ def test_pillow_decodes_as_the_makers_decoders_do() -> None:
     broken_avif = Media.of(b"\x00\x00\x00\x1cftypavif\x00\x00\x00\x00avifmif1\x00\x00\x00\x00bad!", "image")
     with pytest.raises(InvalidRequest, match="AVIF image could not be decoded"):
         load_rgb(broken_avif, exif=True)
+    # an AVIF that names the generic still image brand first (mif1) and AVIF among its compatible brands is an AVIF
+    mif1_first = Media.of(b"\x00\x00\x00\x1cftypmif1\x00\x00\x00\x00mif1avif\x00\x00\x00\x00bad!", "image")
+    with pytest.raises(InvalidRequest, match="AVIF image could not be decoded"):
+        load_rgb(mif1_first, exif=True)
     # Image count is enforced at the boundary; ordinary multi-photo phone sets (e.g. 2 x 24 MP or 4 x 12 MP) are
     # accepted by check_images and budgeted by encoded vision tokens inside QwenImages instead of raw source pixels.
     small = as_media(PNG, "image")

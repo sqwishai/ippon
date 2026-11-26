@@ -290,6 +290,11 @@ def _read_json(path: Path) -> dict[str, Any]:
         data = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
         return {}
+    except json.JSONDecodeError as error:  # JSON with comments (OpenCode reads it): never rewritten without them
+        raise ValueError(
+            f"{path} isn't plain JSON ({error.msg} at line {error.lineno}; comments, say), so ippon leaves it alone: "
+            "add ippon's MCP server to it by hand (`ippon mcp --help`)"
+        ) from error
     if not isinstance(data, dict):
         raise ValueError(f"{path} isn't a JSON object, so ippon leaves it alone")
     return data

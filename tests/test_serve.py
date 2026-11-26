@@ -1202,6 +1202,14 @@ def test_status_keeps_a_finished_jobs_pace_until_its_answers_age_out(monkeypatch
     clock[0] = 41.0
     assert traffic.now()["questions_per_second"] == 0
     assert (traffic.now()["ms_per_decision"], traffic.now()["last_answer_s"]) == (20.0, 31.0)  # quiet: its last speed
+    unwatched = serve._Traffic()  # a server nobody asks the status of: what it keeps ages out as it answers too
+    for second in range(11):
+        clock[0] = float(second)
+        unwatched.answered("job", tokens=100, questions=3, ms=60.0)
+    clock[0] = 100.0
+    unwatched.answered("late", tokens=100, questions=3, ms=600.0)  # one slow answer long after
+    clock[0] = 200.0
+    assert unwatched.now()["ms_per_decision"] == 200.0  # its pace, never a median over every answer it ever sent
     for client in ("job", "job", "batch"):  # three requests in progress from two clients: two clients asking
         traffic.asking(+1, client)
     assert (traffic.now()["in_progress"], traffic.now()["clients_asking"]) == (3, 2)

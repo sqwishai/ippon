@@ -84,7 +84,15 @@ from . import (
     terminal,
 )
 from .answers import DEFAULT_SIZE as ANSWERS_KEPT
-from .errors import DecisionError, InsufficientMemory, InvalidRequest, RuntimeUnavailable, Unavailable, from_json
+from .errors import (
+    DecisionError,
+    InsufficientMemory,
+    InvalidRequest,
+    RuntimeUnavailable,
+    Unavailable,
+    UnsupportedModel,
+    from_json,
+)
 from .licences import accepting
 from .options import AWAKE_WINDOW_S, PERIOD_S, TRUNCATIONS, Reads, precision_argv, validate_load_options
 from .plan import DEFAULT_CHUNK
@@ -2171,7 +2179,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.command == "decide" and args.server is None:
                 args.server = _loaded_already(args)
             if args.server is None:
-                args.model = str(names.resolve(args.model))
+                try:
+                    args.model = str(names.resolve(args.model))
+                except UnsupportedModel as error:
+                    if args.command not in agents.AGENTS:
+                        raise
+                    raise UnsupportedModel(  # --model sonnet, meant for the agent: say where the agent's own goes
+                        f"{error}. --model here is the decision model; {agents.KINDS[args.command].name}'s own goes "
+                        f"after --: ippon {args.command} -- --model {args.model}"
+                    ) from error
         if args.start_timeout is not None and (not math.isfinite(args.start_timeout) or args.start_timeout <= 0):
             raise InvalidRequest("--start-timeout must be finite and positive")
         if args.port is not None and not 0 <= args.port <= 65535:

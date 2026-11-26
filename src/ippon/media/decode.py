@@ -161,7 +161,11 @@ def sniff(data: bytes) -> str | None:
     if data.startswith(b"caff"):
         return "caf"
     if data[4:8] == b"ftyp":  # ISO base media: MP4, QuickTime, an AVIF or a HEIF still, by its major brand
-        if data[8:12] in (b"avif", b"avis"):
+        # an AVIF may name the generic still image brand (mif1) first and itself among the compatible brands after
+        compatible = data[16 : min(int.from_bytes(data[:4], "big"), 64)]
+        if data[8:12] in (b"avif", b"avis") or any(
+            compatible[i : i + 4] in (b"avif", b"avis") for i in range(0, len(compatible) - 3, 4)
+        ):
             return "avif"
         if data[8:12] in _HEIF_BRANDS:
             return "heic"
