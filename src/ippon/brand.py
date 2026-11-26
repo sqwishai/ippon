@@ -91,6 +91,12 @@ def pixels(grid: tuple[str, ...] | list[str], colour: bool) -> list[str]:
         for up, down in zip(top, bottom, strict=True):
             if up == "." and down == ".":
                 line.append(" ")
+            elif (
+                colour and up == down
+            ):  # one colour: a space on it, as a cell's background fills all of it where Apple's
+                # Terminal draws a block glyph short of the line (SF Mono), leaving a seam on every line; the terminal's
+                # own foreground (f) by reversing a space, as SGR can't name it as a background
+                line.append("\x1b[7m \x1b[0m" if up == "f" else f"\x1b[{_code(COLOURS[up], True)}m \x1b[0m")
             elif not colour or {up, down} <= {"f", "."}:
                 line.append("▀" if down == "." else "▄" if up == "." else "█")
             elif down == ".":
