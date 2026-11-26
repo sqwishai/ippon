@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
-    <img alt="ippon, decision models on your mac" src="assets/banner-light.svg" width="800">
+    <img alt="ippon, run decision models on your mac" src="assets/banner-light.svg" width="800">
   </picture>
 </p>
 
