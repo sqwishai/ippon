@@ -175,6 +175,7 @@ class Decider:
         truncation: Truncation = Reads.truncation,
         window: int | None = Reads.window,
         answer_cache: int = ANSWERS_KEPT,
+        freeze_objects: bool = False,
     ) -> Decider:
         """A Hub id (`org/name`, `org/name@revision`), a downloaded directory, or a model's short name (`kettei-core`,
         `kettei-core:q8` at 8 bits: names.py), a GGUF file, or an `ollama://name:tag` build. `precision` is the compute
@@ -297,9 +298,12 @@ class Decider:
             decider.start_keep_awake(keep_awake)
         # What loading made lives as long as the model, mostly Python objects (about 100,000 for a small encoder:
         # imports, tokenizer, adapter), and a full collection, which a request's own garbage sets off now and then,
-        # walked every one: 11 ms inside a request (M5 Pro). Frozen, a collection walks only what came after.
-        gc.collect()
-        gc.freeze()
+        # walked every one: 11 ms inside a request (M5 Pro). Frozen, a collection walks only what came after. Freezing
+        # is process-wide, so only a process ippon owns asks for it (the command line and the server: cli.load_options);
+        # a library load leaves the caller's collector as it was.
+        if freeze_objects:
+            gc.collect()
+            gc.freeze()
         return decider
 
     @property

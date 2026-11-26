@@ -37,14 +37,14 @@ LICENCES = {
 }
 # Open-source and ungated community licences whose weights download without a clickwrap prompt (matching mlx-lm,
 # transformers, and ollama; licence name and URL are still shown on download, in Result.diagnostics, and /v1/models).
-# Non-commercial (CC BY-NC 4.0) and unverified custom licences still require explicit acceptance before download.
+# Non-commercial (CC BY-NC 4.0) and other custom licences require explicit acceptance before download, Kettei's
+# included: Sqwish asks every user to accept it once, here as in the Sqwish Labs SDK.
 OPEN = frozenset(
     {
         "apache-2.0",
         "mit",
         "bsd-2-clause",
         "bsd-3-clause",
-        KETTEI.casefold(),
         LFM.casefold(),
         FASTINO.casefold(),
     }

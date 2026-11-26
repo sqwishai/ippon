@@ -220,6 +220,7 @@ def load_options(args: argparse.Namespace) -> dict[str, Any]:
         "switches": args.switch,
         "chunk": args.chunk,
         "accept_license": args.accept_license,
+        "freeze_objects": True,  # the command line and the server own their process (Decider.load)
     }
     for name in ("literal_state", "truncation", "window", "prefix_budget", "keep_awake", "answer_cache"):
         if getattr(args, name) is not None:

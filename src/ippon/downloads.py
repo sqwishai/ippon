@@ -29,6 +29,7 @@ from .errors import (
     DownloadFailed,
     InsufficientDisk,
     InvalidRequest,
+    ModelNotFound,
     UnsupportedModel,
 )
 from .licences import Licence, of_metadata
@@ -62,9 +63,9 @@ def hub_failure(subject: str, what: str, error: Exception) -> DecisionError:
             f"{subject} is gated on Hugging Face: accept its terms on huggingface.co, then log in with `hf auth login`"
         )
     if isinstance(error, RevisionNotFoundError):
-        return UnsupportedModel(f"{subject} has no such revision on Hugging Face")
+        return ModelNotFound(f"{subject} has no such revision on Hugging Face")
     if isinstance(error, RepositoryNotFoundError):
-        return UnsupportedModel(
+        return ModelNotFound(
             f"no model {subject} on Hugging Face, or it is private (if it is yours, log in with `hf auth login`)"
         )
     said = f"{subject}: {what} ({type(error).__name__}: {error})"

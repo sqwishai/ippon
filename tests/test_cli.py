@@ -51,6 +51,7 @@ def test_every_common_option_reaches_the_load_here_and_in_another_process() -> N
     args = parser.parse_args(ALL_COMMON)
     options = load_options(args)
     assert set(options) <= set(inspect.signature(Decider.load).parameters)
+    assert options.pop("freeze_objects") is True  # not an option: the command line owns its process
     assert options == {
         "profile": "m4",
         "switches": "add_norm=mlx",
@@ -66,7 +67,7 @@ def test_every_common_option_reaches_the_load_here_and_in_another_process() -> N
     }
     dests = {a.dest for a in common_options()._actions if a.option_strings} - {"settings"}
     assert len(dests) == len(options)  # every option of the parser has its entry
-    assert load_options(parser.parse_args(forward_options(args))) == options
+    assert load_options(parser.parse_args(forward_options(args))) == {**options, "freeze_objects": True}
     assert forward_options(parser.parse_args([])) == []  # defaults are not repeated
     assert load_options(parser.parse_args(["--truncation", "creator"]))["truncation"] == "creator"
 

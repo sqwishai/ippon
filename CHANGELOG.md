@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.2.0 (26 November 2026)
+
+**Before you upgrade** - Kettei Core and Kettei Dot now ask you to accept the Kettei Community Model License once,
+before their first download: answer the prompt, or pass `--accept-license`, `accept_license=True` or set
+`IPPON_ACCEPT_LICENSE=1`. A model that isn't there now raises `model_not_found` (exit code 10) where it raised
+`unsupported_model`. Remove the switches `glu` and `norm_rope` from `IPPON_SWITCHES`, `--switch` and `switches=`.
+
+- **Kettei's licence is accepted once** - The Kettei Community Model License asks for acceptance before the first
+  download, as other custom licences do, so the command line, `Decider.load` and the Sqwish Labs SDK all ask the same
+  way. A model already downloaded, or a licence already accepted, isn't asked about again.
+- **No such model** - A Hub repository or revision that doesn't exist, and a folder or GGUF file that isn't there,
+  raise `model_not_found`. `unsupported_model` now means only that no adapter runs the model.
+- **A library load leaves the caller's process alone** - `Decider.load` no longer freezes the process's garbage
+  collector after loading. `freeze_objects=True` asks for it, and the command line and the server pass it, since they
+  own their process.
 - **Fewer of ippon's own kernels** - The switches `glu` and `norm_rope` are gone. Remove them from `IPPON_SWITCHES`,
   `--switch` and `switches=`, where ippon now refuses them as unknown. MLX's own operations do that work, with the
   same fp32 arithmetic rounded once. On a 48 GB M4 Pro the GLU kernel took 1 to 4% longer than MLX's, and

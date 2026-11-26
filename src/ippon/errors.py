@@ -11,7 +11,8 @@ of the error body) and the exit code the command line returns for it (`exit_code
     7  unsupported_profile  a chip profile or code path this Mac can't run
     8  overloaded           a server's queue is full or memory pressure is hard: retry later
     9  unavailable          a server that is closing, or whose model thread stopped
-    10 model_not_found      a request names a model the server doesn't answer for
+    10 model_not_found      no such model: a Hub id, revision, folder or file that isn't there, or a model the server
+                            doesn't answer for
     11 license_not_accepted the model licence needs acceptance before new weights are downloaded
     12 insufficient_disk    the cache disk cannot hold the remaining download
     13 download_failed      a download stopped or arrived incomplete: repeat the command to resume it
@@ -94,7 +95,8 @@ class Unavailable(DecisionError):
 
 
 class ModelNotFound(DecisionError):
-    """A request names a model the server doesn't answer for (`ippon serve MODEL...`)."""
+    """No such model: a Hub repository, revision, folder or GGUF file that isn't there, or a model a server doesn't
+    answer for (`ippon serve MODEL...`)."""
 
     kind, exit_code = "model_not_found", 10
     http_status = 404

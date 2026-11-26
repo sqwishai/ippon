@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING, Any
 from . import downloads, hub, licences, names, ollama, registry
 from .admission import resident_bytes
 from .checkpoint import invalid_file, read_json, weight_files
-from .errors import DownloadFailed, UnsupportedModel
+from .errors import DownloadFailed, ModelNotFound, UnsupportedModel
 from .gguf import builds
 from .gguf import source as gguf_source
 from .gguf.header import Header, read_header
@@ -285,7 +285,7 @@ def _local_gguf(text: str) -> tuple[Path, Header, builds.Build]:
     """A GGUF file on this Mac, its header, and the build ippon knows it as, recognised by that header."""
     path = Path(text).expanduser()
     if not path.is_file():
-        raise UnsupportedModel(f"{path}: no such file")
+        raise ModelNotFound(f"{path}: no such file")
     header = read_header(path)
     header.refuse_unread()
     return path, header, builds.by_header(header.digest)
@@ -309,7 +309,7 @@ def _mmproj(named: builds.Build, path: Path, *, fetch: bool) -> Path | None:
 def _folder(text: str) -> Path:
     path = Path(text).expanduser()
     if not path.is_dir():
-        raise UnsupportedModel(f"{text}: no such folder (a model is a folder, a .gguf file or a Hub id)")
+        raise ModelNotFound(f"{text}: no such folder (a model is a folder, a .gguf file or a Hub id)")
     return path
 
 

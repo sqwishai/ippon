@@ -21,7 +21,7 @@ Errors from the argument parser stay command-line usage errors, with exit code 2
 | 7 | `unsupported_profile` | unsupported chip profile or operation switch |
 | 8 | `overloaded` | the server queue is full or a model that isn't loaded is asked for under hard memory pressure. With `--server`, a server's `timeout` also exits 8 |
 | 9 | `unavailable` | the server is closing, its model thread stopped, or the selected server is unavailable |
-| 10 | `model_not_found` | the server is not configured for the requested model |
+| 10 | `model_not_found` | no such model: a Hub repository, revision, folder or file that isn't there, or a model the server is not configured for |
 | 11 | `license_not_accepted` | accept the model licence before downloading new weights |
 | 12 | `insufficient_disk` | free enough space on the model cache disk before retrying |
 | 13 | `download_failed` | a download stopped or arrived incomplete, so repeat the command to resume it |

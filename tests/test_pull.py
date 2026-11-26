@@ -26,6 +26,7 @@ from ippon.errors import (
     InsufficientMemory,
     InvalidRequest,
     LicenseNotAccepted,
+    ModelNotFound,
     UnsupportedModel,
 )
 from ippon.safetensors import Tensor
@@ -199,11 +200,11 @@ def test_an_open_licence_asks_nothing_and_the_environment_can_accept(
     plan.run()
     assert remote.transferred
     assert not plan.licenses[0].accepted  # nothing to remember
-    # Ungated community models (Kettei, Liquid d1) download smoothly without a clickwrap prompt while still
-    # preserving their licence name and URL; non-commercial (CC BY-NC 4.0) still requires acceptance and gives a
+    # Ungated community models (Liquid d1) download smoothly without a clickwrap prompt while still preserving their
+    # licence name and URL; Kettei's licence and non-commercial ones (CC BY-NC 4.0) require acceptance, with a
     # Python-first hint when called outside the CLI.
     kettei_lic = licences.resolve("Sqwish/Kettei-Core", "main", {}, ())
-    assert kettei_lic.open
+    assert not kettei_lic.open
     assert kettei_lic.name == "Kettei Community Model License 1.0"
     d1_lic = licences.resolve("LiquidAI/d1-2B", "main", {}, ())
     assert d1_lic.open
@@ -542,7 +543,7 @@ def test_no_network_is_a_failed_download_never_a_model_ippon_cant_run(monkeypatc
         downloads.info("org/model")
     missing = httpx2.Response(404, request=httpx2.Request("GET", "https://huggingface.co/api/models/org/model"))
     monkeypatch.setattr(huggingface_hub.HfApi, "model_info", failing(RepositoryNotFoundError("gone", response=missing)))
-    with pytest.raises(UnsupportedModel) as refused:
+    with pytest.raises(ModelNotFound) as refused:
         downloads.info("org/model")
     # one line that says what to do, not the Hub's paragraphs about tokens
     assert (
