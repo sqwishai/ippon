@@ -360,6 +360,10 @@ for fewer bits. If you do, it warns how far the model drifts from its creator's 
 ([formats](docs/formats.md)). Weights keep their creators' licences, and Jeff's do not allow commercial use.
 [Models](docs/models.md) lists every build and what was checked of it.
 
+Our largest models, Kettei Chub and Kettei Fat, run on [console.sqwish.ai](https://console.sqwish.ai), where Kettei
+Fat leads every listed decision model on the public Decision Index and JevBench. There you can also fine-tune Kettei
+on your own labelled data and call it through the [Sqwish SDK](https://docs.sqwish.ai/guides/sdks) or the OneHot API.
+
 ## Speed ⚡
 
 Each model has one chart, in the section for the inputs it was timed on. Open a model to see ippon beside every
