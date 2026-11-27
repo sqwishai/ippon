@@ -47,7 +47,9 @@ tokens.
    `ippon decide ... --server`. For many states, run `ippon decide MODEL request.json --states states.jsonl` once. It
    asks about every line in one run, and a running server that has the model answers them. Never loop one command
    per state. Give each subagent that shares the server its own name (`IPPON_CLIENT=NAME ippon decide ...`), so
-   `ippon status` shows them apart. Done when every answer is back and none says `truncated`. For servers, HTTP and
+   `ippon status` shows them apart. A `--states` run writes each answer as it comes back, in the states' order, so
+   output with fewer lines than the states is a run still going, even when standard error is empty. Wait for the
+   command to exit. Done when every answer is back and none says `truncated`. For servers, HTTP and
    errors, run `ippon skills ippon serving`.
 4. Act on probabilities. Act on a threshold, not on the top label alone. A noul answer is P(yes), and a choice
    answer gives every option's probability. If an answer falls between your thresholds, the call is unsure, so send
