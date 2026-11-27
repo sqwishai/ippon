@@ -2093,9 +2093,11 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
 
 
 def preview(model: dict) -> str:
-    """The line a folded chart shows before it opens: ippon's time in the model's first timed workload and its lead
-    there, "typical call in 438 ms on ippon, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX"."""
-    panel = next((p for p in model["panels"] if p["unit"] == "ms" and any(c["rivals"] for c in p["clusters"])), None)
+    """The line a folded chart shows before it opens: ippon's time in a typical call and its lead there,
+    "~438 ms, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX". The README's Speed section says
+    once that this number is a typical call on ippon. A model timed without one names the workload its number is."""
+    timed = [p for p in model["panels"] if p["unit"] == "ms" and any(c["rivals"] for c in p["clusters"])]
+    panel = next((p for p in timed if p["title"] == "Typical call"), timed[0] if timed else None)
     if panel is None:
         return ""
     clusters = [c for c in panel["clusters"] if c["rivals"]]
@@ -2104,7 +2106,10 @@ def preview(model: dict) -> str:
     runtimes = _listed(sorted({bare(short_runtime(r)) for c in clusters for r in c["rivals"]}))
     lead = compared(max(ratios))
     up_to = "up to " if len(ratios) > 1 and lead.endswith("faster") else ""
-    return f"{panel['title'].lower()} in {fastest:,.0f} ms on ippon, {up_to}{lead} than {runtimes}"
+    took = (
+        f"~{fastest:,.0f} ms" if panel["title"] == "Typical call" else f"{panel['title'].lower()} in {fastest:,.0f} ms"
+    )
+    return f"{took}, {up_to}{lead} than {runtimes}"
 
 
 def escape_attr(text: str) -> str:
