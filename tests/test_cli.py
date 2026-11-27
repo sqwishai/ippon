@@ -332,7 +332,7 @@ def test_status_refreshes_at_a_terminal_until_ctrl_c_and_prints_once_elsewhere(
 ) -> None:
     """In iTerm2, Inky's sticker is sent once, on the first frame, and only the words around it are written again
     each second: a picture sent every second would flicker and fill the terminal's pipe."""
-    for key in ("TERM_PROGRAM", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
+    for key in ("TERM_PROGRAM", "TERM_PROGRAM_VERSION", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
         monkeypatch.delenv(key, raising=False)
     monkeypatch.setenv("TERM", "xterm-256color")
     monkeypatch.setattr(shutil, "get_terminal_size", lambda *a: os.terminal_size((160, 50)))
@@ -361,8 +361,9 @@ def test_status_refreshes_at_a_terminal_until_ctrl_c_and_prints_once_elsewhere(
     assert live.split("\x1b[?1049l")[1].count("ippon status --json") == 1  # the last state left on the user's screen
 
     monkeypatch.setenv("TERM_PROGRAM", "iTerm.app")
+    monkeypatch.setenv("TERM_PROGRAM_VERSION", "3.7.3")
     live = frames(3)
-    assert live.count("\x1b]1337;File=inline=1") == 1  # the sticker once, for three frames
+    assert live.count("\x1b_Ga=T") == 1  # the sticker once, for three frames
     watched = live.split("\x1b[?1049l")[0]
     assert watched.count("Ctrl-C stops") == 3  # the words under him, each frame
     assert len(re.findall(r"\x1b\[\d+;30H\x1b\[1mippon", watched)) == 3  # his header beside him, each frame
@@ -372,18 +373,20 @@ def test_status_refreshes_at_a_terminal_until_ctrl_c_and_prints_once_elsewhere(
 def test_ippon_alone_shows_inkys_sticker_where_the_terminal_draws_pictures_and_words_alone_elsewhere(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """iTerm2 and Ghostty get Inky's sticker, ippon's own picture whole, with the name and its lines written beside
-    it after it is drawn. Apple's Terminal, and iTerm2 inside tmux, get the name and its lines alone on one left
-    edge, with no picture sequence a terminal could print as text."""
+    """WezTerm, iTerm2 and Ghostty get Inky's sticker, ippon's own picture whole, with the name and its lines written
+    beside it after it is drawn. iTerm2 gets it by kitty's protocol, as its own inline images ask the user first and
+    print as text on a No, with no reply to reach the prompt and cells of text that name the picture sent. Apple's
+    Terminal, iTerm2 inside tmux, and an iTerm2 too old for kitty's pictures get the name and its lines alone on one
+    left edge, with no picture sequence a terminal could print as text."""
     from ippon import __version__
 
-    for key in ("TERM_PROGRAM", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
+    for key in ("TERM_PROGRAM", "TERM_PROGRAM_VERSION", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
         monkeypatch.delenv(key, raising=False)
     monkeypatch.setenv("TERM", "xterm-256color")
     monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
     sticker = (files("ippon") / "inky.png").read_bytes()
 
-    monkeypatch.setenv("TERM_PROGRAM", "iTerm.app")
+    monkeypatch.setenv("TERM_PROGRAM", "WezTerm")
     assert main([]) == 0
     shown = capsys.readouterr().out
     drawn = re.search(r"\x1b\]1337;File=inline=1;size=(\d+);[^:]*:([A-Za-z0-9+/=]+)\x07", shown)
@@ -393,21 +396,35 @@ def test_ippon_alone_shows_inkys_sticker_where_the_terminal_draws_pictures_and_w
     assert shown[drawn.end() : drawn.end() + 2] == "\x1b8"  # the cursor back where it was, for the words beside
     assert re.search(r"\x1b\[\d+Grun decision models on your mac", shown)
 
-    monkeypatch.setenv("TERM_PROGRAM", "ghostty")
-    assert main([]) == 0
-    chunks = re.findall(r"\x1b_G([^;]*);([A-Za-z0-9+/=]*)\x1b\\", capsys.readouterr().out)
-    assert "q=2" in chunks[0][0]  # no reply, which would reach the shell's prompt as text
-    assert all(len(data) <= 4096 for _, data in chunks)
-    assert chunks[-1][0].endswith("m=0")
-    assert base64.b64decode("".join(data for _, data in chunks)) == sticker
+    for program, version in (("iTerm.app", "3.7.3"), ("ghostty", "1.2.0")):
+        monkeypatch.setenv("TERM_PROGRAM", program)
+        monkeypatch.setenv("TERM_PROGRAM_VERSION", version)
+        assert main([]) == 0
+        shown = capsys.readouterr().out
+        assert "\x1b]1337" not in shown
+        chunks = re.findall(r"\x1b_G([^;]*);([A-Za-z0-9+/=]*)\x1b\\", shown)
+        assert all("q=2" in keys for keys, _ in chunks)  # no reply, which would reach the shell's prompt as text
+        assert all(len(data) <= 4096 for _, data in chunks)
+        assert chunks[-1][0].endswith("m=0")
+        assert base64.b64decode("".join(data for _, data in chunks)) == sticker
+        keys = dict(pair.split("=") for pair in chunks[0][0].split(","))
+        assert keys["U"] == "1"  # drawn as placeholder cells, which belong to this screen
+        image, columns, rows = int(keys["i"]), int(keys["c"]), int(keys["r"])
+        named = re.findall(r"\x1b\[38;2;(\d+);(\d+);(\d+)m((?:\U0010eeee..)+)\x1b\[39m", shown)
+        assert len(named) == rows
+        assert all((int(r) << 16) + (int(g) << 8) + int(b) == image for r, g, b, _ in named)  # this picture's cells
+        assert [len(cells) for *_, cells in named] == [3 * columns] * rows
+        assert re.search(r"\x1b\[\d+Grun decision models on your mac", shown)
 
-    # Apple's Terminal (one opened from iTerm2 too, which inherits LC_TERMINAL) and iTerm2 inside tmux
-    for program, inherited, tmux in (
-        ("Apple_Terminal", None, None),
-        ("Apple_Terminal", "iTerm2", None),
-        ("iTerm.app", None, "/tmp/tmux-501/default,1,0"),
+    # Apple's Terminal (one opened from iTerm2 too, which inherits LC_TERMINAL), iTerm2 inside tmux, and iTerm2 3.5
+    for program, inherited, tmux, version in (
+        ("Apple_Terminal", None, None, ""),
+        ("Apple_Terminal", "iTerm2", None, ""),
+        ("iTerm.app", None, None, "3.5.14"),
+        ("iTerm.app", None, "/tmp/tmux-501/default,1,0", "3.7.3"),
     ):
         monkeypatch.setenv("TERM_PROGRAM", program)
+        monkeypatch.setenv("TERM_PROGRAM_VERSION", version)
         if inherited:
             monkeypatch.setenv("LC_TERMINAL", inherited)
         if tmux:

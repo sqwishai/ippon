@@ -4,13 +4,14 @@ and the accents its screens use.
 The name is drawn two pixels to a character cell, an upper half block with the top pixel its foreground and the bottom
 one its background, in the terminal's own colour, so it reads on light and dark terminals alike. Inky, Sqwish's octopus
 at a laptop, is the README's sticker (assets/inky-sticker.svg, drawn into inky.png by scripts/sticker.py), shown as a
-picture where the terminal draws pictures: iTerm2 and WezTerm by iTerm2's inline images, kitty and Ghostty by kitty's
-graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) ippon shows its name and its
-lines alone, on one left edge, since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the
-terminal says it takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no
-colour there is no picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits
-beside the header `ippon serve` prints once it is ready and beside the server's state `ippon status` watches. They
-show only to a person at a terminal.
+picture where the terminal draws pictures: kitty, Ghostty and iTerm2 3.6 and newer by kitty's graphics protocol, and
+WezTerm by iTerm2's inline images. iTerm2 itself asks before it shows each of its own inline images ("Allow
+Terminal-Initiated Display?"), and a No there prints the picture as base64 text, so ippon never sends it one. Everywhere
+else (Apple's Terminal, VS Code's terminal, tmux and screen) ippon shows its name and its lines alone, on one left edge,
+since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the terminal says it takes them
+(COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no colour there is no picture
+either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits beside the header `ippon serve`
+prints once it is ready and beside the server's state `ippon status` watches. They show only to a person at a terminal.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ import base64
 import fcntl
 import os
 import re
+import secrets
 import shutil
 import struct
 import sys
@@ -50,6 +52,17 @@ ACCENTS = {
 TAGLINE = "run decision models on your mac"
 GAP = "   "  # between the sticker and the lines beside it
 Pictures = Literal["iterm", "kitty"]
+# The id kitty keeps this process's sticker under, random as kitty asks of programs so one never replaces another's,
+# and under 2**24, as the sticker's cells carry it in their 24-bit colour
+IMAGE = 1 + secrets.randbelow(2**24 - 1)
+# kitty's marks for a placeholder cell's row and column, in kitty's own order (its gen/rowcolumn-diacritics.txt): the
+# first 60, for a sticker up to 60 cells wide or high
+MARKS = (
+    "\u0305\u030d\u030e\u0310\u0312\u033d\u033e\u033f\u0346\u034a\u034b\u034c\u0350\u0351\u0352\u0357\u035b\u0363"
+    "\u0364\u0365\u0366\u0367\u0368\u0369\u036a\u036b\u036c\u036d\u036e\u036f\u0483\u0484\u0485\u0486\u0487\u0592"
+    "\u0593\u0594\u0595\u0597\u0598\u0599\u059c\u059d\u059e\u059f\u05a0\u05a1\u05a8\u05a9\u05ab\u05ac\u05af\u05c4"
+    "\u0610\u0611\u0612\u0613\u0614\u0615"
+)
 
 
 def _code(rgb: tuple[int, int, int], background: bool) -> str:
@@ -107,8 +120,12 @@ def pictures(stream: IO[str]) -> Pictures | None:
         return None
     program = os.environ.get("TERM_PROGRAM", "")
     # LC_TERMINAL only where TERM_PROGRAM says nothing (over SSH): a terminal opened from iTerm2 inherits it, and
-    # Apple's Terminal with it drew no picture, leaving a blank where Inky was meant to be
-    if program in ("iTerm.app", "WezTerm") or (not program and os.environ.get("LC_TERMINAL") == "iTerm2"):
+    # Apple's Terminal with it drew no picture, leaving a blank where Inky was meant to be. iTerm2 draws kitty's
+    # pictures without asking from 3.6 (it asks before its own inline images from 3.5), so an older one gets none.
+    if program == "iTerm.app" or (not program and os.environ.get("LC_TERMINAL") == "iTerm2"):
+        version = os.environ.get("TERM_PROGRAM_VERSION" if program else "LC_TERMINAL_VERSION", "")
+        return "kitty" if tuple(int(part) for part in re.findall(r"\d+", version)[:2]) >= (3, 6) else None
+    if program == "WezTerm":
         return "iterm"
     kitty = os.environ.get("TERM") in ("xterm-kitty", "xterm-ghostty") or os.environ.get("KITTY_WINDOW_ID")
     if kitty or program == "ghostty":
@@ -127,18 +144,29 @@ def _cell_shape(stream: IO[str]) -> float:
 
 
 def _picture(how: Pictures, columns: int, rows: int) -> str:
-    """The sticker as the escape sequence that draws it over `columns` x `rows` cells, leaving the cursor where it is
-    for kitty (C=1) and asking it for no reply (q=2), which would otherwise arrive at the shell's prompt as text."""
+    """The sticker as the escape sequence that draws it over `columns` x `rows` cells from the cursor.
+
+    kitty's picture is sent once, asking for no reply (q=2, on every chunk, as iTerm2 takes the answer from the last
+    one), which would otherwise arrive at the shell's prompt as text. It is then drawn as kitty's Unicode placeholders,
+    one cell of text for each cell of him, so he belongs to the screen he was drawn on, scrolls with the lines beside
+    him and is cleared with them. iTerm2 keeps a picture drawn the other way over both screens: `ippon status`, on the
+    other screen, clearing it erased the banner's Inky on the user's own, and showed him over it when it didn't."""
     png = _sticker_png()
     data = base64.b64encode(png).decode()
     if how == "iterm":
         return f"\x1b]1337;File=inline=1;size={len(png)};width={columns};height={rows};preserveAspectRatio=1:{data}\x07"
     chunks = [data[i : i + 4096] for i in range(0, len(data), 4096)]  # kitty's largest chunk
-    keys = f"a=T,f=100,q=2,C=1,c={columns},r={rows}"
-    return "".join(
-        f"\x1b_G{keys + ',' if i == 0 else ''}m={int(i < len(chunks) - 1)};{chunk}\x1b\\"
+    keys = f"a=T,U=1,f=100,q=2,i={IMAGE},c={columns},r={rows}"
+    sent = "".join(
+        f"\x1b_G{keys if i == 0 else 'q=2'},m={int(i < len(chunks) - 1)};{chunk}\x1b\\"
         for i, chunk in enumerate(chunks)
     )
+    colour = f"\x1b[38;2;{IMAGE >> 16};{IMAGE >> 8 & 255};{IMAGE & 255}m"
+    cells = (
+        colour + "".join(f"\U0010eeee{MARKS[row]}{MARKS[column]}" for column in range(columns)) + "\x1b[39m"
+        for row in range(rows)
+    )
+    return sent + f"\x1b[{columns}D\x1b[B".join(cells)
 
 
 @dataclass(frozen=True)
