@@ -5,12 +5,11 @@ The name is drawn two pixels to a character cell, an upper half block with the t
 one its background, in the terminal's own colour, so it reads on light and dark terminals alike. Inky, Sqwish's octopus
 at a laptop, is the README's sticker (assets/inky-sticker.svg, drawn into inky.png by scripts/sticker.py), shown as a
 picture where the terminal draws pictures: iTerm2 and WezTerm by iTerm2's inline images, kitty and Ghostty by kitty's
-graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) the banner shows Inky in
-pixels (INKY, 40 x 24, drawn by hand from the sticker's drawing), two to a cell, beside the name where the window has
-room, and `ippon serve` its lines alone, since smaller he is only a blur. Colours are 24-bit where the terminal says it
-takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no colour there is no
-picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits beside the header
-`ippon serve` prints once it is ready. Both show only to a person at a terminal.
+graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) ippon shows its name and its
+lines alone, on one left edge, since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the
+terminal says it takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no
+colour there is no picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits
+beside the header `ippon serve` prints once it is ready. Both show only to a person at a terminal.
 """
 
 from __future__ import annotations
@@ -47,46 +46,6 @@ ACCENTS = {
     "red": (0xF0, 0x5A, 0x5A),
 }
 TAGLINE = "run decision models on your mac"
-# Inky at his laptop in pixels, two to a character cell, for a terminal that draws no pictures (Apple's Terminal): the
-# sticker's drawing at 40 x 24, so he and the name fit an 80-column window, each pixel the drawing's own colour it
-# covers most, its outline kept where it covers a third of a pixel, and the eyes, the smile and the lid's Apple logo
-# drawn by hand. Smaller, he is only a blur, so `ippon serve` shows him only as a picture.
-# n outline, w white, p body, m shade, c cheek, g laptop, s its logo.
-INKY = (
-    "..............nnnn......................",
-    "...........nnwwwwwwnn...................",
-    "..........nwwpppppppwn..................",
-    ".........nwpppppppppppwn................",
-    "........nwpppppppppppppw................",
-    ".......nwmpwppppppppppwpn...............",
-    ".......nmppppppppppppppppn..............",
-    "......nwmppppppppppppppppn..............",
-    "......nwmpppppppppppppnnnn..............",
-    "......nmmpppppwwwwpppnnwwnn.........nnn.",
-    "......nmmmpppwnnwwnppnnwwnpnnnnnnngggggn",
-    "..nnn.nmmmpppwnnnwnppnwnnnpggggggggggggn",
-    ".nmmpnnnmmpppwnwnnnpppnnnppggggggsgggggn",
-    "nmnnmpnnmmmpppwnnnpnppnpccnggggssssggggn",
-    "nnnnnmpnnmmmpppccpppnnpppnnggggsssgggggn",
-    "....nnmpnnmmmpppppppppppn.nggggssssgnngn",
-    "..n..nnmmnnnmmppppppppnnnnngggggssggnngn",
-    ".nn..nnnnnnnnnmmpppnnnppnnngggggggggnngn",
-    ".nmnnnnnpnmmmmmmpnppnpnnnnnggggggggnwngn",
-    ".nwmmmmnpnmmmnnppnppppnnnnnnnnnnnnnnpnn.",
-    "..nnmmnnnpnnnppnnnnppn.........nmpnpp...",
-    "...nnnnnnwnnnnnwnnnnn...........nmmnn...",
-    ".........nnwnwnnn.................nnn...",
-    "...........n.n..........................",
-)
-INKY_COLOURS = {
-    "n": (0x2E, 0x1F, 0x57),
-    "w": (0xFF, 0xFF, 0xFF),
-    "p": (0xFB, 0xB2, 0xB6),
-    "m": (0xC3, 0x48, 0x7F),
-    "c": (0xF4, 0x8C, 0xA1),
-    "g": (0xC0, 0xC5, 0xCB),
-    "s": (0x87, 0x94, 0xA5),
-}
 GAP = "   "  # between the sticker and the lines beside it
 Pictures = Literal["iterm", "kitty"]
 
@@ -125,42 +84,6 @@ def name(colour: bool = False) -> list[str]:
         )
         lines.append("".join(cells).rstrip())
     return lines
-
-
-def inky() -> list[str]:
-    """Inky in colour, two pixels to a cell, every line INKY's full width. A cell of one colour is a space on it, as a
-    cell's background fills all of it where Apple's Terminal draws a block character short of the line (SF Mono)."""
-    rows = []
-    for top, bottom in zip(INKY[::2], INKY[1::2], strict=True):
-        cells = []
-        for up, down in zip(top, bottom, strict=True):
-            if up == "." and down == ".":
-                cells.append(" ")
-            elif up == down:
-                cells.append(f"\x1b[{_code(INKY_COLOURS[up], True)}m \x1b[0m")
-            elif down == ".":
-                cells.append(f"\x1b[{_code(INKY_COLOURS[up], False)}m▀\x1b[0m")
-            elif up == ".":
-                cells.append(f"\x1b[{_code(INKY_COLOURS[down], False)}m▄\x1b[0m")
-            else:
-                cells.append(f"\x1b[{_code(INKY_COLOURS[up], False)};{_code(INKY_COLOURS[down], True)}m▀\x1b[0m")
-        rows.append("".join(cells))
-    return rows
-
-
-def in_pixels(lines: Sequence[str], width: int, indent: str = "") -> list[str] | None:
-    """`lines` beside Inky in pixels (`inky`), centred against him, `indent` in from the left edge; None where
-    `width` columns leave no room for him and the longest line."""
-    art = inky()
-    if len(indent) + len(INKY[0]) + len(GAP) + max((len(_plain(line)) for line in lines), default=0) > width:
-        return None
-    top = max(0, (len(art) - len(lines)) // 2)
-    beside = [""] * top + list(lines) + [""] * max(0, len(art) - len(lines) - top)
-    blank = " " * len(INKY[0])
-    return [
-        f"{indent}{a}{GAP}{b}".rstrip()
-        for a, b in zip([*art, *[blank] * (len(beside) - len(art))], beside, strict=True)
-    ]
 
 
 @cache
@@ -258,10 +181,6 @@ def banner(
             return both
         if (alone := sticker(words, stream, width, 44, "  ")) is not None:
             return [*alone, *(f"  {line}" if line else "" for line in under)]
-        if (drawn := in_pixels([*words, *under], width, "  ")) is not None:  # no pictures here: Inky in pixels
-            return drawn
-        if (drawn := in_pixels(words, width, "  ")) is not None:
-            return [*drawn, *(f"  {line}" if line else "" for line in under)]
     return [f"  {line}" if line else "" for line in [*words, *under]]
 
 
