@@ -8,12 +8,13 @@ brand.TAGLINE, is in a monospaced face.
 
 Inky is assets/inky.svg, Sqwish's drawing with all its poses in one file, copied unchanged from the console
 (web/brand/inky.svg in decisionone-workbench). When the drawing changes, copy it again from there rather than editing it
-here. The banner sets the laptop pose, puts the Apple logo on the lid in place of the drawing's octopus (APPLE) and
-moves the arm that holds the lid to its right edge, clear of the logo, hides the ground shadow and crops the drawing to
-the scene, then cuts it out as a sticker: a white keyline grown round its silhouette, a hairline and a soft shadow,
-tilted a little. Inky blinks as it does in the console, and its typing arm is held still so the README stays calm.
-FONTS_DIR holds Source Code Pro's variable font from github.com/google/fonts (OFL), as SourceCodePro.ttf: the tagline is
-outlined from it, since GitHub loads no fonts inside a README image.
+here. The banner sets the laptop pose, draws a MacBook's base in place of the drawing's small keyboard (DECK, HINGE),
+puts the Apple logo on the lid in place of the drawing's octopus (APPLE) and moves the arm that holds the lid to its
+right edge, clear of the logo, hides the ground shadow and crops the drawing to the scene, then cuts it out as a
+sticker: a white keyline grown round its silhouette, a hairline and a soft shadow, tilted a little. Inky blinks as it
+does in the console, and its typing arm is held still so the README stays calm. FONTS_DIR holds Source Code Pro's
+variable font from github.com/google/fonts (OFL), as SourceCodePro.ttf: the tagline is outlined from it, since GitHub
+loads no fonts inside a README image.
 """
 
 import re
@@ -54,6 +55,30 @@ APPLE = "".join(
         'M.2-5.4C.1-7.2 1.4-8.6 3-8.8 3.1-7 1.8-5.6.2-5.4z"/>',
     )
 )
+# The laptop's keyboard as the drawing has it, a small upright sliver with three rows of dashes, and the MacBook base
+# the banner draws instead: on Inky's side of the lid, the deck seen nearly flat (its front edge, its silver top, the
+# keyboard's dark well and its keys), and under the lid, the base's back edge the hinge sits on.
+KEYBOARD = (
+    '<path class="lf" d="M166 137.4l-18.4 4.8 3.8 18 14.6 1.4z" fill="#C0C5CB"/>\n'
+    '      <path d="M150.6 148.4l4.4-.8m2.8-.6 4.8-.8m-10.8 7.2 4.4-.6m2.8-.4 4.4-.6M153 158.2l4.4-.4m2.8-.2 3.8-.2" '
+    'stroke="#2E1F57" stroke-width="1.5" stroke-linecap="round"/>'
+)
+DECK = "".join(
+    (
+        '<path class="lf" d="M145.2 162.4l21.8 1.1v3l-21.6-.9z" fill="#8794A5"/>',
+        '<path class="lf" d="M167 148.4l-20.4 6-1.4 8 21.8 1.1z" fill="#C0C5CB"/>',
+        '<path d="M165.4 150.6l-15.8 4.7-.7 3.4 16.6-1.7z" fill="#2E1F57"/>',
+        '<path d="M150.2 157.4l15.2-1.6m-15-1.1 15.1-2.9M154.4 154l-.5 4m4-5.1-.4 4.7m4.1-5.9-.3 5.3" stroke="#8794A5"',
+        ' stroke-width=".7"/>',
+    )
+)
+LID_PATH = '<path class="lf" d="M166.4 105q'
+HINGE = "".join(
+    (
+        '<path d="M161.6 156.4l90.6-4.8.6 7.2-90.4 6.4z" fill="#C0C5CB" stroke="#2E1F57" stroke-width="2.6"',
+        ' stroke-linejoin="round"/><path d="M164 162.6l86.4-5.6" stroke="#8794A5" stroke-width="1.4"/>',
+    )
+)
 TILT = -3  # degrees the sticker is turned, as a sticker is never quite straight
 TEXT_X = 644  # banner units from the left where the name and the tagline start
 
@@ -71,6 +96,8 @@ def inky(x: float, y: float, width: float) -> str:
     svg = swap(svg, 'class="octo-inky"', 'class="octo-inky" data-pose="laptop"')
     svg = swap(svg, "width: 100%; height: auto; ", "")  # placed by the banner, not sized by a page
     svg = swap(svg, LID_LOGO, APPLE)
+    svg = swap(svg, KEYBOARD, DECK)
+    svg = swap(svg, LID_PATH, HINGE + LID_PATH)
     # the back arm, and the clip that tucks it under the lid, moved to the lid's right edge, so it holds the laptop by
     # its side and leaves the logo clear
     svg = swap(svg, '<g clip-path="url(#inky-lgo)">', '<g clip-path="url(#inky-lgo)" transform="translate(16 0)">')
