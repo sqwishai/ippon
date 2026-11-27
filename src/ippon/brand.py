@@ -9,7 +9,8 @@ graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux a
 lines alone, on one left edge, since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the
 terminal says it takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no
 colour there is no picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits
-beside the header `ippon serve` prints once it is ready. Both show only to a person at a terminal.
+beside the header `ippon serve` prints once it is ready and beside the server's state `ippon status` watches. They
+show only to a person at a terminal.
 """
 
 from __future__ import annotations
@@ -23,6 +24,7 @@ import struct
 import sys
 import termios
 from collections.abc import Sequence
+from dataclasses import dataclass
 from functools import cache
 from importlib.resources import files
 from typing import IO, Literal
@@ -139,30 +141,55 @@ def _picture(how: Pictures, columns: int, rows: int) -> str:
     )
 
 
-def sticker(lines: Sequence[str], stream: IO[str], width: int, most: int, indent: str = "") -> list[str] | None:
-    """`lines` beside Inky's sticker, `indent` in from the left edge, the sticker at most `most` columns wide and as
-    wide as `width` columns leave room for, the lines centred against it: lines to print one after another, or None
-    where the terminal on `stream` draws no pictures or has no room for a sticker 20 columns wide.
+@dataclass(frozen=True)
+class Placement:
+    """Inky's sticker beside some lines: how the terminal draws it, its size in cells, and the column the lines
+    beside it start in, counting from 1."""
 
-    The first line makes room for the whole sticker (blank lines, so the screen scrolls before anything is drawn),
-    goes back to the top of that room and draws the sticker with the cursor kept, so every line beside it is written
-    after the picture, never ahead of a picture still arriving."""
+    how: Pictures
+    columns: int
+    high: int
+    at: int
+
+    def picture(self) -> str:
+        return _picture(self.how, self.columns, self.high)
+
+    def rows(self, lines: Sequence[str]) -> list[str]:
+        """`lines` centred against the sticker, one a row, as many rows as the sticker or the lines take."""
+        rows = max(self.high, len(lines))
+        top = (rows - len(lines)) // 2
+        return [""] * top + list(lines) + [""] * (rows - len(lines) - top)
+
+
+def place(lines: Sequence[str], stream: IO[str], width: int, most: int, indent: str = "") -> Placement | None:
+    """Where Inky's sticker goes beside `lines`, `indent` in from the left edge, at most `most` columns wide and as
+    wide as `width` columns leave room for, or None where the terminal on `stream` draws no pictures or has no room
+    for a sticker 20 columns wide."""
     how = pictures(stream)
     columns = min(most, width - len(indent) - len(GAP) - max((len(_plain(line)) for line in lines), default=0))
     if how is None or columns < 20:
         return None
     high = max(1, round(columns * _cell_shape(stream) / _aspect()))  # the sticker's rows, at its own shape
-    rows = max(high, len(lines))
-    top = (rows - len(lines)) // 2
-    beside = [""] * top + list(lines) + [""] * (rows - len(lines) - top)
-    at = len(indent) + columns + len(GAP) + 1  # the column the lines start in, counting from 1
+    return Placement(how, columns, high, len(indent) + columns + len(GAP) + 1)
 
-    def place(line: str) -> str:
-        return f"\x1b[{at}G{line}" if line else ""
 
-    room = "\n" * (rows - 1) + (f"\x1b[{rows - 1}A" if rows > 1 else "")
-    first = room + f"\x1b7\x1b[{len(indent) + 1}G" + _picture(how, columns, high) + "\x1b8" + place(beside[0])
-    return [first, *(place(line) for line in beside[1:])]
+def sticker(lines: Sequence[str], stream: IO[str], width: int, most: int, indent: str = "") -> list[str] | None:
+    """`lines` beside Inky's sticker (placed as `place` does), the lines centred against it: lines to print one after
+    another, or None where there is no sticker.
+
+    The first line makes room for the whole sticker (blank lines, so the screen scrolls before anything is drawn),
+    goes back to the top of that room and draws the sticker with the cursor kept, so every line beside it is written
+    after the picture, never ahead of a picture still arriving."""
+    if (placed := place(lines, stream, width, most, indent)) is None:
+        return None
+    beside = placed.rows(lines)
+
+    def put(line: str) -> str:
+        return f"\x1b[{placed.at}G{line}" if line else ""
+
+    room = "\n" * (len(beside) - 1) + (f"\x1b[{len(beside) - 1}A" if len(beside) > 1 else "")
+    first = room + f"\x1b7\x1b[{len(indent) + 1}G" + placed.picture() + "\x1b8" + put(beside[0])
+    return [first, *(put(line) for line in beside[1:])]
 
 
 def banner(

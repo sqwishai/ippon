@@ -4,8 +4,10 @@ import argparse
 import base64
 import io
 import json
+import os
 import re
 import shlex
+import shutil
 import sys
 from importlib.resources import files
 from pathlib import Path
@@ -328,24 +330,43 @@ def test_every_named_hub_build_is_pinned_to_the_commit_it_was_verified_at() -> N
 def test_status_refreshes_at_a_terminal_until_ctrl_c_and_prints_once_elsewhere(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    """In iTerm2, Inky's sticker is sent once, on the first frame, and only the words around it are written again
+    each second: a picture sent every second would flicker and fill the terminal's pipe."""
+    for key in ("TERM_PROGRAM", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("TERM", "xterm-256color")
+    monkeypatch.setattr(shutil, "get_terminal_size", lambda *a: os.terminal_size((160, 50)))
     assert cli.main(["status"]) == 0  # not a terminal: one snapshot, as an agent's shell reads it
     once = capsys.readouterr().out
     assert "\x1b[?1049h" not in once
     assert once.count("ippon status --json") == 1
-    naps = iter([None, KeyboardInterrupt()])
 
-    def nap(_: float) -> None:
-        if (raised := next(naps)) is not None:
-            raise raised
+    def frames(n: int) -> str:
+        naps = iter([*[None] * (n - 1), KeyboardInterrupt()])
+
+        def nap(_: float) -> None:
+            if (raised := next(naps)) is not None:
+                raise raised
+
+        monkeypatch.setattr("time.sleep", nap)
+        assert cli.main(["status"]) == 0
+        return capsys.readouterr().out
 
     monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
-    monkeypatch.setattr("time.sleep", nap)
-    assert cli.main(["status"]) == 0
-    live = capsys.readouterr().out
-    assert live.startswith("\x1b[?1049h")  # the other screen, redrawn each second
+    live = frames(2)  # a terminal with no pictures: the words alone, the whole screen drawn again each second
+    assert live.startswith("\x1b[?1049h")
     assert live.count("\x1b[H\x1b[J") == 2
+    assert "\x1b]1337" not in live
     assert "Ctrl-C stops" in live
     assert live.split("\x1b[?1049l")[1].count("ippon status --json") == 1  # the last state left on the user's screen
+
+    monkeypatch.setenv("TERM_PROGRAM", "iTerm.app")
+    live = frames(3)
+    assert live.count("\x1b]1337;File=inline=1") == 1  # the sticker once, for three frames
+    watched = live.split("\x1b[?1049l")[0]
+    assert watched.count("Ctrl-C stops") == 3  # the words under him, each frame
+    assert len(re.findall(r"\x1b\[\d+;30H\x1b\[1mippon", watched)) == 3  # his header beside him, each frame
+    assert live.split("\x1b[?1049l")[1].count("ippon status --json") == 1
 
 
 def test_ippon_alone_shows_inkys_sticker_where_the_terminal_draws_pictures_and_words_alone_elsewhere(

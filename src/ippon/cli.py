@@ -1197,12 +1197,30 @@ def _status(args: argparse.Namespace) -> int:
         print(json.dumps({"servers": servers, "setup": asdict(onboarding.Settings.load())}, indent=2))
         return 0
     if not sys.stdout.isatty() or args.once:
-        print("\n".join(_status_lines(live=False)))
+        print("\n".join(_status_parts(live=False)[0]))
         return 0
     sys.stdout.write("\x1b[?1049h")  # the terminal's other screen, as top uses: wrapped lines can't break a redraw
+    drawn: tuple[brand.Placement, os.terminal_size] | None = None  # the sticker on screen, and the size it was drawn at
     try:
         while True:
-            sys.stdout.write("\x1b[H\x1b[J" + "\n".join(_status_lines(live=True)) + "\n")
+            beside, under = _status_parts(live=True)
+            size = shutil.get_terminal_size()
+            placed = brand.place(beside, sys.stdout, size.columns - 1, 26) if terminal.colour_on(sys.stdout) else None
+            # Inky only while all of it fits the screen (no newline follows the last line), as a line past the
+            # bottom would scroll him away
+            if placed is None or 1 + max(placed.high, len(beside)) + len(under) > size.lines:
+                sys.stdout.write("\x1b[H\x1b[J" + "\n".join(["", *beside, *under]) + "\n")
+                drawn = None
+            else:
+                # The sticker is drawn once (again when the window or its size changes), on the line under the blank
+                # top one, as `serve` draws it. Each second only the lines to its right and under it are written
+                # again: they never touch the cells it covers, so the terminal keeps the picture as it was drawn.
+                if drawn != (placed, size):
+                    sys.stdout.write("\x1b[H\x1b[J\x1b[2;1H" + placed.picture())
+                    drawn = (placed, size)
+                rows = placed.rows(beside)
+                sys.stdout.write("".join(f"\x1b[{2 + i};{placed.at}H{line}\x1b[K" for i, line in enumerate(rows)))
+                sys.stdout.write(f"\x1b[{2 + len(rows)};1H\x1b[J" + "\n".join(under))
             sys.stdout.flush()
             time.sleep(STATUS_EVERY_S)
     except KeyboardInterrupt:
@@ -1210,7 +1228,7 @@ def _status(args: argparse.Namespace) -> int:
     finally:
         sys.stdout.write("\x1b[?1049l")  # back to the user's own screen, which keeps the last state
         sys.stdout.flush()
-    print("\n".join(_status_lines(live=False)))
+    print("\n".join(_status_parts(live=False)[0]))
     return 0
 
 
@@ -1227,10 +1245,10 @@ def _client_bars(clients: Mapping[str, int], colour: bool) -> list[str]:
     ]
 
 
-def _status_lines(live: bool) -> list[str]:
-    """What `ippon status` shows: each server's models by name, its address, then its traffic; the model setup chose
-    when none runs. Watched live, a header over it, and the clients, how many are asking and each one's decisions as a
-    bar, under it."""
+def _status_parts(live: bool) -> tuple[list[str], list[str]]:
+    """What `ippon status` shows, as the lines beside Inky and the lines under him: each server's models by name, its
+    address, then its traffic; the model setup chose when none runs. Watched live, a header over it, and the clients,
+    how many are asking and each one's decisions as a bar, under it. Printed once, all of it is beside him."""
     colour = terminal.colour_on(sys.stdout)
 
     def dim(text: str) -> str:
@@ -1242,7 +1260,7 @@ def _status_lines(live: bool) -> list[str]:
     found = daemon.running()
     servers = [daemon.describe(s, _api_key()) for s in found]
     settings = onboarding.Settings.load()
-    top: list[str] = []  # beside the cat, live
+    top: list[str] = []  # beside Inky, live
     under: list[str] = []  # the client bars, the width of the terminal
     if not servers:
         started = "from login" if onboarding.from_login() else "when something needs it (`ippon start`, an agent)"
@@ -1305,7 +1323,7 @@ def _status_lines(live: bool) -> list[str]:
                     top.append(" · ".join(f"{name} {count:,} decisions" for name, count in clients.items()))
     footer = terminal.commands("`ippon status --json` shows every detail", colour)
     if not live:
-        return [*top, footer]
+        return [*top, footer], []
     header = [bold("ippon") + dim(f" {__version__} · status"), ""]
     width = shutil.get_terminal_size().columns - 1
     # the footer's longest form that fits the terminal: it is redrawn each second, so it never wraps
@@ -1314,9 +1332,7 @@ def _status_lines(live: bool) -> list[str]:
         "Ctrl-C stops",
     )
     tail = footer if said.endswith("· ") else ""
-    # a blank line over the header, as `serve` prints one: the other screen starts it on the terminal's top line. It
-    # is words alone, with no sticker: the screen is drawn again each second, and a picture would be sent again with it
-    return ["", *header, *top, *under, "", dim(said) + tail]
+    return [*header, *top], [*under, "", dim(said) + tail]
 
 
 def _start(args: argparse.Namespace) -> int:

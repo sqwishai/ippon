@@ -60,8 +60,8 @@
   and `ippon setup` open with the same sticker beside ippon's name in terminals that draw pictures (iTerm2, WezTerm,
   kitty and Ghostty), and with the name, the tagline and the version alone elsewhere, on one left edge. `ippon setup`
   names the Mac on the version's line. `ippon serve` shows the sticker beside its first lines in those terminals, and
-  starts with the model, not ippon's version. `ippon status` shows no picture, since it redraws its screen every
-  second.
+  starts with the model, not ippon's version. `ippon status` shows him beside the server's state, as it showed the
+  cat: it draws the sticker once and writes only the words around him again each second.
 
 ## 0.2.0 (26 November 2026)
 
