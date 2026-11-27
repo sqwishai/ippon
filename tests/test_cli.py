@@ -4,8 +4,10 @@ import argparse
 import base64
 import io
 import json
+import os
 import re
 import shlex
+import shutil
 import sys
 from importlib.resources import files
 from pathlib import Path
@@ -380,18 +382,29 @@ def test_ippon_alone_shows_inkys_sticker_where_the_terminal_draws_pictures_and_w
     assert chunks[-1][0].endswith("m=0")
     assert base64.b64decode("".join(data for _, data in chunks)) == sticker
 
-    for program, tmux in (("Apple_Terminal", None), ("iTerm.app", "/tmp/tmux-501/default,1,0")):
+    # Apple's Terminal (one opened from iTerm2 too, which inherits LC_TERMINAL) and iTerm2 inside tmux: Inky in
+    # pixels beside the name in an 80-column window, and no picture sequence a terminal could print as text
+    for program, inherited, tmux in (
+        ("Apple_Terminal", None, None),
+        ("Apple_Terminal", "iTerm2", None),
+        ("iTerm.app", None, "/tmp/tmux-501/default,1,0"),
+    ):
         monkeypatch.setenv("TERM_PROGRAM", program)
+        if inherited:
+            monkeypatch.setenv("LC_TERMINAL", inherited)
         if tmux:
             monkeypatch.setenv("TMUX", tmux)
+        monkeypatch.setattr(shutil, "get_terminal_size", lambda *a: os.terminal_size((80, 24)))
         assert main([]) == 0
         shown = capsys.readouterr().out
         assert "\x1b]1337" not in shown
         assert "\x1b_G" not in shown
         words = re.sub(r"\x1b\[[0-9;]*m", "", shown).splitlines()
-        assert words[1] == "  ▀▀"
-        assert "  run decision models on your mac" in words
-        assert f"  ippon {__version__}" in words
+        beside = [line for line in words if line.endswith("run decision models on your mac")]
+        assert len(beside) == 1
+        assert len(beside[0]) <= 79  # beside Inky, in the window
+        assert shown.count("\x1b[48;") > 100  # Inky's cells, each a colour
+        assert any(line.endswith(f"ippon {__version__}") for line in words)
 
 
 def test_a_request_is_read_from_stdin_only_when_dash_asks(

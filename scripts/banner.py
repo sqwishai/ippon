@@ -7,12 +7,13 @@ brand.TAGLINE, is in a monospaced face.
     uv run --with fonttools python scripts/banner.py FONTS_DIR assets
 
 Inky is assets/inky.svg, Sqwish's drawing with all its poses in one file, copied unchanged from the console
-(web/brand/inky.svg in decisionone-workbench). When the drawing changes, copy it again from there rather than editing
-it here. The banner sets the laptop pose, hides the ground shadow and crops the drawing to the scene, then cuts it out
-as a sticker: a white keyline grown round its silhouette, a hairline and a soft shadow, tilted a little. Inky blinks
-as it does in the console, and its typing arm is held still so the README stays calm. FONTS_DIR holds Source Code
-Pro's variable font from github.com/google/fonts (OFL), as SourceCodePro.ttf: the tagline is outlined from it, since
-GitHub loads no fonts inside a README image.
+(web/brand/inky.svg in decisionone-workbench). When the drawing changes, copy it again from there rather than editing it
+here. The banner sets the laptop pose, puts the Apple logo on the lid in place of the drawing's octopus (APPLE) and
+moves the arm that holds the lid to its right edge, clear of the logo, hides the ground shadow and crops the drawing to
+the scene, then cuts it out as a sticker: a white keyline grown round its silhouette, a hairline and a soft shadow,
+tilted a little. Inky blinks as it does in the console, and its typing arm is held still so the README stays calm.
+FONTS_DIR holds Source Code Pro's variable font from github.com/google/fonts (OFL), as SourceCodePro.ttf: the tagline is
+outlined from it, since GitHub loads no fonts inside a README image.
 """
 
 import re
@@ -36,6 +37,23 @@ THEMES = {
     "dark": {"word": "#e6edf3", "tag": "#9da7b3", "paper": "#fcfaf8", "shadow": 0.55, "hairline": 0},
 }
 SCENE = (-3.5, 65, 202.5, 122)  # the laptop pose's scene in the drawing's own units: x, y, width, height
+# The octopus on the laptop's lid, as the drawing has it, and the Apple logo the banner puts in its place, the lid
+# being a MacBook's: the apple's body, its bite to the right, and its leaf.
+LID_LOGO = (
+    '<g fill="#8794A5" transform="matrix(1.25 0 0 1.25 -41.6 -37.5)">\n'
+    '        <path d="M191.5 129.5c-.5-8 11.5-8.5 11 0z"/>\n'
+    '        <path d="M192.5 129q-1.5 3.5-4 3.2m7-2.7q-.5 4-2.5 5.5m5.5-5.5q1 4 3 5m0-5.5q2 3 4.5 2.5" fill="none" '
+    'stroke="#8794A5" stroke-width="1.6" stroke-linecap="round"/>\n'
+    "      </g>"
+)
+APPLE = "".join(
+    (
+        '<path fill="#8794A5" transform="translate(207.5 127) scale(1.3)" d="',
+        "M0-4.2C1.6-5.6 4.6-5.6 6-3.6 4.6-2.6 4.3.6 6.4 1.8C5.6 4.4 4 6.8 2.6 6.9 1.6 7 1.1 6.4 0 6.4",
+        "-1.1 6.4-1.6 7-2.6 6.9-4.4 6.7-6.8 3-6.6-.4-6.4-3.4-4.3-5-2.6-5-1.5-5-.8-4.2 0-4.2z",
+        'M.2-5.4C.1-7.2 1.4-8.6 3-8.8 3.1-7 1.8-5.6.2-5.4z"/>',
+    )
+)
 TILT = -3  # degrees the sticker is turned, as a sticker is never quite straight
 TEXT_X = 644  # banner units from the left where the name and the tagline start
 
@@ -52,6 +70,10 @@ def inky(x: float, y: float, width: float) -> str:
     svg = re.sub(r"^<!--.*?-->\s*", "", (ASSETS / "inky.svg").read_text(), flags=re.S)
     svg = swap(svg, 'class="octo-inky"', 'class="octo-inky" data-pose="laptop"')
     svg = swap(svg, "width: 100%; height: auto; ", "")  # placed by the banner, not sized by a page
+    svg = swap(svg, LID_LOGO, APPLE)
+    # the back arm, and the clip that tucks it under the lid, moved to the lid's right edge, so it holds the laptop by
+    # its side and leaves the logo clear
+    svg = swap(svg, '<g clip-path="url(#inky-lgo)">', '<g clip-path="url(#inky-lgo)" transform="translate(16 0)">')
     held = "  .octo-inky .inky-shadow { display: none; } .octo-inky { --inky-typing: paused; }\n  </style>"
     svg = swap(svg, "</style>", held)
     box = " ".join(f"{v:g}" for v in SCENE)
