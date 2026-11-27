@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import io
 import json
 import re
 import shlex
 import sys
+from importlib.resources import files
 from pathlib import Path
 
 import pytest
@@ -344,6 +346,59 @@ def test_status_refreshes_at_a_terminal_until_ctrl_c_and_prints_once_elsewhere(
     assert live.count("\x1b[H\x1b[J") == 2
     assert "Ctrl-C stops" in live
     assert live.split("\x1b[?1049l")[1].count("ippon status --json") == 1  # the last state left on the user's screen
+
+
+def test_ippon_alone_shows_inkys_sticker_where_the_terminal_draws_pictures_and_words_alone_elsewhere(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """iTerm2 and Ghostty get Inky's sticker, ippon's own picture whole, with the name and its lines written beside
+    it after it is drawn. Apple's Terminal, and iTerm2 inside tmux, get the name and its lines alone on one left
+    edge, with no picture sequence a terminal could print as text."""
+    from ippon import __version__
+
+    for key in ("TERM_PROGRAM", "LC_TERMINAL", "KITTY_WINDOW_ID", "TMUX", "NO_COLOR"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("TERM", "xterm-256color")
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+    sticker = (files("ippon") / "inky.png").read_bytes()
+
+    monkeypatch.setenv("TERM_PROGRAM", "iTerm.app")
+    assert main([]) == 0
+    shown = capsys.readouterr().out
+    drawn = re.search(r"\x1b\]1337;File=inline=1;size=(\d+);[^:]*:([A-Za-z0-9+/=]+)\x07", shown)
+    assert drawn is not None
+    assert base64.b64decode(drawn[2]) == sticker
+    assert int(drawn[1]) == len(sticker)
+    assert shown[drawn.end() : drawn.end() + 2] == "\x1b8"  # the cursor back where it was, for the words beside
+    assert re.search(r"\x1b\[\d+Grun decision models on your mac", shown)
+
+    monkeypatch.setenv("TERM_PROGRAM", "ghostty")
+    assert main([]) == 0
+    chunks = re.findall(r"\x1b_G([^;]*);([A-Za-z0-9+/=]*)\x1b\\", capsys.readouterr().out)
+    assert "q=2" in chunks[0][0]  # no reply, which would reach the shell's prompt as text
+    assert all(len(data) <= 4096 for _, data in chunks)
+    assert chunks[-1][0].endswith("m=0")
+    assert base64.b64decode("".join(data for _, data in chunks)) == sticker
+
+    # Apple's Terminal (one opened from iTerm2 too, which inherits LC_TERMINAL) and iTerm2 inside tmux
+    for program, inherited, tmux in (
+        ("Apple_Terminal", None, None),
+        ("Apple_Terminal", "iTerm2", None),
+        ("iTerm.app", None, "/tmp/tmux-501/default,1,0"),
+    ):
+        monkeypatch.setenv("TERM_PROGRAM", program)
+        if inherited:
+            monkeypatch.setenv("LC_TERMINAL", inherited)
+        if tmux:
+            monkeypatch.setenv("TMUX", tmux)
+        assert main([]) == 0
+        shown = capsys.readouterr().out
+        assert "\x1b]1337" not in shown
+        assert "\x1b_G" not in shown
+        words = re.sub(r"\x1b\[[0-9;]*m", "", shown).splitlines()
+        assert words[1] == "  ▀▀"
+        assert "  run decision models on your mac" in words
+        assert f"  ippon {__version__}" in words
 
 
 def test_a_request_is_read_from_stdin_only_when_dash_asks(

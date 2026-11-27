@@ -1111,18 +1111,16 @@ def _serve(args: argparse.Namespace) -> int:
             return terminal.styled(text, colour, "2")
 
         header = [
-            terminal.styled("ippon", colour, "1") + dim(f" {__version__}"),
-            "",
             terminal.styled(titles[0], colour, "1") + dim(others),
             "serving at " + terminal.styled(url, colour, "pink") + dim(f" · {took}"),
             *(dim(n) for n in notes),
             "",
             dim("Ctrl-C stops it · ") + terminal.commands("`ippon status` watches it", colour),
         ]
-        art = brand.small_cat(colour) if colour else []
         width = shutil.get_terminal_size().columns - 1
+        shown = (brand.sticker(header, sys.stderr, width, 26) if colour else None) or header
         # the loading line gives way to the header, and the answers follow under it
-        print("\x1b[1A\x1b[2K" + "\n".join(["", *brand.beside(art, header, width), ""]), file=sys.stderr, flush=True)
+        print("\x1b[1A\x1b[2K" + "\n".join(["", *shown, ""]), file=sys.stderr, flush=True)
 
     try:
         run(
@@ -1231,7 +1229,7 @@ def _client_bars(clients: Mapping[str, int], colour: bool) -> list[str]:
 
 def _status_lines(live: bool) -> list[str]:
     """What `ippon status` shows: each server's models by name, its address, then its traffic; the model setup chose
-    when none runs. Watched live, the cat beside it, and the clients, how many are asking and each one's decisions as a
+    when none runs. Watched live, a header over it, and the clients, how many are asking and each one's decisions as a
     bar, under it."""
     colour = terminal.colour_on(sys.stdout)
 
@@ -1309,7 +1307,6 @@ def _status_lines(live: bool) -> list[str]:
     if not live:
         return [*top, footer]
     header = [bold("ippon") + dim(f" {__version__} · status"), ""]
-    art = brand.small_cat(colour) if colour else []
     width = shutil.get_terminal_size().columns - 1
     # the footer's longest form that fits the terminal: it is redrawn each second, so it never wraps
     said = next(
@@ -1317,8 +1314,9 @@ def _status_lines(live: bool) -> list[str]:
         "Ctrl-C stops",
     )
     tail = footer if said.endswith("· ") else ""
-    # a blank line over the cat, as `serve` prints one: the other screen starts it on the terminal's top line
-    return ["", *brand.beside(art, header + top, width), *under, "", dim(said) + tail]
+    # a blank line over the header, as `serve` prints one: the other screen starts it on the terminal's top line. It
+    # is words alone, with no sticker: the screen is drawn again each second, and a picture would be sent again with it
+    return ["", *header, *top, *under, "", dim(said) + tail]
 
 
 def _start(args: argparse.Namespace) -> int:
