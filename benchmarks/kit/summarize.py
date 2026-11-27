@@ -2070,7 +2070,8 @@ def readme_charts(report: dict, section_key: str | None = None) -> str:
             alt = f"{model['name']}: ippon beside {_listed(runtimes)} on the same builds, for {workloads}"
             lines += [
                 "<details>",
-                f"<summary><b>{model['name']}</b> - {escape_attr(preview(model)) or f'ippon beside {named}'}</summary>",
+                # the bold name sets the time apart: a dash before "~" read as stray marks
+                f"<summary><b>{model['name']}</b> {escape_attr(preview(model)) or f'- ippon beside {named}'}</summary>",
                 "",
                 "<picture>",
                 f'  <source media="(prefers-color-scheme: dark)" srcset="{stem}-dark.svg">',

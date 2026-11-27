@@ -387,7 +387,7 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 | Kettei Dot | 51 ms | 14 ms | 16 ms | 46.4 req/s |
 
 <details>
-<summary><b>Jeff-1.1-Medium</b> - ~1,615 ms, 69% faster than Jonathan Geuter's server</summary>
+<summary><b>Jeff-1.1-Medium</b> ~1,615 ms, 69% faster than Jonathan Geuter's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-jeff-1-1-medium-dark.svg">
@@ -397,7 +397,7 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 </details>
 
 <details>
-<summary><b>elephant-1</b> - ~412 ms, 5x faster than Base Labs' runtime</summary>
+<summary><b>elephant-1</b> ~412 ms, 5x faster than Base Labs' runtime</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-elephant-1-dark.svg">
@@ -407,7 +407,7 @@ Per-model timings for typical calls, repeated contexts, growing agent conversati
 </details>
 
 <details>
-<summary><b>Clef-Flash 9B</b> - ~437 ms, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX</summary>
+<summary><b>Clef-Flash 9B</b> ~437 ms, up to 2x faster than Cloudflare's code, Ollama, llama.cpp and oMLX</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-clef-flash-9b-dark.svg">
@@ -419,7 +419,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>GLiDE 9B</b> - ~1,255 ms, 4.8x faster than Fastino's server</summary>
+<summary><b>GLiDE 9B</b> ~1,255 ms, 4.8x faster than Fastino's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-glide-9b-dark.svg">
@@ -429,7 +429,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>GLiDE 2B</b> - ~199 ms, 7x faster than Fastino's server</summary>
+<summary><b>GLiDE 2B</b> ~199 ms, 7x faster than Fastino's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-glide-2b-dark.svg">
@@ -439,7 +439,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Jeff-1.1-Qwen-4B</b> - ~549 ms, 7.4x faster than Jonathan Geuter's server</summary>
+<summary><b>Jeff-1.1-Qwen-4B</b> ~549 ms, 7.4x faster than Jonathan Geuter's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-jeff-1-1-qwen-4b-dark.svg">
@@ -449,7 +449,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Kev-9B</b> - ~322 ms, 52% faster than Jared Palmer's server</summary>
+<summary><b>Kev-9B</b> ~322 ms, 52% faster than Jared Palmer's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-kev-9b-dark.svg">
@@ -459,7 +459,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Kev-4B</b> - ~187 ms, 44% faster than Jared Palmer's server</summary>
+<summary><b>Kev-4B</b> ~187 ms, 44% faster than Jared Palmer's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-kev-4b-dark.svg">
@@ -469,7 +469,7 @@ With 16 clients at once, llama.cpp's median wait is lower than ippon's, at 759 m
 </details>
 
 <details>
-<summary><b>Strands-Decider-12B</b> - ~677 ms, 34% faster than AWS Strands' server</summary>
+<summary><b>Strands-Decider-12B</b> ~677 ms, 34% faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-12b-dark.svg">
@@ -481,7 +481,7 @@ On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned 
 </details>
 
 <details>
-<summary><b>Strands-Decider-E4B</b> - ~191 ms, 2x faster than AWS Strands' server</summary>
+<summary><b>Strands-Decider-E4B</b> ~191 ms, 2x faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-e4b-dark.svg">
@@ -491,7 +491,7 @@ On the 48 GB Apple M5 Pro, with a growing context, AWS Strands' server returned 
 </details>
 
 <details>
-<summary><b>Strands-Decider-E2B</b> - ~75 ms, 2.9x faster than AWS Strands' server</summary>
+<summary><b>Strands-Decider-E2B</b> ~75 ms, 2.9x faster than AWS Strands' server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-strands-decider-e2b-dark.svg">
@@ -517,7 +517,7 @@ request ([the round](benchmarks/results/m5pro-2026-11-18-pictures),
 
 <!-- text-images charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>Torchcast Decision 4B</b> - ~488 ms, 2.9x faster than Torchcast's server</summary>
+<summary><b>Torchcast Decision 4B</b> ~488 ms, 2.9x faster than Torchcast's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-torchcast-decision-4b-dark.svg">
@@ -527,7 +527,7 @@ request ([the round](benchmarks/results/m5pro-2026-11-18-pictures),
 </details>
 
 <details>
-<summary><b>pplx-decider flash v1.3</b> - ~507 ms, 7.6x faster than Perplexity's package</summary>
+<summary><b>pplx-decider flash v1.3</b> ~507 ms, 7.6x faster than Perplexity's package</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-pplx-decider-flash-v1-3-dark.svg">
@@ -539,7 +539,7 @@ These timings use the full BF16 checkpoint. Perplexity publishes no GGUF or MLX 
 </details>
 
 <details>
-<summary><b>H2O-Lightning-4B</b> - ~229 ms, 89% faster than llama.cpp</summary>
+<summary><b>H2O-Lightning-4B</b> ~229 ms, 89% faster than llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-h2o-lightning-4b-dark.svg">
@@ -558,7 +558,7 @@ for d1, and Ollama refuses video for every decision model.
 
 <!-- text-images-video charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>d3-mini</b> - ~513 ms, up to 7.6x faster than Ollama, oMLX and vllm-sr's server</summary>
+<summary><b>d3-mini</b> ~513 ms, up to 7.6x faster than Ollama, oMLX and vllm-sr's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d3-mini-dark.svg">
@@ -570,7 +570,7 @@ On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 5 of i
 </details>
 
 <details>
-<summary><b>d3-flash</b> - ~920 ms, up to 4.8x faster than Ollama, oMLX and vllm-sr's server</summary>
+<summary><b>d3-flash</b> ~920 ms, up to 4.8x faster than Ollama, oMLX and vllm-sr's server</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d3-flash-dark.svg">
@@ -582,7 +582,7 @@ On the 48 GB Apple M5 Pro, with growing images, Ollama returned errors on 6 of i
 </details>
 
 <details>
-<summary><b>d1-2B</b> - ~67 ms, up to 4.3x faster than Liquid's code, Ollama and llama.cpp</summary>
+<summary><b>d1-2B</b> ~67 ms, up to 4.3x faster than Liquid's code, Ollama and llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d1-2b-dark.svg">
@@ -601,7 +601,7 @@ checkpoint and 76 ms on llama.cpp with the same Q8_0 file.
 
 <!-- text-images-video-audio charts: benchmarks/kit/summarize.py --readme -->
 <details>
-<summary><b>d1-Omni-2B</b> - ~67 ms, up to 4.4x faster than Liquid's code, Ollama and llama.cpp</summary>
+<summary><b>d1-Omni-2B</b> ~67 ms, up to 4.4x faster than Liquid's code, Ollama and llama.cpp</summary>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-d1-omni-2b-dark.svg">
