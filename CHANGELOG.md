@@ -1,15 +1,6 @@
 # Changelog
 
-## Unreleased
-
-- **Inky in place of the cat** - The README's banner shows Inky, Sqwish's octopus, at a laptop as a sticker. `ippon`
-  and `ippon setup` open with the same sticker beside ippon's name in terminals that draw pictures (iTerm2, WezTerm,
-  kitty and Ghostty), and with the name, the tagline and the version alone elsewhere, on one left edge. `ippon setup`
-  names the Mac on the version's line. `ippon serve` shows the sticker beside its first lines in those terminals, and
-  starts with the model, not ippon's version. `ippon status` shows no picture, since it redraws its screen every
-  second.
-
-## 0.2.1 (26 November 2026)
+## 0.2.1 (27 November 2026)
 
 - **`ippon start` asks for a licence before it starts the server** - At a terminal, `ippon start` and
   `ippon serve --detach` ask for an undownloaded model's licence (Kettei's, say) before the server goes to the
@@ -24,9 +15,9 @@
   downloaded 10 GB, then held 1 token and refused every request. Admission now keeps what loading keeps, so `pull`,
   `check`, setup and `serve` refuse such a model before downloading it. On an 8 GB Mac that is Kettei Core (Kettei
   Dot fits), and on a 16 GB Mac some 4B models only fit at 8-bit; models list as fitting a little less often.
-- **The cat and the name draw whole in Apple's Terminal** - Its font draws block characters short of the line, so the
-  banner's cat and the `ippon` letters came out in stripes there. Every cell of one colour is now a coloured space,
-  which fills the cell in every terminal.
+- **ippon's name draws whole in Apple's Terminal** - Its font draws block characters short of the line, so the
+  `ippon` letters came out in stripes there. A cell inked top and bottom is now a reversed space, which fills the cell
+  in every terminal.
 - **An 8 GB Mac gets a model it runs, unasked** - Without setup, `ippon claude`, `ippon start` and the other agent
   commands take Kettei Core at 8-bit where it fits and Kettei Dot where it doesn't (an 8 GB Mac), where they took
   Kettei Core at 8-bit on every Mac. When nothing of a family fits, `pull` names the model to start with on this Mac
@@ -65,6 +56,12 @@
   after a busy server on it stopped.
 - **"Stopped" is the last line** - A second Ctrl-C while `ippon status` printed its last state left part of that
   state after the message.
+- **Inky in place of the cat** - The README's banner shows Inky, Sqwish's octopus, at a MacBook as a sticker. `ippon`
+  and `ippon setup` open with the same sticker beside ippon's name in terminals that draw pictures (iTerm2, WezTerm,
+  kitty and Ghostty), and with the name, the tagline and the version alone elsewhere, on one left edge. `ippon setup`
+  names the Mac on the version's line. `ippon serve` shows the sticker beside its first lines in those terminals, and
+  starts with the model, not ippon's version. `ippon status` shows no picture, since it redraws its screen every
+  second.
 
 ## 0.2.0 (26 November 2026)
 
