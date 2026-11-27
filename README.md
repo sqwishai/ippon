@@ -222,10 +222,10 @@ ippon claude              # or ippon codex, ippon opencode, ippon pi
 ```
 
 <p align="center">
-  <img alt="Claude Code runs 8 parallel subagents against one local ippon serve Kettei Core server, sorting 4,278 openai/codex issues and 5,991 comments by type, part of Codex and Windows-only bugs (30,807 questions in 42 minutes, 73% of 25.4M tokens read reused from earlier requests) while ippon status shows live throughput and a bar for each subagent, then Claude Code ends on a table of the results" src="docs/assets/claude-demo.gif" width="830">
+  <img alt="Claude Code runs 8 parallel subagents against one local ippon serve Kettei Core server, sorting 4,278 openai/codex issues and 5,991 comments by type, part of Codex and Windows-only bugs (30,807 questions at 80 ms average and 73% cache reuse) while ippon status shows live throughput and a bar for each subagent, then Claude Code ends on a table of the results" src="docs/assets/claude-demo.gif" width="830">
 </p>
 
-<p align="center">Claude Code spinning up 8 subagents on one local Kettei Core server, sorting 4,278 issues and 5,991 comments (30,807 questions in 42 minutes, 12 a second, 73% cache reuse) on a single Mac.</p>
+<p align="center">Claude Code spinning up 8 subagents on one local Kettei Core server, sorting 4,278 issues and 5,991 comments (30,807 questions, 80 ms average, 73% cache reuse) on a single Mac.</p>
 
 To keep it in every session, add ippon's MCP server.
 
