@@ -54,6 +54,9 @@
   abort with "Fatal Python error: could not acquire lock for <stderr>".
 - **A server restarts at once on its port** - `ippon serve` no longer says the port is in use for half a minute
   after a busy server on it stopped.
+- **`ippon status` counts each agent once** - A `--states` run kept the connection it checked the model on open beside
+  the one it asked on, so for half a minute status showed 16 clients connected for 8 subagents. It now says
+  "1 client connected" for one, not "1 clients".
 - **"Stopped" is the last line** - A second Ctrl-C while `ippon status` printed its last state left part of that
   state after the message.
 - **Inky in place of the cat** - The README's banner shows Inky, Sqwish's octopus, at a MacBook as a sticker. `ippon`

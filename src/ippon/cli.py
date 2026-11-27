@@ -1313,7 +1313,8 @@ def _status_parts(live: bool) -> tuple[list[str], list[str]]:
             asking = traffic.get("clients_asking", traffic["in_progress"])
             # a client that opens a connection for each request (curl, most scripts) holds none between them, yet
             # one asking now is connected
-            heading = f"{max(traffic['connections'], asking)} clients connected · {asking} asking"
+            connected = max(traffic["connections"], asking)
+            heading = f"{connected} client{'' if connected == 1 else 's'} connected · {asking} asking"
             clients = traffic.get("by_client") or {}
             if live:
                 under += ["", heading, *_client_bars(clients, colour)] if clients else ["", heading]

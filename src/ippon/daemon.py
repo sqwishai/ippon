@@ -387,6 +387,9 @@ class Client:
             finally:
                 self.close()  # this worker's connection, which no later call would use
 
+        # the caller's own connection (its model check) would idle beside the workers', and status would count the
+        # client twice for the server's read timeout
+        self.close()
         with ThreadPoolExecutor(in_flight) as pool:
             pending: deque[Future[dict[str, Any] | DecisionError]] = deque()
             for body in bodies:

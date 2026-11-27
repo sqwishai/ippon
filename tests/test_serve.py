@@ -1177,6 +1177,15 @@ def test_status_counts_the_clients_attached_and_the_answers_a_second(url: str, m
         monkeypatch.setenv("IPPON_CLIENT", "repeat-fixes")  # ippon's own client sends the name it is given
         Client(url).call("/v1/systemone", REQUEST)
         assert call(url, "/v1/status")[1]["traffic"]["by_client"]["repeat-fixes"] == 3
+        # a --states run checks the model, then asks from its workers: the check's connection does not idle beside
+        # them, where status counted each of 8 subagents twice
+        run = Client(url)
+        run.models()
+        assert not [got for got in run.decide_all([REQUEST] * 3) if isinstance(got, DecisionError)]
+        deadline = time.monotonic() + 5
+        while (left := call(url, "/v1/status")[1]["traffic"]["connections"]) > 3 and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert left == 3  # the three above, and none left by the run
     finally:
         for client in clients:
             client.close()
