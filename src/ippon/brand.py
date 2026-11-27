@@ -3,13 +3,14 @@ and the accents its screens use.
 
 The name is drawn two pixels to a character cell, an upper half block with the top pixel its foreground and the bottom
 one its background, in the terminal's own colour, so it reads on light and dark terminals alike. Inky, Sqwish's octopus
-at a laptop, is the README's sticker (assets/inky-sticker.svg, drawn into inky.png by scripts/sticker.py), shown as a
-picture where the terminal draws pictures: iTerm2 and WezTerm by iTerm2's inline images, kitty and Ghostty by kitty's
-graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) ippon shows its name and its
-lines alone, on one left edge, since Inky drawn in character cells is only a blur of him. Colours are 24-bit where the
-terminal says it takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no
-colour there is no picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits
-beside the header `ippon serve` prints once it is ready. Both show only to a person at a terminal.
+holding a laptop, is the README's sticker (assets/inky-sticker.svg, drawn into inky.png by scripts/sticker.py), shown as
+a picture where the terminal draws pictures: iTerm2 and WezTerm by iTerm2's inline images, kitty and Ghostty by kitty's
+graphics protocol. Everywhere else (Apple's Terminal, VS Code's terminal, tmux and screen) the banner shows Inky in
+pixels (INKY, 40 x 28, drawn by hand from the sticker's drawing), two to a cell, beside the name where the window has
+room, and `ippon serve` its lines alone, since smaller he is only a blur. Colours are 24-bit where the terminal says it
+takes them (COLORTERM), the nearest of xterm's 256 elsewhere, and none under NO_COLOR, and with no colour there is no
+picture either. The banner opens `ippon` alone and `ippon setup`, and the sticker, smaller, sits beside the header
+`ippon serve` prints once it is ready. Both show only to a person at a terminal.
 """
 
 from __future__ import annotations
@@ -46,6 +47,50 @@ ACCENTS = {
     "red": (0xF0, 0x5A, 0x5A),
 }
 TAGLINE = "run decision models on your mac"
+# Inky holding a laptop in pixels, two to a character cell, for a terminal that draws no pictures (Apple's Terminal):
+# the sticker's drawing at 40 x 28, so he and the name fit an 80-column window, each pixel the drawing's own colour it
+# covers most, its outline kept where it covers half a pixel, and the eyes and the mouth drawn by hand. Smaller, he is
+# only a blur, so `ippon serve` shows him only as a picture.
+# n outline, w white, p body, m shade, c cheek, g laptop, s its octopus.
+INKY = (
+    "................nnnn....................",
+    ".............nnwwwwwwwn.................",
+    "............nwwpppppppwwn...............",
+    "..........nwwpppppppppppwn..............",
+    ".........nwwppppppppppppppw.............",
+    ".........wwppppppppppppppppn............",
+    "........nwmpwpppppppppppppppn...........",
+    "........wmmpppppppppppppppppw...........",
+    ".......nwmmppppppppppppppppppn..........",
+    ".......nwmmpppppppppppppppnnnn..........",
+    ".......nwmmpppppwwwwpppppnnwwn..........",
+    ".......nwmmppppwnnwwnppppnnwwnnnnnn.....",
+    "..nnn..nmmmppppwnnwwnppppnnnnnnppppn....",
+    ".nppppnnnmmmpppwnnnwnpnnnpnwnpppnnpnn...",
+    ".mmmmppnnmmmpppwnwnnnpnmnnnnnnnnnnnwgn..",
+    "nmwnnmppnmmmmpppwnnnpppppngggggggggggn..",
+    "nnnnnnmpnnmmmmpppccppppmpngggggggggnnn..",
+    ".....nnmpnnnmmpppppppppppngggggggggnpn..",
+    "..n...nmmmnnnmmmpppppppppnggggssggggppn.",
+    ".nn...nnmnnnnnnnmmppppppnnggggsssgggnpn.",
+    ".nmn..nnnwpnmmmmmmppppppnngggggggggggpnn",
+    ".nmmmnnmnpnmmmmmmnpppppppngggggggggggmnn",
+    "..nwmmmmnwpnnnnnpppppnpppngggggggggmmmn.",
+    "...nwwmnnnwppppppwwnnnnppnggggggggnnnn..",
+    "....nnnnnnnnwwnwnnnn..nnpnnnnnnnnnnnn...",
+    "...........nnwnwnnn....nnpnnnnnnnnnnn...",
+    "...............n........nnnnnn..........",
+    "........................................",
+)
+INKY_COLOURS = {
+    "n": (0x2E, 0x1F, 0x57),
+    "w": (0xFF, 0xFF, 0xFF),
+    "p": (0xFB, 0xB2, 0xB6),
+    "m": (0xC3, 0x48, 0x7F),
+    "c": (0xF4, 0x8C, 0xA1),
+    "g": (0xC0, 0xC5, 0xCB),
+    "s": (0x87, 0x94, 0xA5),
+}
 GAP = "   "  # between the sticker and the lines beside it
 Pictures = Literal["iterm", "kitty"]
 
@@ -86,6 +131,42 @@ def name(colour: bool = False) -> list[str]:
     return lines
 
 
+def inky() -> list[str]:
+    """Inky in colour, two pixels to a cell, every line INKY's full width. A cell of one colour is a space on it, as a
+    cell's background fills all of it where Apple's Terminal draws a block character short of the line (SF Mono)."""
+    rows = []
+    for top, bottom in zip(INKY[::2], INKY[1::2], strict=True):
+        cells = []
+        for up, down in zip(top, bottom, strict=True):
+            if up == "." and down == ".":
+                cells.append(" ")
+            elif up == down:
+                cells.append(f"\x1b[{_code(INKY_COLOURS[up], True)}m \x1b[0m")
+            elif down == ".":
+                cells.append(f"\x1b[{_code(INKY_COLOURS[up], False)}m▀\x1b[0m")
+            elif up == ".":
+                cells.append(f"\x1b[{_code(INKY_COLOURS[down], False)}m▄\x1b[0m")
+            else:
+                cells.append(f"\x1b[{_code(INKY_COLOURS[up], False)};{_code(INKY_COLOURS[down], True)}m▀\x1b[0m")
+        rows.append("".join(cells))
+    return rows
+
+
+def in_pixels(lines: Sequence[str], width: int, indent: str = "") -> list[str] | None:
+    """`lines` beside Inky in pixels (`inky`), centred against him, `indent` in from the left edge; None where
+    `width` columns leave no room for him and the longest line."""
+    art = inky()
+    if len(indent) + len(INKY[0]) + len(GAP) + max((len(_plain(line)) for line in lines), default=0) > width:
+        return None
+    top = max(0, (len(art) - len(lines)) // 2)
+    beside = [""] * top + list(lines) + [""] * max(0, len(art) - len(lines) - top)
+    blank = " " * len(INKY[0])
+    return [
+        f"{indent}{a}{GAP}{b}".rstrip()
+        for a, b in zip([*art, *[blank] * (len(beside) - len(art))], beside, strict=True)
+    ]
+
+
 @cache
 def _sticker_png() -> bytes:
     return (files("ippon") / "inky.png").read_bytes()
@@ -104,7 +185,9 @@ def pictures(stream: IO[str]) -> Pictures | None:
     if not stream.isatty() or os.environ.get("TMUX") or os.environ.get("TERM", "").startswith(("screen", "tmux")):
         return None
     program = os.environ.get("TERM_PROGRAM", "")
-    if program in ("iTerm.app", "WezTerm") or os.environ.get("LC_TERMINAL") == "iTerm2":
+    # LC_TERMINAL only where TERM_PROGRAM says nothing (over SSH): a terminal opened from iTerm2 inherits it, and
+    # Apple's Terminal with it drew no picture, leaving a blank where Inky was meant to be
+    if program in ("iTerm.app", "WezTerm") or (not program and os.environ.get("LC_TERMINAL") == "iTerm2"):
         return "iterm"
     kitty = os.environ.get("TERM") in ("xterm-kitty", "xterm-ghostty") or os.environ.get("KITTY_WINDOW_ID")
     if kitty or program == "ghostty":
@@ -179,6 +262,10 @@ def banner(
             return both
         if (alone := sticker(words, stream, width, 44, "  ")) is not None:
             return [*alone, *(f"  {line}" if line else "" for line in under)]
+        if (drawn := in_pixels([*words, *under], width, "  ")) is not None:  # no pictures here: Inky in pixels
+            return drawn
+        if (drawn := in_pixels(words, width, "  ")) is not None:
+            return [*drawn, *(f"  {line}" if line else "" for line in under)]
     return [f"  {line}" if line else "" for line in [*words, *under]]
 
 

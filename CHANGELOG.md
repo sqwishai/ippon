@@ -2,10 +2,10 @@
 
 ## Unreleased
 
-- **Inky in place of the cat** - The README's banner shows Inky, Sqwish's octopus, at a laptop as a sticker.
+- **Inky in place of the cat** - The README's banner shows Inky, Sqwish's octopus, holding a laptop, as a sticker.
   `ippon` and `ippon setup` open with the same sticker beside ippon's name in terminals that draw pictures
-  (iTerm2, WezTerm, kitty and Ghostty), and with the name, the tagline and the version alone elsewhere, on one
-  left edge. `ippon setup` names the Mac on the version's line. `ippon serve` shows the sticker beside its first
+  (iTerm2, WezTerm, kitty and Ghostty), and with Inky drawn in coloured cells elsewhere (Apple's Terminal, VS Code,
+  tmux), beside the name where the window is 80 columns or wider. `ippon setup` names the Mac on the version's line. `ippon serve` shows the sticker beside its first
   lines in those terminals, and starts with the model, not ippon's version. `ippon status` shows no picture,
   since it redraws its screen every second.
 
