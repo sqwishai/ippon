@@ -72,7 +72,7 @@ made to the ippon command.
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-ready-dark.png">
-    <img alt="ippon setup finished: Kettei Core is on this Mac, answered its first question in 52 ms, and ippon lists the commands to use it with" src="docs/assets/cli-ready-light.png" width="680">
+    <img alt="ippon setup opens with Inky, Sqwish's octopus, beside ippon's name, its tagline, its version and this Mac (Apple M5 Pro, 48 GB memory, 37 GB for the GPU), then finds Kettei Core already on this Mac, sees it answer its first question in 38 ms and lists the commands to use it with" src="docs/assets/cli-ready-light.png" width="680">
   </picture>
 </p>
 
@@ -82,7 +82,7 @@ made to the ippon command.
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-setup-dark.png">
-    <img alt="ippon setup on an M5 Pro with 48 GB: the decision models listed with their precision, size, whether they fit this Mac and what they read, Kettei Core first and highlighted, every model at full precision, the largest marked tight on this Mac" src="docs/assets/cli-setup-light.png" width="680">
+    <img alt="ippon setup on an M5 Pro with 48 GB lists the decision models with their precision, size, whether they fit this Mac and what they read, Kettei Core first and highlighted, every model at full precision but one at 8 bits, the largest marked tight on this Mac" src="docs/assets/cli-setup-light.png" width="680">
   </picture>
 </p>
 
@@ -184,7 +184,7 @@ line for each answer it sends, and `ippon start` runs the same server in the bac
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-serve-dark.png">
-    <img alt="ippon serve kettei-core shows Inky, Sqwish's octopus, beside Kettei Core, serving at http://127.0.0.1:8000, ready in 1.9 s, then prints a line for each of four answers to a client named support, with the time, 20 to 50 ms, the tokens read and each question's answer, and on the last line 24 tokens kept from an earlier reading" src="docs/assets/cli-serve-light.png" width="680">
+    <img alt="ippon serve kettei-core shows Inky, Sqwish's octopus, beside Kettei Core, serving at http://127.0.0.1:8000, ready in 1.5 s, then prints a line for each of four answers to a client named support, with the time, 19 to 37 ms, the tokens read and each question's answer, and on the last line 24 tokens kept from an earlier reading" src="docs/assets/cli-serve-light.png" width="680">
   </picture>
 </p>
 
@@ -204,7 +204,7 @@ that URL too. In a terminal, `ippon status` watches live throughput, cache reuse
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-status-dark.png">
-    <img alt="ippon status shows Kettei Core, loaded in 7.6 GB, and its server watched live: 20 ms per decision, 33.4 questions answered a second, 408 answered, 21.8k tokens read with 14% from earlier requests, 3 clients connected, and a bar for each client's decisions, support 321, billing 72 and triage 15" src="docs/assets/cli-status-light.png" width="680">
+    <img alt="ippon status shows Inky beside Kettei Core, loaded in 7.6 GB, and its server watched live, 20 ms per decision, 33.5 questions answered a second, 405 answered, 21.6k tokens read with 14% from earlier requests, then 3 clients connected and a bar for each client's decisions, support 318, billing 72 and triage 15" src="docs/assets/cli-status-light.png" width="680">
   </picture>
 </p>
 
@@ -264,7 +264,7 @@ with Decider.load("d1-2b:bf16") as model:
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-media-dark.png">
-    <img alt="A photo of the Wright brothers' first flight, page 1 of the US Constitution and a 3-second clip of a rolling ball, with d1-2B's answers: an aircraft 99.8%, a law or charter 98.8%, a ball rolls 98.8%" src="docs/assets/cli-media-light.png" width="680">
+    <img alt="A photo of the Wright brothers' first flight, page 1 of the US Constitution and a 3-second clip of a rolling ball, with d1-2B's answers, an aircraft 99.8%, a law or charter 93.6%, a ball rolls 98.7%" src="docs/assets/cli-media-light.png" width="680">
   </picture>
 </p>
 
@@ -630,7 +630,7 @@ Ollama's bar averages its highest memory on each build it shares with ippon, ove
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cli-help-dark.png">
-    <img alt="ippon --help: every command with one line on what it does, and 3 to start with, ippon setup, ippon claude and ippon start" src="docs/assets/cli-help-light.png" width="760">
+    <img alt="ippon --help lists every command with one line on what it does, and 3 to start with, ippon setup, ippon claude and ippon start" src="docs/assets/cli-help-light.png" width="760">
   </picture>
 </p>
 
