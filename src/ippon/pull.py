@@ -7,7 +7,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, TextIO
 
-from . import check, downloads, hub, licences, locate, names, recommend
+from . import check, downloads, hub, licences, locate, names, quantization, recommend
 from .device import detect
 from .errors import InsufficientMemory, UnsupportedModel
 from .hub import Download
@@ -59,6 +59,18 @@ class Plan:
         return str(folder / first.patterns[0] if first.gguf else folder), revision
 
 
+def _asked(need: check.Need, carried: str | None) -> bool:
+    """Whether `need` is a precision the model is pulled to run at: the one its name carries, or one of the same
+    width at full precision, else any that keeps the weights as published."""
+    if carried is None:
+        return not need.changes_weights
+    width = quantization.PRECISIONS[carried].width
+    same = (
+        not need.changes_weights and need.precision != "auto" and quantization.PRECISIONS[need.precision].width == width
+    )
+    return need.precision == carried or same
+
+
 def prepare(model: str) -> Plan:
     """Resolve a name and inspect compatibility, metadata and exact missing bytes before fetching model assets."""
     resolved = str(names.resolve(model))
@@ -69,12 +81,13 @@ def prepare(model: str) -> Plan:
     except UnsupportedModel as error:
         raise UnsupportedModel(f"{error}. No weights downloaded.") from error
     named = names.of_load(resolved)
-    # a name that quantizes as it loads (kettei-core:q8) has its fit checked at those weights, any other as published
-    weights = names.weights_at(model)
-    at = "as published" if weights == "full" else f"at {weights}"
+    # a name that carries a precision (kettei-core:q8, jeff:fp32) has its fit checked at that precision, where fp16
+    # takes bf16's row (one width), and any other name at the precisions it computes in as published
+    weights, carried = names.weights_at(model), names.precision_of(model)
+    at = f"at {carried}" if carried else "as published"
     room = check.room(device)
     every = check.needs(inspected, room)
-    rows = [n for n in every if (n.precision == weights if weights != "full" else not n.changes_weights)]
+    rows = [n for n in every if _asked(n, carried)]
     if not any(n.fits for n in rows):
         needed = min((n.bytes for n in rows), default=0)
         others = names.families()[named.family] if named else ()

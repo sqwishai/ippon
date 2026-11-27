@@ -53,6 +53,7 @@ SETUP = "setup.json"  # in ippon's settings: what setup chose (`Settings`)
 SETUP_UNREADABLE = unreadable(SETUP)  # beside it: the last one that couldn't be read, set aside unchanged
 LOGIN_LABEL = "ai.sqwish.ippon"  # the launchd job that serves the model from login
 LOGIN_LOG = "login.log"  # its log, in the servers' folder (daemon.folder), which `ippon status` tells apart
+LOGIN_ENV = ("IPPON_CONFIG", "IPPON_CACHE", "HF_HOME", "HF_HUB_CACHE")  # the folders it is told of (serve_from_login)
 
 
 @dataclass
@@ -317,13 +318,18 @@ def serve_from_login(model: str, precision: str | None) -> None:
     the next login."""
     log = daemon.folder() / LOGIN_LOG
     serving = daemon.Wanted((model,), precision or "auto").argv()
-    job = {
+    job: dict[str, object] = {
         "Label": LOGIN_LABEL,
         "ProgramArguments": [*processes.command(), "serve", *serving, "--record-log", str(log)],
         "RunAtLoad": True,
         "StandardOutPath": str(log),
         "StandardErrorPath": str(log),
     }
+    # launchd starts the job without this shell's environment: where ippon's folders and the Hub's were moved, the
+    # job is told, so its server registers where `ippon status` looks and reads the models pulled here. Keys and
+    # tokens stay out, since any user on this Mac can read the job's file
+    if moved := {name: os.environ[name] for name in LOGIN_ENV if os.environ.get(name)}:
+        job["EnvironmentVariables"] = moved
     path = _login_plist()
     path.parent.mkdir(parents=True, exist_ok=True)
     stop_from_login()

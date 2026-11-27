@@ -8,7 +8,7 @@ Each agent takes the session's additions its own way, as its documentation gives
 - Codex reads `-c key=value` overrides of its config.toml: `mcp_servers.ippon`.
 - OpenCode reads a whole config from `OPENCODE_CONFIG_CONTENT`, merged over the user's: the MCP server.
 - Pi loads an extension with `-e FILE` (ippon's, `pi/ippon.ts`: the model as a Pi classifier, which codemode and
-  extensions ask, and the MCP server) and a skill with `--skill DIR`.
+  extensions ask, and the MCP server) and a skill with `--skill DIR`, each unless Pi already has it in every session.
 
 `ippon setup` can instead give an agent the model in every session (`add_everywhere`, undone by `remove_everywhere`):
 ippon's MCP server by the agent's own `mcp add` (OpenCode's and Pi's in their config files), ippon's skill linked into
@@ -135,12 +135,20 @@ def _opencode(mcp: list[str], args: Sequence[str], env: Mapping[str, str], folde
 
 
 def _pi(mcp: list[str], args: Sequence[str], env: Mapping[str, str], folder: Path) -> Plan:
-    return Plan(
-        ["pi", "-e", str(folder / "ippon.ts"), "--skill", str(folder / "skills" / "ippon"), *args],
-        env={"IPPON_MCP": json.dumps(mcp)},  # the extension registers the MCP server with it
-        files={"ippon.ts": _pi_extension().read_text(encoding="utf-8")}
-        | {f"skills/ippon/{path}": text for path, text in _skill().items()},
-    )
+    # Pi refuses a second extension that registers the MCP server "ippon", and warns of two skills of one name. Where
+    # `ippon setup` gave Pi ippon in every session, its linked extension (with the MCP server in mcp.json) and skill
+    # serve this session too, reaching the session's server through IPPON_URL. Pi reads skills from ~/.agents too.
+    made = Plan(["pi"])
+    home = Path.home()
+    if not (home / ".pi" / "agent" / "extensions" / "ippon.ts").exists():
+        made.argv += ["-e", str(folder / "ippon.ts")]
+        made.env["IPPON_MCP"] = json.dumps(mcp)  # the extension registers the MCP server with it
+        made.files["ippon.ts"] = _pi_extension().read_text(encoding="utf-8")
+    if not any((home / skills / "ippon").exists() for skills in (".pi/agent/skills", ".agents/skills")):
+        made.argv += ["--skill", str(folder / "skills" / "ippon")]
+        made.files |= {f"skills/ippon/{path}": text for path, text in _skill().items()}
+    made.argv += args
+    return made
 
 
 @dataclass(frozen=True)

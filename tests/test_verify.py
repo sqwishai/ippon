@@ -113,6 +113,13 @@ def test_the_report_needs_every_request_within_bound_and_top() -> None:
     assert verdict.worst == pytest.approx(0.05)
     assert [f.split(":")[0] for f in verdict.failures] == ["b", "c"]
     assert "different top answer" in verdict.failures[1]
+    # weights quantized as they loaded (q8) are graded as `ippon setup` tags them: past full precision's bound, but
+    # under 10 points with every top answer the same, they pass, listing what is past; a changed top answer fails
+    held = Report("m", 0.03, verdict.requests[:2], quantized="q8")
+    assert held.passed
+    assert held.level == "close"
+    assert "  b: 0.05000 from the reference (full precision's bound 0.03)" in held.text().splitlines()
+    assert not Report("m", 0.03, verdict.requests, quantized="q8").passed
 
 
 def test_a_tokens_only_reference_checks_prompts_counts_and_refusals_on_a_checkpoint(tmp_path: Path) -> None:

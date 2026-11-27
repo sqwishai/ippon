@@ -280,7 +280,9 @@ Quantization can change decisions. The public d1-Omni-2B Q8_0 GGUF build above d
 reference by 0.045, against a 0.0172 bound, and changes a top answer. ippon is nevertheless 0.0033 from llama.cpp on
 the same file, and the 2 checks answer different questions. To establish the numerical result of an application build,
 use `ippon verify MODEL --reference FILE --precision q8` (or the precision you selected). Do not assume that a bit
-width is accurate for every model.
+width is accurate for every model. A build quantized at load is another model than the one the reference ran, so
+`ippon verify` grades it the way `ippon setup` tags it ([formats](formats.md)). It passes when its answers move under
+10 points with every top answer the same, and it lists the requests past full precision's bound.
 
 Kettei at q8 (`kettei-core:q8`, `kettei-dot:q8`), on the 22 requests above, with every top answer unchanged:
 

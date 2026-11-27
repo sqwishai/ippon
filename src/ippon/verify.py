@@ -5,6 +5,9 @@ precisions, is accepted only when on a fixed set of requests it renders the refe
 every probability is within a stated bound of the reference's, and the most likely option is the same. A question
 whose two most likely options are within the bound of each other in the reference is a near tie: a difference the
 bound allows can swap them, so a changed top answer there is reported but is not a failure.
+A precision that quantizes the weights as they load (q8, q6, q4) makes another model than the one the reference ran,
+so it is graded by how far its answers move (drift.py): it passes when they stay close, under 10 points with no top
+answer changed, and the requests past full precision's bound are listed.
 Speed measured with other answers would not be a comparison.
 """
 
@@ -22,7 +25,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from . import _emulate
+from . import _emulate, drift, names
 from ._portable import record
 from .arch.common import is_placeholder, media_digest, media_of
 from .compare_arms import ARM_DTYPE, agreement, answers, difference, lookup
@@ -174,6 +177,19 @@ class Report:
     requests: tuple[RequestReport, ...]
     against: str = "the reference"  # what the answers are compared with: a reference file, or another runtime
     notes: tuple[str, ...] = ()  # how the bound was found, when it was measured here
+    # the precision ippon quantized the weights to as they loaded (q8), None for weights as published. Such a build is
+    # another model than the one the reference ran, so full precision's bound only describes it: it is graded on
+    # drift.py's scale, the one `ippon setup` tags each precision with and every low-bit load warns by
+    quantized: str | None = None
+
+    def _past(self, request: RequestReport) -> str | None:
+        """How `request` misses the bound, said as a line; None within it."""
+        found = request.comparison
+        if found is None or (found.max_abs_difference <= self.bound and found.top_agrees):
+            return None
+        bound = f"full precision's bound {self.bound}" if self.quantized else f"bound {self.bound}"
+        changed = "" if found.top_agrees else ", a different top answer"
+        return f"{request.name}: {found.max_abs_difference:.5f} from {self.against} ({bound}){changed}"
 
     @property
     def failures(self) -> list[str]:
@@ -181,20 +197,23 @@ class Report:
         for r in self.requests:
             if not r.tokens_match:
                 out.append(f"{r.name}: prompt tokens differ from the creator's")
-            if r.comparison is not None and (
-                r.comparison.max_abs_difference > self.bound or not r.comparison.top_agrees
-            ):
-                out.append(
-                    f"{r.name}: {r.comparison.max_abs_difference:.5f} from {self.against} (bound {self.bound})"
-                    + ("" if r.comparison.top_agrees else ", a different top answer")
-                )
+            if self.quantized is None and (past := self._past(r)):
+                out.append(past)
             if not r.input_tokens_match:
                 out.append(f"{r.name}: input token count differs from the creator's")
         return out
 
     @property
+    def level(self) -> drift.Level | None:
+        """How far a build quantized here moves from full precision; None for weights as published."""
+        compared = [r.comparison for r in self.requests if r.comparison is not None]
+        if self.quantized is None or not compared:
+            return None
+        return drift.measured(self.worst, any(not c.top_agrees for c in compared))
+
+    @property
     def passed(self) -> bool:
-        return not self.failures
+        return not self.failures and self.level in (None, "close")
 
     @property
     def worst(self) -> float:
@@ -205,13 +224,19 @@ class Report:
             lines = [f"{self.model}: {len(self.requests)} requests, prompt tokens and counts only"]
         else:
             versus = "" if self.against == "the reference" else f" against {self.against}"
+            at, bound = (f" at {self.quantized}", "full precision's bound") if self.quantized else ("", "bound")
             lines = [
-                f"{self.model}{versus}: {len(self.requests)} requests, worst {self.worst:.5f} (bound {self.bound})"
+                f"{self.model}{at}{versus}: {len(self.requests)} requests, worst {self.worst:.5f} "
+                f"({bound} {self.bound})"
             ]
         lines += [f"  {n}" for n in self.notes] + [f"  {f}" for f in self.failures]
+        if self.quantized:
+            lines += [f"  {past}" for r in self.requests if (past := self._past(r))]
         ties = [r.name for r in self.requests if r.comparison is not None and r.comparison.near_ties]
         if ties:
             lines.append(f"  a different top answer in a near tie (not a failure): {', '.join(ties)}")
+        if self.level is not None:
+            lines.append(f"{drift.TAG[self.level][0]} at {self.quantized}: {drift.SAYS[self.level]}")
         lines.append("passed" if self.passed else "failed")
         return "\n".join(lines)
 
@@ -223,6 +248,8 @@ class Report:
                 "notes": self.notes,
                 "bound": self.bound,
                 "worst": self.worst,
+                "quantized": self.quantized,
+                "level": self.level,
                 "passed": self.passed,
                 "failures": self.failures,
                 "requests": [
@@ -302,7 +329,14 @@ def verify_model(model: str, reference: str | Path, **load: Any) -> Report:
         "checkpoint_dequantized": "this checkpoint dequantized in FP32",
         "original_fp32": "the creator's original FP32 checkpoint",
     }
-    return Report(model, bound, tuple(reports), against=kinds.get(str(ref.get("reference_kind", "")), "the reference"))
+    weights = names.weights_at(model, load.get("precision", "auto"))  # q8, q6 or q4 when quantized as it loaded
+    return Report(
+        model,
+        bound,
+        tuple(reports),
+        against=kinds.get(str(ref.get("reference_kind", "")), "the reference"),
+        quantized=None if weights == "full" else weights,
+    )
 
 
 # -- a build against another runtime of the same weights ------------------------------------------------------------

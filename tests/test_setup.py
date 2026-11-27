@@ -6,6 +6,7 @@ from __future__ import annotations
 import io
 import json
 import os
+import plistlib
 import re
 import subprocess
 import sys
@@ -125,8 +126,8 @@ def test_an_agent_config_with_comments_is_left_alone_and_said_so(home: Path, tmp
 
 
 def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """Every-session setup adds ippon's MCP server and skill beside what the user has, and `remove` takes out only
-    those, never a skill of the user's own."""
+    """Every-session setup adds ippon's MCP server and skill beside what the user has, `ippon pi` then adds neither
+    again, and `remove` takes out only those, never a skill of the user's own."""
     opencode = home / ".config" / "opencode" / "opencode.json"
     opencode.parent.mkdir(parents=True)
     theirs = {"theme": "dark", "mcp": {"other": {"type": "remote", "url": "https://example.com"}}}
@@ -145,6 +146,14 @@ def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monke
     assert (home / ".pi" / "agent" / "extensions" / "ippon.ts").read_text().startswith("// ippon in Pi")
     assert (home / ".claude" / "skills" / "ippon" / "SKILL.md").is_file()
     assert not own_skill.is_symlink()  # the user's own, left in place
+    mcp = ["ippon", "mcp", "kettei-core"]
+    session = agents.plan("pi", mcp, "http://127.0.0.1:8000", "kettei-core", None, [], tmp_path / "session")
+    # `ippon pi` with ippon in every Pi session: Pi refuses its extension twice, and one ippon skill is already there
+    assert session.argv[0] == "pi"
+    assert "-e" not in session.argv
+    assert "--skill" not in session.argv
+    assert "IPPON_MCP" not in session.env
+    assert session.env["IPPON_URL"] == "http://127.0.0.1:8000"
     calls = (tmp_path / "calls").read_text().splitlines()
     assert any(
         c.startswith("mcp add --scope user ippon -- ") and c.endswith("mcp kettei-core --precision q8") for c in calls
@@ -158,6 +167,9 @@ def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monke
         "pi": "ippon's MCP server, skill and extension taken out",
     }
     assert not (home / ".pi" / "agent" / "extensions" / "ippon.ts").exists()
+    session = agents.plan("pi", mcp, "http://127.0.0.1:8000", "kettei-core", None, [], tmp_path / "session")
+    assert session.argv[1:3] == ["-e", str(tmp_path / "session" / "ippon.ts")]
+    assert "IPPON_MCP" in session.env
     agents.add_everywhere("claude", "kettei-core", [])
     (tmp_path / "bin" / "claude").unlink()  # Claude Code gone: only its own command edits its MCP servers
     monkeypatch.setenv("PATH", f"{tmp_path / 'bin'}{os.pathsep}/usr/bin{os.pathsep}/bin")
@@ -252,7 +264,8 @@ def test_ippon_started_in_a_repository_never_runs_its_code(tmp_path: Path) -> No
 def test_remove_all_takes_out_everything_ippon_added_and_nothing_else(
     home: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """`ippon remove all --models`: ippon out of every agent's settings, and of folders other programs share only what
+    """`ippon remove all --models`: ippon out of every agent's settings, its login job (told where ippon's folders
+    are) gone, and of folders other programs share only what
     is ippon's: its own files where IPPON_CACHE and IPPON_CONFIG point, and of the Hub cache the revisions ippon
     downloaded, never another revision of the same repository, a model ippon only reused or another tool's model."""
     cache = tmp_path / "cache"
@@ -301,7 +314,16 @@ def test_remove_all_takes_out_everything_ippon_added_and_nothing_else(
     onboarding.Settings(model="kettei-core:q8").save()  # set aside first, as it was, then written afresh
     unreadable = onboarding.Settings.path().with_name(onboarding.SETUP_UNREADABLE)
     assert unreadable.read_text() == '{"everywhere": ["claude"'
+    launchctl = tmp_path / "bin" / "launchctl"  # macOS's, faked: the login job is written but never started
+    launchctl.write_text("#!/bin/sh\n")
+    launchctl.chmod(0o755)
+    onboarding.serve_from_login("kettei-core", None)
+    job = home / "Library" / "LaunchAgents" / f"{onboarding.LOGIN_LABEL}.plist"
+    told = plistlib.loads(job.read_bytes())["EnvironmentVariables"]  # launchd's job would serve from ippon's folders
+    assert told["IPPON_CACHE"] == str(cache)
+    assert told["IPPON_CONFIG"] == str(home.parent / "config")
     done = onboarding.remove_all(models=True)
+    assert not job.exists()
     assert not unreadable.exists()
     assert not (home / ".claude" / "skills" / "ippon").exists()
     assert "ippon" not in json.loads((home / ".config" / "opencode" / "opencode.json").read_text()).get("mcp", {})

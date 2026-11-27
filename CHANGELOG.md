@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+- **`ippon pi` starts where setup gave Pi ippon in every session** - Pi refuses a second extension that registers the
+  same MCP server, so `ippon pi` stopped with "MCP server ippon is already registered". It now uses the extension and
+  skill Pi already has, and points them at the session's server. It also leaves out its skill when Pi finds one named
+  ippon in `~/.agents/skills`, where Pi warned of two.
+- **`pull` refuses a precision that doesn't fit before downloading** - `ippon pull jeff:fp32` on a 48 GB Mac said
+  "fp32 43.6 GB does not fit", then asked for the licence and downloaded, because the fit was checked at whichever
+  full precision fit. A precision the name carries (`:fp32`, `:bf16`, `:fp16`) is now the one checked, as `:q8` was.
+- **`verify` grades 8-bit as setup tags it** - `ippon verify kettei-core:q8` printed "failed" for answers that move
+  4 points with every top answer the same, which setup marks "answers hold". A build quantized at load is another
+  model than the one the reference ran, so verify now grades it by how far its answers move (under 10 points with no
+  top answer changed passes) and lists the requests past full precision's bound.
+- **The login server keeps ippon's folders** - With `IPPON_CACHE`, `IPPON_CONFIG`, `HF_HOME` or `HF_HUB_CACHE` set,
+  setup's "from login" server started without them, so it registered where `ippon status` didn't look. The login job
+  now carries them, and no keys or tokens.
+
 ## 0.2.1 (27 November 2026)
 
 - **`ippon start` asks for a licence before it starts the server** - At a terminal, `ippon start` and

@@ -84,6 +84,14 @@ TAG: dict[Level, tuple[str, str]] = {
 }
 
 
+def measured(worst: float, changed: bool) -> Level:
+    """The level a build measures at against its model's reference, as MEASURED's were found: "close" when its
+    probabilities move under 10 points with no top answer changed, "a lot" over 25, "noticeable" between."""
+    if worst > 0.25:
+        return "a lot"
+    return "close" if worst < 0.10 and not changed else "noticeable"
+
+
 def level(name: str, form: str) -> Level:
     """How far `name` at `form` moves: as measured, else "noticeable" at 6 bits and "a lot" below (every 4-bit build
     measured moved 16 points or more)."""

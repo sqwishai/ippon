@@ -176,7 +176,7 @@ def test_a_precision_a_name_carries_is_the_one_pull_checks_the_fit_of(
     remote: Any, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Setup recommends kettei-core:q8 for a Mac where Kettei Core fits at 8 bits only, then pulls it: the fit is
-    checked at the precision the name asks for, never at full precision alone, and a bare name still is."""
+    checked at the precision the name asks for (q8, or fp32 where only 16 bits fit), and a bare name's as published."""
     layers = [Tensor(f"encoder.layer.{i}.weight", "F32", (2048, 2048)) for i in range(10)]
     stored = [*layers, Tensor("classifier.weight", "F32", (2048, 4096))]  # about 101 MB at 16 bits, 61 MB at 8
     monkeypatch.setattr(locate, "_remote", lambda *a: (stored, 1, 65536))
@@ -188,6 +188,11 @@ def test_a_precision_a_name_carries_is_the_one_pull_checks_the_fit_of(
     with pytest.raises(InsufficientMemory, match="doesn't fit this Mac as published") as refused:
         pull.prepare("kettei-core")
     assert "At 8 bits it fits: ippon pull kettei-core:q8." in str(refused.value)  # the name to pull instead
+    roomier = Device("Apple M1", "applegpu_g13g", 8 << 30, 3_200_000_000, (26, 1), True)  # 196 MB: 16 bits fit, 32 not
+    monkeypatch.setattr(pull, "detect", lambda: roomier)
+    pull.prepare("kettei-core")
+    with pytest.raises(InsufficientMemory, match="doesn't fit this Mac at fp32"):  # never checked at bf16 instead
+        pull.prepare("kettei-core:fp32")
     eight = Device("Apple M1", "applegpu_g13g", 8 << 30, 5_726_623_744, (26, 1), True)  # 5.33 GiB for its GPU
     big = [Tensor(f"encoder.layer.{i}.weight", "F32", (8192, 8192)) for i in range(40)]  # about 2.7 GB at 8 bits
     monkeypatch.setattr(locate, "_remote", lambda *a: (big, 1, 65536))
