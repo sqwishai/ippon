@@ -15,7 +15,9 @@ from pathlib import Path
 
 import huggingface_hub.constants
 import pytest
+import yaml
 
+from helpers import FAKE_HERMES_MCP
 from ippon import agents, drift, names, onboarding, processes
 from ippon.agents import AGENTS
 from ippon.device import Device
@@ -31,17 +33,20 @@ def mac(memory: int, gpu: float) -> Device:
 
 @pytest.fixture
 def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    """An empty HOME and ippon settings folder, and fake `claude`, `codex` and `pi` commands that log their
-    arguments."""
+    """An empty HOME and ippon settings folder, fake `claude`, `codex` and `pi` commands that log their arguments,
+    and a fake `hermes` whose `mcp add` and `mcp remove` keep its config.yaml as Hermes does."""
     for folder in ("home", "config", "bin"):
         (tmp_path / folder).mkdir()
     monkeypatch.setenv("HOME", str(tmp_path / "home"))
     monkeypatch.setenv("IPPON_CONFIG", str(tmp_path / "config"))
+    monkeypatch.delenv("HERMES_HOME", raising=False)
     for agent in ("claude", "codex", "pi"):
         fake = tmp_path / "bin" / agent
         log = f"open({str(tmp_path / 'calls')!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')"
         fake.write_text(f"#!{sys.executable}\nimport sys\n{log}\n")
         fake.chmod(0o755)
+    (tmp_path / "bin" / "hermes").write_text(FAKE_HERMES_MCP.format(python=sys.executable))
+    (tmp_path / "bin" / "hermes").chmod(0o755)
     monkeypatch.setenv("PATH", f"{tmp_path / 'bin'}{os.pathsep}/usr/bin{os.pathsep}/bin")
     return tmp_path / "home"
 
@@ -127,7 +132,8 @@ def test_an_agent_config_with_comments_is_left_alone_and_said_so(home: Path, tmp
 
 def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Every-session setup adds ippon's MCP server and skill beside what the user has, `ippon pi` then adds neither
-    again, and `remove` takes out only those, never a skill of the user's own."""
+    again, `ippon hermes` adds them only for another model, and `remove` takes out only those, never a skill of the
+    user's own."""
     opencode = home / ".config" / "opencode" / "opencode.json"
     opencode.parent.mkdir(parents=True)
     theirs = {"theme": "dark", "mcp": {"other": {"type": "remote", "url": "https://example.com"}}}
@@ -146,6 +152,17 @@ def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monke
     assert (home / ".pi" / "agent" / "extensions" / "ippon.ts").read_text().startswith("// ippon in Pi")
     assert (home / ".claude" / "skills" / "ippon" / "SKILL.md").is_file()
     assert not own_skill.is_symlink()  # the user's own, left in place
+    hermes = home / ".hermes" / "config.yaml"
+    entry = yaml.safe_load(hermes.read_text())["mcp_servers"]["ippon"]
+    assert entry["args"][-3:] == ["kettei-core", "--precision", "q8"]
+    # Hermes gives an MCP server none of its environment but PATH, HOME and the like: its entry says where ippon's
+    # folders are, and whose requests these are
+    assert entry["env"]["IPPON_CLIENT"] == "hermes"
+    assert entry["env"]["IPPON_CONFIG"] == str(home.parent / "config")
+    assert (home / ".hermes" / "skills" / "ippon" / "SKILL.md").is_file()
+    assert agents.ensure_everywhere("hermes", "kettei-core", ["--precision", "q8"]) == []  # there for this model
+    assert agents.ensure_everywhere("hermes", "kettei-dot", [])  # `ippon hermes --model kettei-dot`: changed
+    assert yaml.safe_load(hermes.read_text())["mcp_servers"]["ippon"]["args"][-1] == "kettei-dot"
     mcp = ["ippon", "mcp", "kettei-core"]
     session = agents.plan("pi", mcp, "http://127.0.0.1:8000", "kettei-core", None, [], tmp_path / "session")
     # `ippon pi` with ippon in every Pi session: Pi refuses its extension twice, and one ippon skill is already there
@@ -165,7 +182,9 @@ def test_every_session_comes_out_as_it_went_in(home: Path, tmp_path: Path, monke
         "codex": taken,
         "opencode": taken,
         "pi": "ippon's MCP server, skill and extension taken out",
+        "hermes": "ippon's MCP server and skill taken out",
     }
+    assert yaml.safe_load(hermes.read_text())["mcp_servers"] == {}
     assert not (home / ".pi" / "agent" / "extensions" / "ippon.ts").exists()
     session = agents.plan("pi", mcp, "http://127.0.0.1:8000", "kettei-core", None, [], tmp_path / "session")
     assert session.argv[1:3] == ["-e", str(tmp_path / "session" / "ippon.ts")]
@@ -246,7 +265,7 @@ def test_setup_goes_back_to_the_question_before(home: Path, monkeypatch: pytest.
     asked = Terminal(io.StringIO("\nb\n\n\n\nb\n2\n\n"), io.StringIO())
     settings = onboarding.run(asked, mac(16, 12), onboarding.Steps(pull, lambda name, options: "answered"))
     assert pulled == ["kettei-core:bf16", "kettei-core:bf16"]  # as published: a person turns the precision
-    assert sorted(settings.everywhere) == ["claude", "codex", "pi"]
+    assert sorted(settings.everywhere) == ["claude", "codex", "hermes", "pi"]
     assert settings.serving == "on demand"
 
 

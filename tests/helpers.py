@@ -10,6 +10,34 @@ import numpy as np
 
 from ippon.profiles import Switches
 
+# Hermes 0.21's `hermes mcp add NAME --env K=V ... --command C --args A ...` and `hermes mcp remove NAME`, as a fake
+# on PATH ({python} formatted in): each asks on stdin before it changes config.yaml (under HERMES_HOME, else
+# ~/.hermes) and cancels without a yes, and removing a server it doesn't have says so and changes nothing. A fake
+# that also starts a chat continues after this block
+FAKE_HERMES_MCP = """#!{python}
+import os, sys
+from pathlib import Path
+import yaml
+if sys.argv[1:2] == ["mcp"]:
+    path = Path(os.environ.get("HERMES_HOME") or Path.home() / ".hermes") / "config.yaml"
+    config = (yaml.safe_load(path.read_text()) if path.exists() else None) or {{}}
+    servers = config.setdefault("mcp_servers", {{}})
+    verb, name = sys.argv[2], sys.argv[3]
+    if verb == "remove" and name not in servers:
+        sys.exit(print(f"Server {{name!r}} not found in config."))
+    if sys.stdin.readline().strip().lower() not in ("y", "yes"):
+        sys.exit(print("Cancelled."))
+    if verb == "add":
+        at = sys.argv.index
+        told = dict(pair.split("=", 1) for pair in sys.argv[at("--env") + 1 : at("--command")])
+        servers[name] = {{"command": sys.argv[at("--command") + 1], "args": sys.argv[at("--args") + 1 :], "env": told}}
+    else:
+        del servers[name]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(config))
+    sys.exit(0)
+"""
+
 # every operation on MLX's own path: the reference a test turns single switches on over
 MLX_SWITCHES = Switches(
     add_norm="mlx",

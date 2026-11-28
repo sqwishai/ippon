@@ -1,5 +1,6 @@
-"""`ippon claude`, `ippon codex`, `ippon opencode` and `ippon pi`: a coding agent for one session with the local
-decision model beside it, through ippon's MCP server, and nothing written to the agent's own configuration.
+"""`ippon claude`, `ippon codex`, `ippon opencode`, `ippon pi` and `ippon hermes`: a coding agent for one session with
+the local decision model beside it, through ippon's MCP server, and nothing written to the agent's own configuration
+but Hermes's, which takes MCP servers from nowhere else.
 
 Each agent takes the session's additions its own way, as its documentation gives them.
 
@@ -9,6 +10,9 @@ Each agent takes the session's additions its own way, as its documentation gives
 - OpenCode reads a whole config from `OPENCODE_CONFIG_CONTENT`, merged over the user's: the MCP server.
 - Pi loads an extension with `-e FILE` (ippon's, `pi/ippon.ts`: the model as a Pi classifier, which codemode and
   extensions ask, and the MCP server) and a skill with `--skill DIR`, each unless Pi already has it in every session.
+- Hermes reads MCP servers only from its config.yaml and loads skills only by name from its skills folder, so
+  `ippon hermes` adds both there as setup's every-session option does (`ensure_everywhere`), and says so, when they
+  aren't there for the session's model. `hermes chat --skills ippon` then preloads the skill.
 
 `ippon setup` can instead give an agent the model in every session (`add_everywhere`, undone by `remove_everywhere`):
 ippon's MCP server by the agent's own `mcp add` (OpenCode's and Pi's in their config files), ippon's skill linked into
@@ -34,12 +38,14 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any, Literal, get_args
 
+import yaml
+
 from . import __version__, daemon, processes
 from .errors import DecisionError, RuntimeUnavailable
 from .served import CLIENT_ENV
-from .storage import write_json_atomic
+from .storage import moved_folders, write_json_atomic
 
-Agent = Literal["claude", "codex", "opencode", "pi"]
+Agent = Literal["claude", "codex", "opencode", "pi", "hermes"]
 AGENTS: tuple[Agent, ...] = get_args(Agent)
 # what a Codex MCP server is given of the environment beside Codex's own short list (HOME, PATH, ...): where ippon's
 # cache and the Hub's are, and the server's key
@@ -151,6 +157,46 @@ def _pi(mcp: list[str], args: Sequence[str], env: Mapping[str, str], folder: Pat
     return made
 
 
+def _hermes(mcp: list[str], args: Sequence[str], env: Mapping[str, str], folder: Path) -> Plan:
+    # ippon's MCP server and skill are in Hermes's own settings by now (ensure_everywhere): the skill is preloaded
+    return Plan(["hermes", "chat", "--skills", "ippon", *args])
+
+
+def _hermes_server() -> list[str] | None:
+    """The command of ippon's MCP server in Hermes's config.yaml (under HERMES_HOME, else ~/.hermes), read as Hermes
+    keeps it; None where it has none."""
+    home = Path(os.environ.get("HERMES_HOME") or Path.home() / ".hermes").expanduser()
+    try:
+        settings = yaml.safe_load((home / "config.yaml").read_text(encoding="utf-8"))
+    except (FileNotFoundError, yaml.YAMLError):
+        return None
+    servers = settings.get("mcp_servers") if isinstance(settings, dict) else None
+    entry = servers.get("ippon") if isinstance(servers, dict) else None
+    if not isinstance(entry, dict):
+        return None
+    return [str(entry.get("command")), *(str(word) for word in entry.get("args") or ())]
+
+
+def _hermes_add(mcp: list[str]) -> list[str]:
+    # Hermes gives an MCP server PATH, HOME and a few more of its environment, plus its entry's own `env`: the
+    # client's name `ippon status` shows, and where ippon's folders and the Hub's were moved (no key or token)
+    env = {CLIENT_ENV: "hermes"} | moved_folders()
+    told = [f"{name}={value}" for name, value in env.items()]
+    return ["hermes", "mcp", "add", "ippon", "--env", *told, "--command", mcp[0], "--args", *mcp[1:]]
+
+
+@dataclass(frozen=True)
+class Commands:
+    """How an agent's own commands add and remove ippon's MCP server, for an agent whose servers only they edit: the
+    command that adds `mcp`, the one that removes it, whether it is there now (`remove` succeeds either way), and
+    what both read on stdin (Hermes asks before it saves or removes)."""
+
+    add: Callable[[list[str]], list[str]]
+    remove: list[str]
+    present: Callable[[], bool]
+    answer: str | None = None
+
+
 @dataclass(frozen=True)
 class Config:
     """An agent's own JSON config file under HOME (`path`), whose `key` holds its MCP servers by name, each as
@@ -165,17 +211,28 @@ class Config:
 class Kind:
     """An agent ippon works with: its name, how to install it, how it gets the decision model for one session
     (`session`, the plan `ippon AGENT` runs it with), and how it gets it in every session (`add_everywhere`): ippon's
-    MCP server added by the agent's own `mcp add` with `scope`, or written into its `config` file, ippon's skill
-    linked into `skills`, a folder under HOME (None: it gets ippon's guidance as the MCP server's instructions), and
-    Pi's extension linked into `extensions`."""
+    MCP server added by the agent's own `commands`, or written into its `config` file, ippon's skill linked into
+    `skills`, a folder under HOME (None: it gets ippon's guidance as the MCP server's instructions), and Pi's
+    extension linked into `extensions`. An agent that takes MCP servers only from its settings (Hermes) has `current`,
+    the command of ippon's MCP server there, so `ippon AGENT` adds the session's first (`ensure_everywhere`)."""
 
     name: str
     install: str
     session: Callable[[list[str], Sequence[str], Mapping[str, str], Path], Plan]
-    scope: tuple[str, ...] = ()
+    commands: Commands | None = None
     config: Config | None = None
     skills: str | None = None
     extensions: str | None = None
+    current: Callable[[], list[str] | None] | None = None
+
+
+def _mcp_commands(agent: Agent, *scope: str) -> Commands:
+    """The `mcp add NAME -- COMMAND` family of an agent's commands (Claude Code's, Codex's)."""
+    return Commands(
+        lambda mcp: [agent, "mcp", "add", *scope, "ippon", "--", *mcp],
+        [agent, "mcp", "remove", *scope, "ippon"],
+        lambda: _run([agent, "mcp", "get", "ippon"]),
+    )
 
 
 KINDS: dict[Agent, Kind] = {
@@ -183,10 +240,12 @@ KINDS: dict[Agent, Kind] = {
         "Claude Code",
         "curl -fsSL https://claude.ai/install.sh | bash",
         _claude,
-        scope=("--scope", "user"),
+        commands=_mcp_commands("claude", "--scope", "user"),
         skills=".claude/skills",
     ),
-    "codex": Kind("Codex", "npm install -g @openai/codex", _codex, skills=".agents/skills"),
+    "codex": Kind(
+        "Codex", "npm install -g @openai/codex", _codex, commands=_mcp_commands("codex"), skills=".agents/skills"
+    ),
     "opencode": Kind(
         "OpenCode",
         "curl -fsSL https://opencode.ai/install | bash",
@@ -200,6 +259,16 @@ KINDS: dict[Agent, Kind] = {
         config=Config(".pi/agent/mcp.json", "mcpServers", _pi_server),
         skills=".pi/agent/skills",
         extensions=".pi/agent/extensions",
+    ),
+    "hermes": Kind(
+        "Hermes",
+        "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash",
+        _hermes,
+        commands=Commands(
+            _hermes_add, ["hermes", "mcp", "remove", "ippon"], lambda: _hermes_server() is not None, answer="y\n"
+        ),
+        skills=".hermes/skills",
+        current=_hermes_server,
     ),
 }
 
@@ -249,8 +318,9 @@ def add_everywhere(agent: Agent, model: str, options: Sequence[str]) -> list[str
         _write_json(path, config)
         added = [f"ippon's MCP server in ~/{kind.config.path}"]
     else:
-        _run([agent, "mcp", "remove", *kind.scope, "ippon"])
-        _run([agent, "mcp", "add", *kind.scope, "ippon", "--", *mcp], must=True)
+        assert kind.commands is not None  # every agent has its own commands or a config file
+        _run(kind.commands.remove, answer=kind.commands.answer)
+        _run(kind.commands.add(mcp), must=True, answer=kind.commands.answer)
         added = [f"ippon's MCP server ({agent} mcp list)"]
     if kind.skills is not None:
         _link(Path.home() / kind.skills / "ippon", _skill_folder())
@@ -266,19 +336,32 @@ def remove_everywhere(agent: Agent) -> str | None:
     untouched. What was taken out, as a line to show ("ippon's MCP server and skill taken out"), and what stayed when
     the agent's command, which alone edits its MCP servers, isn't on PATH; None when nothing was there."""
     kind = KINDS[agent]
-    remove = None if kind.config is not None else [agent, "mcp", "remove", *kind.scope, "ippon"]
-    if remove is None:
+    commands = kind.commands
+    if commands is None:
         server = kind.config is not None and _remove_from_config(kind.config)
-    else:  # an agent's `mcp remove` succeeds for a server it doesn't have (Codex 0.154): only one it lists goes
-        server = _run([agent, "mcp", "get", "ippon"]) and _run(remove)
+    else:  # an agent's `mcp remove` succeeds for a server it doesn't have (Codex 0.154, Hermes): only one it has goes
+        server = commands.present() and _run(commands.remove, answer=commands.answer)
     skill = kind.skills is not None and _unlink(Path.home() / kind.skills / "ippon", _skill_folder())
     extension = kind.extensions is not None and _unlink(Path.home() / kind.extensions / "ippon.ts", _pi_extension())
     parts = [part for part, done in (("MCP server", server), ("skill", skill), ("extension", extension)) if done]
     gone = " and ".join([", ".join(parts[:-1]), parts[-1]] if len(parts) > 2 else parts)
-    if remove is not None and shutil.which(agent) is None:  # its MCP server, if added, is still in its settings
-        kept = f"its MCP server stays, since `{agent}` isn't on PATH: run `{shlex.join(remove)}` once it is"
+    if commands is not None and shutil.which(agent) is None:  # its MCP server, if added, is still in its settings
+        kept = f"its MCP server stays, since `{agent}` isn't on PATH: run `{shlex.join(commands.remove)}` once it is"
         return f"ippon's {gone} taken out, and {kept}" if gone else kept[0].upper() + kept[1:]
     return f"ippon's {gone} taken out" if gone else None
+
+
+def ensure_everywhere(agent: Agent, model: str, options: Sequence[str]) -> list[str]:
+    """For an agent that takes MCP servers only from its own settings (`Kind.current`, Hermes's): ippon's MCP server
+    for `model` and ippon's skill added there, as `add_everywhere` adds them, unless both already are; what was added,
+    as lines to show. Nothing for any other agent, which takes them for one session."""
+    kind = KINDS[agent]
+    if kind.current is None:
+        return []
+    skill = kind.skills is None or (Path.home() / kind.skills / "ippon").exists()
+    if skill and kind.current() == mcp_command(model, options):
+        return []
+    return add_everywhere(agent, model, options)
 
 
 def _remove_from_config(config: Config) -> bool:
@@ -334,11 +417,11 @@ def _unlink(link: Path, target: Path) -> bool:
     return False
 
 
-def _run(argv: Sequence[str], must: bool = False) -> bool:
-    """Whether an agent's command succeeded (False when it isn't installed). With `must`, a failure is an error that
-    gives the command's own output, so setup never says it added what the agent refused."""
+def _run(argv: Sequence[str], must: bool = False, answer: str | None = None) -> bool:
+    """Whether an agent's command succeeded (False when it isn't installed), given `answer` on stdin. With `must`, a
+    failure is an error that gives the command's own output, so setup never says it added what the agent refused."""
     try:
-        done = subprocess.run(list(argv), check=False, capture_output=True, text=True)
+        done = subprocess.run(list(argv), check=False, capture_output=True, text=True, input=answer)
     except FileNotFoundError:
         if must:
             raise RuntimeUnavailable(

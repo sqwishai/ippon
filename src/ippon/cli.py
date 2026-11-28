@@ -2,9 +2,11 @@
 
     ippon setup [NAME] [--yes]        choose a decision model for this Mac (each listed with what it reads and whether
                                             it fits), download it, answer a first question, and say what to run next
-    ippon claude|codex|opencode|pi    the agent for one session with the model beside it (ippon's MCP server, and in
-                                            Claude Code ippon's skill); arguments after -- go to the agent, and
-                                            nothing is written to its config
+    ippon claude|codex|opencode|pi|hermes
+                                      the agent for one session with the model beside it (ippon's MCP server, and in
+                                            Claude Code, Pi and Hermes ippon's skill); arguments after -- go to the
+                                            agent, and nothing is written to its config but Hermes's, which takes MCP
+                                            servers from nowhere else
     ippon start [MODEL]               the shared server in the background, for your own code (port 8000)
     ippon status | stop | logs        what it serves, stop it, follow its log
     ippon remove AGENT|login|all      undo what setup added to an agent's settings, or the server from login, or
@@ -109,7 +111,7 @@ MODEL = (  # what names a model on the command line
 
 START = f"""start here:
   ippon setup     choose a decision model for this Mac and see it answer
-  ippon claude    Claude Code with the model beside it (or codex, opencode)
+  ippon claude    Claude Code with the model beside it (or codex, opencode, pi, hermes)
   ippon start     serve it to your own code at {url_of(DEFAULT_PORT)}"""
 # each command's --help ends with it in use: the forms people type, the commonest first, each with what it does
 EXAMPLES: dict[str, tuple[tuple[str, str], ...]] = {
@@ -209,8 +211,8 @@ def examples(command: str) -> str | None:
 
 # the commands `ippon --help` lists, in the order `main` adds them: a first run's, then checking and timing, then tools
 HELP_ORDER = (
-    "setup", "claude", "codex", "opencode", "pi", "start", "decide", "status", "stop", "logs", "pull", "recommend",
-    "serve", "lint", "eval", "verify", "bench", "doctor", "remove", "mcp", "skills",
+    "setup", "claude", "codex", "opencode", "pi", "hermes", "start", "decide", "status", "stop", "logs", "pull",
+    "recommend", "serve", "lint", "eval", "verify", "bench", "doctor", "remove", "mcp", "skills",
 )  # fmt: skip
 
 
@@ -1412,7 +1414,10 @@ def _remove(args: argparse.Namespace) -> int:
     gone = settings.leave(args.what)
     name = agents.KINDS[args.what].name
     print(f"{name}: {gone}" if gone else f"ippon wasn't in {name}'s settings, so nothing changed")
-    print(f"ippon {args.what} still brings them for a session")
+    if agents.KINDS[args.what].current is None:
+        print(f"ippon {args.what} still brings them for a session")
+    else:  # Hermes takes MCP servers only from its settings
+        print(f"ippon {args.what} adds them again when it starts")
     return 0
 
 
@@ -1518,7 +1523,18 @@ def _agent(args: argparse.Namespace) -> int:
     client, model = daemon.answering(args.named, wanted, key, args.start_timeout)
     assert model is not None
     # what `ippon mcp` takes too, should it start the server again
-    ippon = agents.mcp_command(args.named, forward_options(args, skip=AGENT_OWN))
+    options = forward_options(args, skip=AGENT_OWN)
+    ippon = agents.mcp_command(args.named, options)
+    if added := agents.ensure_everywhere(args.command, args.named, options):
+        name = agents.KINDS[args.command].name
+        said = f"ippon: {name} takes MCP servers only from its own settings, so ippon added {'; '.join(added)}"
+        print(
+            terminal.commands(
+                f"{said}, for this session and later ones; `ippon remove {args.command}` takes them out",
+                terminal.colour_on(sys.stderr),
+            ),
+            file=sys.stderr,
+        )
     status = agents.run(
         lambda folder: agents.plan(args.command, ippon, client.url, model.id, key, args.agent_args, folder)
     )
@@ -1844,7 +1860,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     setting_up.add_argument(
         "--use",
         metavar="LIST",
-        help="what to use it with, without asking: claude, codex, opencode, pi, code (your own)",
+        help="what to use it with, without asking: claude, codex, opencode, pi, hermes, code (your own)",
     )
     setting_up.add_argument(
         "--every-session",
@@ -1865,9 +1881,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             help=f"{agents.KINDS[agent].name} with the decision model beside it, for one session",
             description=f"Start {agents.KINDS[agent].name} for this session with the decision model beside it: "
             "ippon's MCP server, which starts the shared ippon server or reuses the one running"
-            + (", and ippon's skill" if agent == "claude" else "")
-            + ". Nothing is written to its configuration (ippon setup can add it to every session), and the server "
-            "keeps running after the agent exits (ippon stop stops it).",
+            + (", and ippon's skill" if agent in ("claude", "pi", "hermes") else "")
+            + (
+                ". Hermes takes MCP servers only from its own settings, so ippon adds its MCP server and skill there "
+                "first, for later sessions too (ippon remove hermes takes them out)"
+                if agents.KINDS[agent].current is not None
+                else ". Nothing is written to its configuration (ippon setup can add it to every session)"
+            )
+            + ", and the server keeps running after the agent exits (ippon stop stops it).",
         )
         launching.set_defaults(handler=_agent, precision=None, agent_args=[], from_setup=True)
         launching.add_argument(

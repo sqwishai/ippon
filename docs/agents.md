@@ -16,9 +16,9 @@ and how to act on probabilities.
 
 ## One command for a session
 
-`ippon claude`, `ippon codex`, `ippon opencode` and `ippon pi` start a coding agent with the decision model ready for one session.
-Each command starts the shared server first, or uses again the server that already runs. It does not change the
-agent's own settings.
+`ippon claude`, `ippon codex`, `ippon opencode`, `ippon pi` and `ippon hermes` start a coding agent with the decision
+model ready for one session. Each command starts the shared server first, or uses again the server that already runs.
+It does not change the agent's own settings, except for Hermes, as the table shows.
 
 ```sh
 ippon claude
@@ -37,6 +37,13 @@ the same installation of ippon as the command that started it, even when another
 | Codex | `-c` overrides of `mcp_servers.ippon` | the MCP tools, with ippon's guidance as the server's instructions |
 | OpenCode | `OPENCODE_CONFIG_CONTENT` | the MCP tools, with ippon's guidance as the server's instructions |
 | Pi | `-e` with ippon's extension and `--skill`, in a temporary folder deleted when it exits | the MCP tools, ippon's skill, and the model as a Pi classifier |
+| Hermes | `hermes mcp add` puts ippon's MCP server in `~/.hermes/config.yaml`, ippon's skill is linked into `~/.hermes/skills`, and `hermes chat --skills ippon` starts the session | the MCP tools and ippon's skill, preloaded |
+
+Hermes reads MCP servers only from its own `config.yaml` and loads skills by name from its own folder, so `ippon hermes`
+adds ippon to both, says so, and leaves them there for later sessions. When they are already there for the same model,
+it adds nothing. Hermes gives an MCP server almost none of its environment, so the entry names the client
+(`IPPON_CLIENT=hermes`) and any of `IPPON_CACHE`, `IPPON_CONFIG`, `HF_HOME` and `HF_HUB_CACHE` that you set. It never
+holds a key. `ippon remove hermes` takes ippon out of Hermes again.
 
 In Pi, the model is also a classifier, named `ippon/MODEL`, so codemode scripts (`models.classify`) and extensions
 (`ctx.modelRegistry.classify`) can ask it. A model that reads images takes the images a script or extension passes
@@ -45,7 +52,7 @@ with its questions.
 To have the model in every session, select that option in `ippon setup`. Setup adds the MCP server and skill of ippon
 to the agent's own settings, next to your settings. For Pi, setup writes the MCP server into `~/.pi/agent/mcp.json`
 and links ippon's extension into `~/.pi/agent/extensions`. When Pi starts, the extension makes the models of the
-ippon server that runs at that time into Pi classifiers. `ippon remove claude` (or `codex`, `opencode`, `pi`) removes only these additions.
+ippon server that runs at that time into Pi classifiers. `ippon remove claude` (or `codex`, `opencode`, `pi`, `hermes`) removes only these additions.
 
 Ctrl-C goes to the agent, and the agent decides what it means. When the agent exits, the server continues to run for
 other clients. `ippon stop` stops the server. If the agent is not installed, the command fails with
@@ -90,7 +97,8 @@ If the desktop host cannot find `ippon`, replace `command` with the absolute exe
 These are standard local-server configurations. The [Claude Code MCP guide](https://code.claude.com/docs/en/mcp) and
 the [Cursor MCP guide](https://prod.cursor.com/docs/mcp) give the host-specific configuration.
 
-For Hermes, add ippon to `mcp_servers` in `~/.hermes/config.yaml`, next to your current servers.
+For Hermes, `ippon hermes` and setup's every-session option add ippon with Hermes's own `hermes mcp add`. To add it
+by hand instead, put ippon in `mcp_servers` in `~/.hermes/config.yaml`, next to your current servers.
 
 ```yaml
 mcp_servers:
@@ -165,7 +173,7 @@ To use a local endpoint that already runs, use this configuration.
 
 To see which client asks what, send `X-Ippon-Client: NAME` with each request. The server's log and `ippon status` then
 count the questions answered for that name and never show a state. ippon's own clients send the `IPPON_CLIENT` variable, and `ippon
-claude`, `ippon codex`, `ippon opencode` and `ippon pi` set it to the agent's name.
+claude`, `ippon codex`, `ippon opencode`, `ippon pi` and `ippon hermes` set it to the agent's name.
 
 If the server requires a key, put `IPPON_API_KEY` in the environment of the MCP process. Do not put the key in
 committed configuration. The client sends the key as a Bearer token. This client accepts local HTTP endpoints and

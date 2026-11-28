@@ -22,8 +22,10 @@ from typing import Any, ClassVar
 
 import mlx.core as mx
 import pytest
+import yaml
 from PIL import Image
 
+from helpers import FAKE_HERMES_MCP
 from ippon import Decider, cli, daemon, hub, locate, mcp, registry
 from ippon import check as checks
 from ippon.errors import DecisionError, InvalidRequest, ModelNotFound, Unavailable, UnsupportedModel
@@ -516,13 +518,20 @@ record = {{"argv": sys.argv[1:], "env": dict(os.environ), "files": files, "dirs"
 Path(os.environ["FAKE_RECORD"]).write_text(json.dumps(record))
 sys.exit(7)
 """
+FAKE_HERMES = FAKE_HERMES_MCP + FAKE_AGENT.split("\n", 1)[1]  # its `mcp` commands, else the chat recorded
 
 
 def launched(
-    agent: str, running: tuple[str, Batcher, Decider], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, *more: str
+    agent: str,
+    running: tuple[str, Batcher, Decider],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *more: str,
+    settings: bool = False,
 ) -> dict[str, Any]:
     """`ippon AGENT` run against the toy server, with a fake agent on PATH that records its arguments, environment
-    and the files it was given, under an empty HOME; what it recorded."""
+    and the files it was given, under an empty HOME that only an agent with `settings` (Hermes) may write into; what
+    it recorded."""
     url = running[0]
     me = os.getpid()
     port = int(url.rsplit(":", 1)[1])
@@ -537,14 +546,15 @@ def launched(
     monkeypatch.setattr(toy_model, "weights", "q8")  # as `ippon serve FOLDER --precision q8` serves it
     daemon.record(daemon.Server(me, port, url, served, started=daemon.started_at(me) or 0.0, status="serving"))
     fake = bin_dir / agent
-    fake.write_text(FAKE_AGENT.format(python=sys.executable))
+    fake.write_text((FAKE_HERMES if agent == "hermes" else FAKE_AGENT).format(python=sys.executable))
     fake.chmod(0o755)
     monkeypatch.setenv("PATH", f"{bin_dir}{os.pathsep}{os.environ['PATH']}")
     monkeypatch.setenv("HOME", str(home))
     monkeypatch.setenv("FAKE_RECORD", str(tmp_path / "record.json"))
+    monkeypatch.delenv("HERMES_HOME", raising=False)
     assert cli.main([agent, "--model", str(folder), "--precision", "q8", *more, "--", "--resume", "a b"]) == 7
     recorded = json.loads((tmp_path / "record.json").read_text())
-    assert not any(home.iterdir()), "wrote into HOME"
+    assert settings or not any(home.iterdir()), "wrote into HOME"
     assert not any(Path(p).exists() for p in recorded["files"]), "left its temporary files"
     assert (recorded["env"]["IPPON_URL"], recorded["env"]["IPPON_MODEL"]) == (url, "toy")
     assert recorded["env"]["IPPON_CLIENT"] == agent  # its requests named in the server's log and status
@@ -628,6 +638,29 @@ def test_ippon_pi_gives_pi_the_tools_skill_and_extension_for_one_session(
     mcp_cmd = json.loads(recorded["env"]["IPPON_MCP"])
     assert mcp_cmd[1:] == mcp_args(tmp_path)
     answers(mcp_cmd, recorded["env"], running[2])
+
+
+def test_ippon_hermes_puts_ippon_in_hermes_settings_once_and_preloads_its_skill(
+    running: tuple[str, Batcher, Decider],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """Hermes takes MCP servers only from its config.yaml and skills by name from its own folder, so `ippon hermes`
+    adds both there and says so, then preloads the skill. The MCP server, given only what Hermes gives one, answers
+    from the shared server, and a second start finds both in place."""
+    recorded = launched("hermes", running, tmp_path, monkeypatch, settings=True)
+    assert recorded["argv"] == ["chat", "--skills", "ippon", "--resume", "a b"]
+    assert "Hermes takes MCP servers only from its own settings" in capsys.readouterr().err
+    home = tmp_path / "home"
+    ippon = yaml.safe_load((home / ".hermes" / "config.yaml").read_text())["mcp_servers"]["ippon"]
+    assert ippon["args"] == mcp_args(tmp_path)
+    assert (home / ".hermes" / "skills" / "ippon" / "SKILL.md").is_file()
+    given = {"PATH": os.environ["PATH"], "HOME": str(home)} | ippon["env"]  # no IPPON_URL: Hermes passes none
+    answers([ippon["command"], *ippon["args"]], given, running[2])
+    again = ["hermes", "--model", str(toy_folder(tmp_path)), "--precision", "q8", "--", "--resume", "a b"]
+    assert cli.main(again) == 7
+    assert "only from its own settings" not in capsys.readouterr().err
 
 
 def test_mcp_negotiates_older_protocol_versions_without_structured_content() -> None:

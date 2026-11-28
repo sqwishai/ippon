@@ -14,6 +14,15 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
+# the variables that move ippon's folders and the Hub's: what a process started apart from this shell (the login job,
+# Hermes's MCP server) is told, so it reads the same records and models. None of them holds a key or a token
+FOLDER_ENV = ("IPPON_CONFIG", "IPPON_CACHE", "HF_HOME", "HF_HUB_CACHE")
+
+
+def moved_folders() -> dict[str, str]:
+    """The FOLDER_ENV variables this environment sets, by name."""
+    return {name: os.environ[name] for name in FOLDER_ENV if os.environ.get(name)}
+
 
 def cache_dir() -> Path:
     return Path(os.environ.get("IPPON_CACHE") or Path.home() / "Library" / "Caches" / "ippon").expanduser()

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Hermes, beside Claude Code, Codex, OpenCode and Pi** - `ippon hermes` starts Hermes with the decision model
+  beside it, `ippon setup` offers Hermes like the other agents, and `ippon remove hermes` takes ippon out again. Hermes
+  reads MCP servers only from its own `config.yaml`, so `ippon hermes` adds ippon's there with `hermes mcp add`, links
+  ippon's skill into `~/.hermes/skills`, says so, and preloads the skill with `hermes chat --skills ippon`. The entry
+  names the client and the folders you moved, since Hermes passes an MCP server almost none of its environment.
 - **`ippon pi` starts where setup gave Pi ippon in every session** - Pi refuses a second extension that registers the
   same MCP server, so `ippon pi` stopped with "MCP server ippon is already registered". It now uses the extension and
   skill Pi already has, and points them at the session's server. It also leaves out its skill when Pi finds one named

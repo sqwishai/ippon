@@ -42,7 +42,7 @@ from .quantization import FULL, PRECISIONS, QUANTIZED, Precision, form_of
 from .quantization import get as get_precision
 from .schema import MEDIA
 from .served import DEFAULT_PORT, url_of
-from .storage import cache_dir, config_dir, read_record, set_aside, unreadable, write_json_atomic
+from .storage import cache_dir, config_dir, moved_folders, read_record, set_aside, unreadable, write_json_atomic
 from .terminal import Back, Line, Terminal, commands, styled
 from .verified import DEFAULT_MODEL
 
@@ -53,7 +53,6 @@ SETUP = "setup.json"  # in ippon's settings: what setup chose (`Settings`)
 SETUP_UNREADABLE = unreadable(SETUP)  # beside it: the last one that couldn't be read, set aside unchanged
 LOGIN_LABEL = "ai.sqwish.ippon"  # the launchd job that serves the model from login
 LOGIN_LOG = "login.log"  # its log, in the servers' folder (daemon.folder), which `ippon status` tells apart
-LOGIN_ENV = ("IPPON_CONFIG", "IPPON_CACHE", "HF_HOME", "HF_HUB_CACHE")  # the folders it is told of (serve_from_login)
 
 
 @dataclass
@@ -328,7 +327,7 @@ def serve_from_login(model: str, precision: str | None) -> None:
     # launchd starts the job without this shell's environment: where ippon's folders and the Hub's were moved, the
     # job is told, so its server registers where `ippon status` looks and reads the models pulled here. Keys and
     # tokens stay out, since any user on this Mac can read the job's file
-    if moved := {name: os.environ[name] for name in LOGIN_ENV if os.environ.get(name)}:
+    if moved := moved_folders():
         job["EnvironmentVariables"] = moved
     path = _login_plist()
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -574,10 +573,17 @@ def _choose_everywhere(term: Terminal | None, use: Sequence[Agent], given: bool 
     if given is not None or term is None:
         return list(use) if given else []
     starts = " / ".join(f"ippon {a}" for a in use)
+    names = [KINDS[a].name for a in use]
+    listed = ", ".join(names[:-1]) + " and " + names[-1] if len(names) > 1 else names[0]
+    # Hermes takes MCP servers only from its settings, so `ippon hermes` adds ippon there all the same
+    settled = [KINDS[a].name for a in use if KINDS[a].current is not None]
+    unchanged = "nothing in their settings changes" + (
+        f", but {settled[0]}'s, its only place for MCP servers" if settled else ""
+    )
     picked = term.choose(
-        f"  3/4  How should {' and '.join(KINDS[a].name for a in use)} get it?",
+        f"  3/4  How should {listed} get it?",
         [
-            Line(f"When I start them with {starts}", "nothing in their settings changes"),
+            Line(f"When I start them with {starts}", unchanged),
             Line("In every session", "adds ippon to their settings · ippon remove undoes it"),
         ],
         0,

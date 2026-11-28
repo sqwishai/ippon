@@ -104,7 +104,7 @@ pip install git+https://github.com/sqwishai/ippon
 <details>
 <summary>Or let your coding agent install it</summary>
 
-Paste this into Claude Code, Codex, OpenCode or Pi.
+Paste this into Claude Code, Codex, OpenCode, Pi or Hermes.
 
 ```text
 Set up ippon on this Mac, the runtime for local decision models at https://github.com/sqwishai/ippon.
@@ -114,7 +114,7 @@ Set up ippon on this Mac, the runtime for local decision models at https://githu
 3. Once I accept, start the setup in the background, because it downloads about 10 GB, which can take 20 minutes
    or more, longer than one shell command waits:
    nohup ippon setup --yes --accept-license --use AGENT --every-session > ~/ippon-setup.log 2>&1 &
-   where AGENT is claude, codex, opencode or pi, whichever you are. Check `tail -n 3 ~/ippon-setup.log` every minute and
+   where AGENT is claude, codex, opencode, pi or hermes, whichever you are. Check `tail -n 3 ~/ippon-setup.log` every minute and
    tell me how far the download is, until the log shows the first answer. Setup adds ippon's MCP tools and skill to
    your settings for every session, and `ippon remove AGENT` takes them out again.
 4. Read ippon's skill with `ippon skills ippon`. Then show me how my own Python code asks the model directly.
@@ -215,10 +215,10 @@ that URL too. In a terminal, `ippon status` watches live throughput, cache reuse
 ### Agents
 
 `ippon claude` opens Claude Code with your decision model ready for that session, and `ippon codex`,
-`ippon opencode` and `ippon pi` do the same for Codex, OpenCode and Pi.
+`ippon opencode`, `ippon pi` and `ippon hermes` do the same for Codex, OpenCode, Pi and Hermes.
 
 ```sh
-ippon claude              # or ippon codex, ippon opencode, ippon pi
+ippon claude              # or ippon codex, ippon opencode, ippon pi, ippon hermes
 ```
 
 <p align="center">
@@ -238,8 +238,8 @@ keeps its answers by default. It returns the answer the model gave the first tim
 does not sample. Agents send the same request many times, so the saving adds up. To turn the answer cache off, use
 `--answer-cache 0`.
 
-`ippon skills` teaches your agent when a decision model is worth asking, and [Agents](docs/agents.md) covers Cursor,
-Hermes and other hosts.
+`ippon skills` teaches your agent when a decision model is worth asking, and [Agents](docs/agents.md) covers Cursor
+and other MCP hosts.
 
 ### Multimodal
 
